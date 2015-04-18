@@ -1,0 +1,4 @@
+services:
+#    resource_listener.example:
+#        class: Resource\Bundle\ListenerBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

@@ -2,9 +2,7 @@ services:
   wsse.security.authentication.provider:
     class:  Resource\Bundle\SecurityBundleSecurity\Authentication\Provider\WsseProvider
     arguments: ['', %kernel.cache_dir%/security/nonces]
-    factory_class: Resource\Bundle\SecurityBundle\DependencyInjection\Security\Factory\WsseFacory
 
   wsse.security.authentication.listener:
     class:  Resource\Bundle\SecurityBundle\Security\Firewall\WsseListener
     arguments: [@security.context, @security.authentication.manager]
-    factory_class: Resource\Bundle\SecurityBundle\DependencyInjection\Security\Factory\WsseFacory
