@@ -1,6 +1,6 @@
 <?php
 // src/Acme/DemoBundle/DependencyInjection/Security/Factory/WsseFactory.php
-namespace Acme\DemoBundle\DependencyInjection\Security\Factory;
+namespace Resource\Bundle\SecurityBundle\DependencyInjection\Security\Factory;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;

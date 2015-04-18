@@ -1,8 +1,9 @@
 security:
     providers:
-        in_memory:
-            memory: ~
+         my_mongo_provider:
+            mongodb: {class: Resource\Bundle\UserBundel\Document\User, property: username}
     firewalls:
         wsse_secured:
             pattern:   /api/.*
             wsse:      true
+
