@@ -1,3 +1,7 @@
+resource_listener:
+    resource: "@ResourceListenerBundle/Resources/config/routing.yml"
+    prefix:   /
+
 resource_user:
     resource: "@ResourceUserBundle/Resources/config/routing.yml"
     prefix:   /
