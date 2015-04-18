@@ -27,7 +27,7 @@ class RequestListener
             $event->getResponse()->body->set($data);
             //todo might be usefull to set every key as a post data
             foreach($data as $key=>$value){
-                $event->getResponse()->request->set($key,$value);
+                $event->getResponse()->attributes->set($key,$value);
             }
         }
     }
