@@ -4,6 +4,7 @@ namespace Resource\Bundle\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Resource\Bundle\UserBundle\Document\User;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
