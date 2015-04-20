@@ -33,6 +33,9 @@ class UserController extends Controller
                 'creationUserId'=>$user->getId()
                 )));
             $response->headers->set('Content-Type', 'application/json');
+            $response->headers->set('Access-Control-Allow-Headers','Content-Type');
+            $response->headers->set('Access-Control-Allow-Methods','GET,POST,OPTIONS,PUT,DELETE');
+            $response->headers->set('Access-Control-Allow-Origin','*');
 
             return $response; 
     }

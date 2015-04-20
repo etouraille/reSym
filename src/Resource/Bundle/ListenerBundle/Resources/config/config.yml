@@ -1,5 +1,0 @@
-services:
-    listener.controller.request:
-        class: Resource\Bundle\ListenerBundle\Listener\Controler\RequestListener
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

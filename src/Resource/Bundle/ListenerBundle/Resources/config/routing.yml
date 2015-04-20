@@ -1,3 +1,0 @@
-resource_listener_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: ResourceListenerBundle:Default:index }

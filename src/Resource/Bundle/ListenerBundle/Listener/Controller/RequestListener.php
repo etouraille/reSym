@@ -23,11 +23,10 @@ class RequestListener
         $request = $event->getRequest();
         if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $data = json_decode($request->getContent(), true);
-            $data = is_array($data)?$data:array());
-            $event->getResponse()->body->set($data);
+            $data = is_array($data)?$data:array();
             //todo might be usefull to set every key as a post data
             foreach($data as $key=>$value){
-                $event->getResponse()->attributes->set($key,$value);
+                $event->getRequest()->attributes->set($key,$value);
             }
         }
     }

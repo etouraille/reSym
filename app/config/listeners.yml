@@ -1,0 +1,2 @@
+imports:
+    - { resource: "@ResourceListenerBundle/Resources/config/config.yml" }
