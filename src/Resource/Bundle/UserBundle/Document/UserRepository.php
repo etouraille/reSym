@@ -1,14 +1,13 @@
 <?php
-namespace Resource\Bundle\UserBundle\Entity\UserRepository;
-
+namespace Resource\Bundle\UserBundle\Document;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ORM\NoResultException;
 
-class UserRepository extends EntityRepository implements UserProviderInterface
+class UserRepository extends DocumentRepository implements UserProviderInterface
 {
     public function loadUserByUsername($username)
     {

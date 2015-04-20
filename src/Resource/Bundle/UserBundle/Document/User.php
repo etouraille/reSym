@@ -1,12 +1,13 @@
 <?php
-namespace Resouce\Bundle\UserBundle\Entity;
+namespace Resource\Bundle\UserBundle\Document;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
  *  @MongoDB\Document
- *  @MongoDB\Document(repositoryClass="Acme\StoreBundle\Repository\UserRepository")
+ *  @MongoDB\Document(repositoryClass="UserRepository")
  */
 
 class User implements AdvancedUserInterface, \Serializable
@@ -130,4 +131,94 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->isActive;
     }
     // Not necessary for the moment
+
+    /**
+     * Get id
+     *
+     * @return id $id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     * @return self
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+        return $this;
+    }
+
+    /**
+     * Set salt
+     *
+     * @param string $salt
+     * @return self
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+        return $this;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     * @return self
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return self
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string $email
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     * @return self
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean $isActive
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
 }

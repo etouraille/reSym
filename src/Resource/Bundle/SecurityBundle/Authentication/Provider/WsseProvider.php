@@ -1,6 +1,5 @@
 <?php
-// src/Acme/DemoBundle/Security/Authentication/Provider/WsseProvider.php
-namespace Resouce\Bundle\SecurityBundle\Security\Authentication\Provider;
+namespace Resource\Bundle\SecurityBundle\Authentication\Provider;
 
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
