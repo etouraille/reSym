@@ -3,6 +3,7 @@ namespace Resource\Bundle\ListenerBundle\Listener\Controller;
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
 class RequestListener
 {
@@ -29,5 +30,16 @@ class RequestListener
                 $event->getRequest()->attributes->set($key,$value);
             }
         }
+    }
+
+    public function onKernelResponse(FilterResponseEvent $event){
+            //The api is in JSON format.
+            $event->getResponse()->headers->set('Content-Type', 'application/json');
+            // Header For Cross Domain.
+            $event->getResponse()->headers->set('Access-Control-Allow-Headers','Content-Type');
+            $event->getResponse()->headers->set('Access-Control-Allow-Methods','GET,POST,OPTIONS,PUT,DELETE');
+            $event->getResponse()->headers->set('Access-Control-Allow-Origin','*');
+
+        
     }
 }
