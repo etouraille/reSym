@@ -15,6 +15,24 @@ class UserController extends Controller
         //revoie le token d'authentication.
     }
 
+    public function saltAction($username){
+        $repository = $this->get('doctrine_mongo')
+            ->getManager()
+            ->getRepository('ResourceUserBundle:Product');
+        $user = $repository->findOneByUsername($username);
+        $ret = array('success'=>false);
+        if($user){
+            $success = true;
+            $ret = array(
+                'salt'=>$user->getSalt(),
+                'success'=>$success,
+            )
+        }
+        $response = new Response();
+        $response->setContent(json_encode($ret));
+        return $response;
+    }
+
     public function subscribeAction($username='etouraille',$password='b1otope',$email='edouard.touraille@gmail.com'){
             $user = new User();
             // mettre en place un filtre de validation des paramètres.
@@ -26,12 +44,12 @@ class UserController extends Controller
             $dm = $this->get('doctrine_mongodb')->getManager();
             $dm->persist($user);
             $dm->flush();
-
-            $response = new Response();
-            $response->setContent(json_encode(array(
+            $ret = array(
                 'succes' => true,
                 'creationUserId'=>$user->getId()
-                )));
-            return $response; 
+                );
+            $response = new Response();
+            $response->setContent(json_encode($ret));
+            return $response;
     }
 }
