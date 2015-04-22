@@ -6,3 +6,7 @@ services:
   wsse.security.authentication.listener:
     class:  Resource\Bundle\SecurityBundle\Security\Firewall\WsseListener
     arguments: [@security.context, @security.authentication.manager]
+  security.encoder.custom:
+    class: Resource\Bundle\SecurityBundle\Password\CustomEncoder
+    arguments: [2]
+

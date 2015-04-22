@@ -1,3 +1,4 @@
 imports:
     - { resource: "@ResourceSecurityBundle/Resources/config/services.yml" }
-    - { resource: "@ResourceListenerBundle/Resources/config/services.yml" }
+    - { resource: "@ResourceListenerBundle/Resources/config/services.yml" }   
+

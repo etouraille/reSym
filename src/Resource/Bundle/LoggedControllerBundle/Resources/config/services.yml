@@ -1,0 +1,4 @@
+services:
+#    resource_logged_controller.example:
+#        class: Resource\Bundle\LoggedControllerBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

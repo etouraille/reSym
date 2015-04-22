@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new Resource\Bundle\SecurityBundle\ResourceSecurityBundle(),
             new Resource\Bundle\UserBundle\ResourceUserBundle(),
             new Resource\Bundle\ListenerBundle\ResourceListenerBundle(),
+            new Resource\Bundle\LoggedControllerBundle\ResourceLoggedControllerBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

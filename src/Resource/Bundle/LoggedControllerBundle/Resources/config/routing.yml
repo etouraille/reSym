@@ -1,0 +1,3 @@
+resource_logged_controller_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: ResourceLoggedControllerBundle:Default:index }
