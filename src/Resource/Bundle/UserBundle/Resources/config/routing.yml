@@ -1,3 +1,6 @@
-resource_user_homepage:
+user_subscribe:
     path:     /subscribe
     defaults: { _controller: ResourceUserBundle:User:subscribe }
+user_salt:
+    path:     /salt
+    defaults: { _controller: ResourceUserBundle:User:salt }

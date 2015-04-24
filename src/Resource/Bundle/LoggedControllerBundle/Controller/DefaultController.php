@@ -3,11 +3,12 @@
 namespace Resource\Bundle\LoggedControllerBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Components\HttpFoudation\Response;
 
-class DefaultController extends Controller
+class AuthenticationController extends Controller
 {
-    public function indexAction($name)
+    public function pingAction($name)
     {
-        return $this->render('ResourceLoggedControllerBundle:Default:index.html.twig', array('name' => $name));
+        return new Response();
     }
 }

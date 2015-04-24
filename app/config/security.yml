@@ -6,7 +6,7 @@ security:
              mongodb: {class: Resource\Bundle\UserBundle\Document\User }
     firewalls:
         wsse_secured:
-            pattern:   /api/.*
+            pattern:   /logged-area/.*
             wsse:      true
     encoders:
         Resource\Bundle\UserBundle\Document\User:

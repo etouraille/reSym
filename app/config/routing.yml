@@ -1,3 +1,6 @@
 resource_user:
     resource: "@ResourceUserBundle/Resources/config/routing.yml"
     prefix:   /
+resource_logged_area:
+    resource: "@ResourceLoggedControllerBundle/Resources/config/routing.yml"
+    prefix:   /logged-area
