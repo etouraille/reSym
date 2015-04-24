@@ -6,14 +6,14 @@ use Symfony\Component\HttpKernel\Response;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\NonceExpiredException;
 
-class RequestListener
+class ExceptiontListener
 {
 
     public function onKernelException(GetResponseForExcepion $event)
     {
         $exception = $event->getException();
         $response = new Response();
-        
+        exit(1); 
         //Manage exception Type, and return appropriate status code
         if($exception instanceof NonceExpiredException){
            $status = 403;
@@ -39,7 +39,7 @@ class RequestListener
         $ret = array_merge(array(
             'success'=>false,
             'status'=>$status,
-            'error'=>$exception->getMessage(),
+            'message'=>$exception->getMessage(),
         ),$stack);
 
         //Header return Type

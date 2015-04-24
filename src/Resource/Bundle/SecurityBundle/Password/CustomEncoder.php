@@ -16,7 +16,7 @@ class CustomEncoder implements PasswordEncoderInterface
     {
         $encodedPassword = $raw;
         for($i=0;$i<$this->iteration;$i++){
-            $encodedPassword = hash('sha256',$salt . $encodedPassword );
+            $encodedPassword = hash('md5',$salt . $encodedPassword );
         }
         return $encodedPassword;
     }

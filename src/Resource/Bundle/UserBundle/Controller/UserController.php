@@ -8,14 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-    public function loginAction($username,$password)
-    {
-        //idée de login: 
-        //appelée en https pour proteger login et mot de passe
-        //revoie le token d'authentication.
-    }
-
-    public function saltAction($username){
+    public function saltAction($username) {
         $repository = $this->get('doctrine_mongo')
             ->getManager()
             ->getRepository('ResourceUserBundle:Product');
@@ -26,14 +19,14 @@ class UserController extends Controller
             $ret = array(
                 'salt'=>$user->getSalt(),
                 'success'=>$success,
-            )
+            );
         }
         $response = new Response();
         $response->setContent(json_encode($ret));
         return $response;
     }
 
-    public function subscribeAction($username='etouraille',$password='b1otope',$email='edouard.touraille@gmail.com'){
+    public function subscribeAction($username='etouraille',$password='b1otope',$email='edouard.touraille@gmail.com') {
             $user = new User();
             // mettre en place un filtre de validation des paramètres.
             // je ne vois null part de filtrage des donnée : mise en place dans le validateur.
