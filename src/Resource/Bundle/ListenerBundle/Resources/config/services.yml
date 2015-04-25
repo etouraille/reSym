@@ -6,5 +6,6 @@ services:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
     kernel.listener.api_exception_login:
         class: Resource\Bundle\ListenerBundle\Listener\ExceptionListener
+        arguments: [@kernel]
         tags:
-            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+            - { name: kernel.event_listener, event: kernel.exception, mthod: onKernelException }

@@ -11,7 +11,7 @@ class UserController extends Controller
     public function saltAction($username) {
         $repository = $this->get('doctrine_mongo')
             ->getManager()
-            ->getRepository('ResourceUserBundle:Product');
+            ->getRepository('ResourceUserBundle:User');
         $user = $repository->findOneByUsername($username);
         $ret = array('success'=>false);
         if($user){

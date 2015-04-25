@@ -28,18 +28,19 @@ class UserRepository extends DocumentRepository implements UserProviderInterface
 
         return $user;
     }
-    public function deleteUserByUsername($username)
+    public function deleteByUsername($username)
     {
-        $q = $this
-            ->createQueryBuilder('u')
-            ->delete('u')
-            ->where('u.username = :username OR u.email = :email')
-            ->setParameter('username', $username)
-            ->setParameter('email', $username)
-            ->getQuery();
-
-        return $q->getResult();
-
+        $regExp = new \MongoRegex("/^{$username}/i");
+        
+        $q = $this->createQueryBuilder()->remove();
+        $q->addOr(
+            $q->expr()->field('username')->equals($regExp),
+            $q->expr()->field('email')->equals($regExp)
+             )
+        ->getQuery()
+        ->execute();
+       
+        return $q;
     }
 
 

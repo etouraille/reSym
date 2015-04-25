@@ -1,6 +1,6 @@
 <?php
 
-namespace Resource\Bundle\UserBundle\Controller;
+namespace Resource\Bundle\TestBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Resource\Bundle\UserBundle\Document\User;
@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TestUserController extends Controller
 {
-      public function addAction($username,$password,$email) {
+      public function addAction($username='edouard',$password='b1otope',$email='edouard.touraille@gmail.com') {
             $user = new User();
             // mettre en place un filtre de validation des paramètres.
             // je ne vois null part de filtrage des donnée : mise en place dans le validateur.
@@ -30,12 +30,15 @@ class TestUserController extends Controller
             return $response;
       }
 
-      public function deleteAction($username){
+      public function deleteAction($username='edouard'){
 
-            $repository = $this->get('doctrine_mongo')
+            $repository = $this->get('doctrine_mongodb')
                 ->getManager()
-                ->getRepository('ResourceUserBundle:Product');
-                $user = $repository->deleteOneByUsername($username);
+                ->getRepository('ResourceUserBundle:User');
+            $user = $repository->deleteByUsername($username);
 
+            $response = new Response();
+            $response->setContent(json_encode(array('user'=>$user)));
+            return $response;
       }
 }
