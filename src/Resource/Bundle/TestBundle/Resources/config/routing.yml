@@ -1,0 +1,6 @@
+resource_test_add_and_get:
+    path:     /create-and-get-user
+    defaults: { _controller: ResourceTestBundle:TestUser:add }
+resource_test_delete_by_username:
+    path:     /delete-by-username
+    defaults: { _controller: ResourceTestBundle:TestUser:delete }

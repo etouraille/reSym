@@ -28,6 +28,20 @@ class UserRepository extends DocumentRepository implements UserProviderInterface
 
         return $user;
     }
+    public function deleteUserByUsername($username)
+    {
+        $q = $this
+            ->createQueryBuilder('u')
+            ->delete('u')
+            ->where('u.username = :username OR u.email = :email')
+            ->setParameter('username', $username)
+            ->setParameter('email', $username)
+            ->getQuery();
+
+        return $q->getResult();
+
+    }
+
 
     public function refreshUser(UserInterface $user)
     {
