@@ -20,7 +20,6 @@ class ExceptionListener {
     public function onKernelException(GetResponseForExceptionEvent $event) {
         $exception = $event->getException();
         $response = new Response();
-        $line = array();
         //Manage exception Type, and return appropriate status code
         if($exception instanceof NonceExpiredException){
            $status = 403;
@@ -38,7 +37,6 @@ class ExceptionListener {
         
         }
         $response->setStatusCode($status);
-       var_dump($exception); 
         //manage stack trace.
         $stack = array();
         if($this->kernel->getEnvironment() == 'dev' && $status >= 500){
@@ -49,7 +47,7 @@ class ExceptionListener {
             'success'=>false,
             'status'=>$status,
             'message'=>$exception->getMessage(),
-        ),$line,$stack);
+        ),$stack);
         $response->setContent(json_encode($ret));
 
         //Header return Type

@@ -8,4 +8,9 @@ services:
         class: Resource\Bundle\ListenerBundle\Listener\ExceptionListener
         arguments: [@kernel]
         tags:
-            - { name: kernel.event_listener, event: kernel.exception, mthod: onKernelException }
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+    report.listener:
+        class: Resource\Bundle\ListenerBundle\Doctrine\User
+        arguments: [@security.encoder.custom]
+        tags:
+            - { name: doctrine_mongodb.odm.event_listener , event: prePersist }

@@ -9,7 +9,7 @@ class CustomEncoder implements PasswordEncoderInterface
     protected $iteration;
 
     public function __construct($iteration){
-        $this->iteration = $iteration; 
+        $this->iteration = $iteration;
     }
     
     public function encodePassword($raw, $salt)
