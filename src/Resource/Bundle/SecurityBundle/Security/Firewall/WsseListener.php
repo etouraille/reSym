@@ -1,13 +1,12 @@
 <?php
-namespace Resouce\Bundle\SecurityBundle\Security\Firewall;
-
+namespace Resource\Bundle\SecurityBundle\Security\Firewall;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
-use Acme\DemoBundle\Security\Authentication\Token\WsseUserToken;
+use Resource\Bundle\SecurityBundle\Authentication\Token\WsseUserToken;
 
 class WsseListener implements ListenerInterface
 {
@@ -46,6 +45,8 @@ class WsseListener implements ListenerInterface
             // To deny the authentication clear the token. This will redirect to the login page.
             // $this->securityContext->setToken(null);
             // return;
+            echo $failed->getMessage();
+            throw $failed;
 
             // Deny authentication with a '403 Forbidden' HTTP response
             $response = new Response();

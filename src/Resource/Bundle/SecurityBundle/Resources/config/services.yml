@@ -1,7 +1,7 @@
 services:
   wsse.security.authentication.provider:
     class:  Resource\Bundle\SecurityBundle\Authentication\Provider\WsseProvider
-    arguments: ['', %kernel.cache_dir%/security/nonces]
+    arguments: [security.provider.my_mongo_provider, %kernel.cache_dir%/security/nonces]
 
   wsse.security.authentication.listener:
     class:  Resource\Bundle\SecurityBundle\Security\Firewall\WsseListener

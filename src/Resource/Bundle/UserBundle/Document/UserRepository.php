@@ -12,10 +12,11 @@ class UserRepository extends DocumentRepository implements UserProviderInterface
     public function loadUserByUsername($username)
     {
         $q = $this
-            ->createQueryBuilder('u')
-            ->where('u.username = :username OR u.email = :email')
-            ->setParameter('username', $username)
-            ->setParameter('email', $username)
+            ->createQueryBuilder('u')->find();
+         $q = $q->addOr(
+                $q->expr()->field('username')->equals($username),
+                $q->expr()->field('password')->equals($username)
+             )
             ->getQuery();
 
         try {

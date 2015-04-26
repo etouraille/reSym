@@ -8,8 +8,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-    public function saltAction($username) {
-        $repository = $this->get('doctrine_mongo')
+    public function saltAction($username='edouard') {
+        $repository = $this->get('doctrine_mongodb')
             ->getManager()
             ->getRepository('ResourceUserBundle:User');
         $user = $repository->findOneByUsername($username);

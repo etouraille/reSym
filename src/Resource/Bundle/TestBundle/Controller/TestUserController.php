@@ -41,4 +41,25 @@ class TestUserController extends Controller
             $response->setContent(json_encode(array('user'=>$user)));
             return $response;
       }
+
+      public function wsseAction(){
+
+          $password = 'b1otope';        
+          $salt = 123;
+          $nonce = 123;
+          $encoder = $this->get('security.encoder.custom');
+          $secret = $encoder->encodePassword($password,$salt);
+          $expected =  base64_encode(
+              hash('md5',
+                  base64_decode($nonce).'2012-02-12 00:00:00'.$secret
+              )
+          );
+
+          $chaine = 'UsernameToken Username="edouard", PasswordDigest="'.$expected.'", Nonce="123", Created="2012-02-12 00:00:00"';
+          $response = new Response();
+          $response->setContent(json_encode(array('xwsse'=>$chaine)));
+      
+          return $response;
+      
+      }
 }

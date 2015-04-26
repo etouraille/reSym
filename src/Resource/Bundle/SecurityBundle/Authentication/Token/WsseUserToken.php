@@ -1,7 +1,8 @@
 <?php
-Namespace Resouce\Bundle\SecurityBundle\Authentication\Token; 
 
-use Symfony\Component\  Security\Core\Authentication\Token\AbstractToken;
+namespace Resource\Bundle\SecurityBundle\Authentication\Token; 
+
+use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 
 class WsseUserToken extends AbstractToken
 {

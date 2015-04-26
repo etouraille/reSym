@@ -6,26 +6,29 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\NonceExpiredException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-
+use Resource\Bundle\ListenerBundle\Services\ResponseFormaterService;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 class ExceptionListener {
 
     protected $kernel;
+    protected $formater;
 
-    public function __construct($kernel) {
+    public function __construct($kernel, ResponseFormaterService $formater) {
         
         $this->kernel = $kernel;
-    
+        $this->formater = $formater;
     }
     
-    public function onKernelException(GetResponseForExceptionEvent $event) {
+    public function onKernelException(GetResponseForExceptionEvent $event ) {
         $exception = $event->getException();
+        $class = get_class($exception);
         $response = new Response();
         //Manage exception Type, and return appropriate status code
         if($exception instanceof NonceExpiredException){
            $status = 403;
             // Forbiden, and the client cannot solve the problem, hacking attempt
-        }elseif($exception instanceof AuthentificationExcepion){
-           $status = 401;
+        }elseif($exception instanceof AuthentificationExcepion || $exception instanceof AuthenticationCredentialsNotFoundException ){
+           $status = 500;//401;
             // Forbiden, but the client can logged with the proper rights
         }elseif($exception instanceof HttpExceptionInterface){
             $status = $exception->getStatusCode();
@@ -39,22 +42,26 @@ class ExceptionListener {
         $response->setStatusCode($status);
         //manage stack trace.
         $stack = array();
-        if($this->kernel->getEnvironment() == 'dev' && $status >= 500){
+        //if($this->kernel->getEnvironment() == 'dev' && $status >= 500){
+    
             $stack = array('stack'=>$exception->getTrace());
-        }
+        //}
         // Manage returned data.
-        $ret = array_merge(array(
+        $content = array_merge(array(
             'success'=>false,
             'status'=>$status,
             'message'=>$exception->getMessage(),
         ),$stack);
-        $response->setContent(json_encode($ret));
 
-        //Header return Type
-        $response->headers->set('Content-Type','application/json');
         
         // set response
-        $event->setResponse($response);
+        $event->setResponse(
+            $this->formater->formatResponse(
+                $response,
+                $event->getRequest(),
+                $content
+            )
+        );
 
     }
 

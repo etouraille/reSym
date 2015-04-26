@@ -4,3 +4,6 @@ resource_test_add_and_get:
 resource_test_delete_by_username:
     path:     /delete-by-username
     defaults: { _controller: ResourceTestBundle:TestUser:delete }
+resource_test_wsse:
+    path:     /wsse
+    defaults: { _controller: ResourceTestBundle:TestUser:wsse }

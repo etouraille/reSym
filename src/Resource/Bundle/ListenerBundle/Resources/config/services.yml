@@ -1,12 +1,13 @@
 services:
     listener.controller.request:
         class: Resource\Bundle\ListenerBundle\Listener\Controller\RequestListener
+        arguments : [@response.formater.service]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
     kernel.listener.api_exception_login:
         class: Resource\Bundle\ListenerBundle\Listener\ExceptionListener
-        arguments: [@kernel]
+        arguments: [@kernel,@response.formater.service]
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
     report.listener:
@@ -14,3 +15,5 @@ services:
         arguments: [@security.encoder.custom]
         tags:
             - { name: doctrine_mongodb.odm.event_listener , event: prePersist }
+    response.formater.service:
+        class: Resource\Bundle\ListenerBundle\Services\ResponseFormaterService
