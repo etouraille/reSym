@@ -51,6 +51,8 @@ class ExceptionListener {
             'success'=>false,
             'status'=>$status,
             'message'=>$exception->getMessage(),
+            'line'=>$exception->getLine(),
+            'file'=>$exception->getFile()
         ),$stack);
 
         

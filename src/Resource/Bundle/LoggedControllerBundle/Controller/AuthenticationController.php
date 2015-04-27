@@ -3,11 +3,11 @@
 namespace Resource\Bundle\LoggedControllerBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Components\HttpFoudation\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthenticationController extends Controller
 {
-    public function pingAction($name)
+    public function pingAction()
     {
         $response =  new Response();
         // default result for login area ping 

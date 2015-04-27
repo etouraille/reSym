@@ -22,6 +22,12 @@ class WsseListener implements ListenerInterface
     public function handle(GetResponseEvent $event)
     {
         $request = $event->getRequest();
+        if($request->getMethod() === 'OPTIONS'){
+            $response = new Response();
+            $response->setStatusCode(200);
+            $event->setResponse($response);
+            return;
+        }
 
         $wsseRegex = '/UsernameToken Username="([^"]+)", PasswordDigest="([^"]+)", Nonce="([^"]+)", Created="([^"]+)"/';
         if (!$request->headers->has('x-wsse') || 1 !== preg_match($wsseRegex, $request->headers->get('x-wsse'), $matches)) {
@@ -45,8 +51,6 @@ class WsseListener implements ListenerInterface
             // To deny the authentication clear the token. This will redirect to the login page.
             // $this->securityContext->setToken(null);
             // return;
-            echo $failed->getMessage();
-            throw $failed;
 
             // Deny authentication with a '403 Forbidden' HTTP response
             $response = new Response();

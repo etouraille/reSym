@@ -10,8 +10,8 @@ class WsseUserToken extends AbstractToken
     public $digest;
     public $nonce;
 
-    public function __construct(array $roles = array())
-    {
+    public function __construct(array $roles = array()) {
+
         parent::__construct($roles);
 
         // Si l'utilisateur a des rôles, on le considère comme authentifié

@@ -25,8 +25,7 @@ class ResponseFormaterService {
         // Header For Cross Domain.
         $allowHeaders = 'content-type';
         if(preg_match('#logged\-area#',$request->getUri())) {
-            $allowHeaders ='authorization,xwsse';
-            
+            $allowHeaders ='authorization,x-wsse';
         }    
         $response->headers->set('Access-Control-Allow-Headers',$allowHeaders);
         $response->headers->set('Access-Control-Allow-Methods','GET,OPTIONS,PUT,DELETE');

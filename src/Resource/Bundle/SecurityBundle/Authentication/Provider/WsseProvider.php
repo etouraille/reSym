@@ -29,7 +29,7 @@ class WsseProvider implements AuthenticationProviderInterface
             return $authenticatedToken;
         }
 
-        throw new AuthenticationException('The WSSE authentication failed.'.$token->getUsername());
+        throw new AuthenticationException('The WSSE authentication failed.');
     }
 
     protected function validateDigest($digest, $nonce, $created, $secret)
@@ -47,8 +47,19 @@ class WsseProvider implements AuthenticationProviderInterface
         //file_put_contents($this->cacheDir.'/'.$nonce, time());
 
         // Valide le Secret
-        $expected = base64_encode(md5(base64_decode($nonce).$created.$secret));
-
+        $expected = base64_encode(
+            hash(
+                'md5',
+                base64_decode($nonce).$created.$secret
+            )
+        );
+        throw new \Exception(
+            'digets='.$digest. 
+            '  nounce='.$nonce .
+            ' created='.$created. 
+            ' secret='.$secret.
+            ' expected='.$expected 
+        );
         return $digest === $expected;
     }
 
