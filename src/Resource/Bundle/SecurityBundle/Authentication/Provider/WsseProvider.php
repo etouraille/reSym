@@ -12,11 +12,13 @@ class WsseProvider implements AuthenticationProviderInterface
 {
     private $userProvider;
     private $cacheDir;
+    private $encryptionService;
 
-    public function __construct(UserProviderInterface $userProvider, $cacheDir)
+    public function __construct(UserProviderInterface $userProvider, $cacheDir,$encryptionService)
     {
         $this->userProvider = $userProvider;
         $this->cacheDir     = $cacheDir;
+        $this->encryptionService = $encryptionService;
     }
 
     public function authenticate(TokenInterface $token)
@@ -47,20 +49,8 @@ class WsseProvider implements AuthenticationProviderInterface
         //file_put_contents($this->cacheDir.'/'.$nonce, time());
 
         // Valide le Secret
-        $expected = base64_encode(
-            hash(
-                'md5',
-                base64_decode($nonce).$created.$secret
-            )
-        );
-        throw new \Exception(
-            'digets='.$digest. 
-            '  nounce='.$nonce .
-            ' created='.$created. 
-            ' secret='.$secret.
-            ' expected='.$expected 
-        );
-        return $digest === $expected;
+        $expected = $this->encryptionService->getDigest(trim($nonce),trim($created),trim($secret));
+        return trim($digest) === $expected;
     }
 
     public function supports(TokenInterface $token)

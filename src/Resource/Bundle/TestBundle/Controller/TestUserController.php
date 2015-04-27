@@ -43,22 +43,29 @@ class TestUserController extends Controller
       }
 
       public function wsseAction(){
-
-          $password = 'b1otope';        
-          $salt = 123;
-          $nonce = 123;
+          
+          $salt = '9320d97bc80eec01f366083a2bce5ef8';
+          $nonce = 'NjdlZjE1MDRlYjgxZjZhN2RkYjE1OTE4NzZiOGY0Mzg=';
+          $password = 'b1otope'; 
+          $created = '2012-02-12 00:00:00';
           $encoder = $this->get('security.encoder.custom');
           $secret = $encoder->encodePassword($password,$salt);
-          $expected =  base64_encode(
-              hash('md5',
-                  base64_decode($nonce).'2012-02-12 00:00:00'.$secret
-              )
-          );
-
+          $expected =  $this->get('security.encryption')->getDigest($nonce, $created, $secret );         
+            
           $chaine = 'UsernameToken Username="edouard", PasswordDigest="'.$expected.'", Nonce="123", Created="2012-02-12 00:00:00"';
           $response = new Response();
-          $response->setContent(json_encode(array('xwsse'=>$chaine)));
+          $response->setContent(json_encode(array('secret'=>$secret,'password'=>$password,'salt'=>$salt, 'expected'=>$expected)));
       
+          return $response;
+      
+      
+      }
+
+      public function digestAction($nonce=123,$created='2012-02-12 00:00:00', $secret = '123aTd58887y'){
+          $digest = $this->get('security.encryption')->getDigest($nonce, $created, $secret );
+
+          $response = new Response();
+          $response->setContent(json_encode(array('digest'=>$digest)));
           return $response;
       
       }

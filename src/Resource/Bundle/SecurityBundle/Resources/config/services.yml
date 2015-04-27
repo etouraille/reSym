@@ -1,7 +1,7 @@
 services:
   wsse.security.authentication.provider:
     class:  Resource\Bundle\SecurityBundle\Authentication\Provider\WsseProvider
-    arguments: [security.provider.my_mongo_provider, %kernel.cache_dir%/security/nonces]
+    arguments: [security.provider.my_mongo_provider, %kernel.cache_dir%/security/nonces,@security.encryption]
 
   wsse.security.authentication.listener:
     class:  Resource\Bundle\SecurityBundle\Security\Firewall\WsseListener
@@ -9,4 +9,7 @@ services:
   security.encoder.custom:
     class: Resource\Bundle\SecurityBundle\Password\CustomEncoder
     arguments: [2]
+  security.encryption:
+    class: Resource\Bundle\SecurityBundle\Authentication\Service\Encryption
+
 

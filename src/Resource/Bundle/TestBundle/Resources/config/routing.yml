@@ -7,3 +7,6 @@ resource_test_delete_by_username:
 resource_test_wsse:
     path:     /wsse
     defaults: { _controller: ResourceTestBundle:TestUser:wsse }
+resource_test_digest:
+    path:     /digest
+    defaults: { _controller: ResourceTestBundle:TestUser:digest }
