@@ -10,6 +10,7 @@ class ResponseFormaterService {
     protected $content = null;
     protected $request = null;
 
+
     public function formatResponse(Response $response = null,Request $request = null, array $content = null){
 
         if(!isset($response)) {
@@ -19,6 +20,7 @@ class ResponseFormaterService {
         if(!isset($request)){
             $request = isset($this->request)?$this->request:null;
         }
+        
 
         // JSON FORMAT RESPONSE
         $response->headers->set('Content-Type', 'application/json');
@@ -50,4 +52,3 @@ class ResponseFormaterService {
         $this->request = $request;
     }
 }
-

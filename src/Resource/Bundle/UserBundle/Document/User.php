@@ -32,6 +32,8 @@ class User implements AdvancedUserInterface, \Serializable
     */
     private $password;
 
+    private $password2;
+
     /**
      * @MongoDB\String
     */
@@ -177,6 +179,17 @@ class User implements AdvancedUserInterface, \Serializable
         $this->password = $password;
         return $this;
     }
+
+    public function setPassword2($password)
+    {
+        $this->password2 = $password;
+        return $this;
+    }
+
+    public function isPasswordEquals(){
+        return $this->password === $this->password2;
+    }
+
 
     /**
      * Set email

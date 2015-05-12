@@ -26,20 +26,38 @@ class UserController extends Controller
         return $response;
     }
 
-    public function subscribeAction($username='etouraille',$password='b1otope',$email='edouard.touraille@gmail.com') {
+    public function subscribeAction($username='etouraille',$password1='b1otope', $password2='b1otope',$email='edouard.touraille@gmail.com') {
+            $success = true;
+            
             $user = new User();
-            // mettre en place un filtre de validation des paramètres.
-            // je ne vois null part de filtrage des donnée : mise en place dans le validateur.
+            
             $user->setUsername($username);
-            $user->setPassword($password);
+            $user->setPassword($password1);
+            $user->setPassword2($password2);
             $user->setEmail($email);
 
-            $dm = $this->get('doctrine_mongodb')->getManager();
-            $dm->persist($user);
-            $dm->flush();
+            $validator = $this->get('validator');
+            $errorList = $validator->validate($user);
+            if(count($errorList) > 0 ){
+                $success = false;
+                $messages = array();
+                    foreach($errorList as $value){
+                        $message = $value->getMessage();
+                        $property = $value->getPropertyPath();
+                        if( isset($messages[$property]) && is_array($messages[$property]) ) $messsages[$property][] = $message;
+                        else $messages[$property] = array($message);
+                }
+            }
+            else
+            {
+                $dm = $this->get('doctrine_mongodb')->getManager();
+                $dm->persist($user);
+                $dm->flush();
+                $messages = 'OK creation';
+            }
             $ret = array(
-                'succes' => true,
-                'creationUserId'=>$user->getId()
+                'succes' => $success,
+                'message'=> $messages
                 );
             $response = new Response();
             $response->setContent(json_encode($ret));
