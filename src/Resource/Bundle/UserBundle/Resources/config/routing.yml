@@ -4,3 +4,12 @@ user_subscribe:
 user_salt:
     path:     /salt
     defaults: { _controller: ResourceUserBundle:User:salt }
+user_exists:
+    path:     /exists
+    defaults: { _controller: ResourceUserBundle:User:exists }
+content_add:
+    path:     /add
+    defaults: { _controller: ResourceUserBundle:Resource:add }
+content_geo:
+    path:     /geo
+    defaults: { _controller: ResourceUserBundle:Resource:geo }

@@ -48,6 +48,7 @@ class ExceptionListener {
            // We log the trace in dev env.
         
         }
+        $status = 200;
         $response->setStatusCode($status);
         //manage stack trace.
         $stack = array();

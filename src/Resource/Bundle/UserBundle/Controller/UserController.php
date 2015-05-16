@@ -8,11 +8,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-    public function saltAction($username='edouard') {
+    public function saltAction($username='toto') {
         $repository = $this->get('doctrine_mongodb')
             ->getManager()
             ->getRepository('ResourceUserBundle:User');
-        $user = $repository->findOneByUsername($username);
+        $user = $repository->loadUserByUsername($username);
         $ret = array('success'=>false);
         if($user){
             $success = true;
@@ -23,6 +23,20 @@ class UserController extends Controller
         }
         $response = new Response();
         $response->setContent(json_encode($ret));
+        return $response;
+    }
+
+    public function existsAction($email='edouard.touraille@gmail.co'){
+         $repository = $this->get('doctrine_mongodb')
+            ->getManager()
+            ->getRepository('ResourceUserBundle:User');
+         $user = $repository->findOneByEmail($email);
+         $inDatabase = false;
+         if($user){
+            $inDatabase = true;
+         }
+         $response = new Response();
+         $response->setContent(json_encode(array('success'=>$inDatabase)));
         return $response;
     }
 
@@ -44,8 +58,13 @@ class UserController extends Controller
                     foreach($errorList as $value){
                         $message = $value->getMessage();
                         $property = $value->getPropertyPath();
-                        if( isset($messages[$property]) && is_array($messages[$property]) ) $messsages[$property][] = $message;
-                        else $messages[$property] = array($message);
+
+                        if( isset($messages[$property]) && is_array($messages[$property]) ) {
+                            $messsages[$property][] = $message;
+                        }
+                        else {
+                            $messages[$property] = array($message);
+                        }
                 }
             }
             else
@@ -53,10 +72,11 @@ class UserController extends Controller
                 $dm = $this->get('doctrine_mongodb')->getManager();
                 $dm->persist($user);
                 $dm->flush();
-                $messages = 'OK creation';
+                $salt = $user->getSalt();
+                $messages = array('salt'=>$salt);
             }
             $ret = array(
-                'succes' => $success,
+                'success' => $success,
                 'message'=> $messages
                 );
             $response = new Response();

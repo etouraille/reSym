@@ -14,8 +14,8 @@ class UserRepository extends DocumentRepository implements UserProviderInterface
         $q = $this
             ->createQueryBuilder('u')->find();
          $q = $q->addOr(
-                $q->expr()->field('username')->equals($username),
-                $q->expr()->field('password')->equals($username)
+                $q->expr()->field('email')->equals($username),
+                $q->expr()->field('username')->equals($username)
              )
             ->getQuery();
 

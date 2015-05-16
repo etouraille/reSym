@@ -28,14 +28,15 @@ class RequestListener
         }
 
         $request = $event->getRequest();
-        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+        //if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            
             $data = json_decode($request->getContent(), true);
             $data = is_array($data)?$data:array();
             //todo might be usefull to set every key as a post data
             foreach($data as $key=>$value){
                 $event->getRequest()->attributes->set($key,$value);
             }
-        }
+        //}
     }
 
     public function onKernelResponse(FilterResponseEvent $event){
