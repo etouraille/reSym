@@ -53,10 +53,11 @@ class Geo
      *
      * @return id $id
      */
+    /*
     public function getId()
     {
         return $this->id;
-    }
+    }*/
 
     /**
      * Set lat

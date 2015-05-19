@@ -8,8 +8,8 @@ user_exists:
     path:     /exists
     defaults: { _controller: ResourceUserBundle:User:exists }
 content_add:
-    path:     /add
+    path:     /logged-area/add
     defaults: { _controller: ResourceUserBundle:Resource:add }
-content_geo:
-    path:     /geo
-    defaults: { _controller: ResourceUserBundle:Resource:geo }
+content_search:
+    path:     /logged-area/search
+    defaults: { _controller: ResourceUserBundle:Resource:search}

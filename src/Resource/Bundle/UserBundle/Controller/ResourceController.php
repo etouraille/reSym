@@ -31,9 +31,9 @@ class ResourceController extends Controller
             return $response;
     }
 
-    public function geoAction(){
+    public function searchAction($content='',$lat='45.7677957',$lon='4.8731638',$distance = '1km'){
         $elastic = new Elastic();
-        $ret = $elastic->geoSearch(45.7682564,4.8738098);
+        $ret = $elastic->geoSearch($content,$lat,$lon,$distance);
         //$ret = $elastic->delete();
         //$ret = $elastic->mapping();
         return (new Response())->setContent($ret);

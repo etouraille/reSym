@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e47dcb18e32d5832212f19c7e2f400b2",
+    "hash": "cbd8ac5b0adc058c48f3074fab5f8ba2",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1251,17 +1251,17 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v3.0.22",
+            "version": "v3.0.24",
             "target-dir": "Sensio/Bundle/DistributionBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "0fe4ec86db57c232becb694e01cdabe3c4d9af7c"
+                "reference": "79b820aee1f1daeb2717fa9471ee19275cc1d638"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/0fe4ec86db57c232becb694e01cdabe3c4d9af7c",
-                "reference": "0fe4ec86db57c232becb694e01cdabe3c4d9af7c",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/79b820aee1f1daeb2717fa9471ee19275cc1d638",
+                "reference": "79b820aee1f1daeb2717fa9471ee19275cc1d638",
                 "shasum": ""
             },
             "require": {
@@ -1307,7 +1307,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2015-05-02 16:23:08"
+            "time": "2015-05-16 12:57:08"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -1988,29 +1988,40 @@
         },
         {
             "name": "videlalvaro/php-amqplib",
-            "version": "v2.1.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/videlalvaro/php-amqplib.git",
-                "reference": "adc2a425ab214517a5e76557a9370bdc6f212576"
+                "url": "https://github.com/etouraille/php-amqplib.git",
+                "reference": "0b5cfa6f3aef99c9a568469f3ece7f39e1d79099"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/videlalvaro/php-amqplib/zipball/adc2a425ab214517a5e76557a9370bdc6f212576",
-                "reference": "adc2a425ab214517a5e76557a9370bdc6f212576",
+                "url": "https://api.github.com/repos/etouraille/php-amqplib/zipball/0b5cfa6f3aef99c9a568469f3ece7f39e1d79099",
+                "reference": "0b5cfa6f3aef99c9a568469f3ece7f39e1d79099",
                 "shasum": ""
             },
             "require": {
                 "ext-bcmath": "*",
+                "ext-mbstring": "*",
                 "php": ">=5.3.0"
             },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "suggest": {
+                "ext-sockets": "Use AMQPSocketConnection"
+            },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.4-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "PhpAmqpLib": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "LGPL-2.1"
             ],
@@ -2026,7 +2037,10 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2013-06-17 19:25:27"
+            "support": {
+                "source": "https://github.com/etouraille/php-amqplib/tree/master"
+            },
+            "time": "2015-03-31 10:44:35"
         }
     ],
     "packages-dev": [
@@ -2085,6 +2099,7 @@
         "doctrine/mongodb-odm": 10,
         "doctrine/mongodb-odm-bundle": 10,
         "symfony/console": 20,
+        "videlalvaro/php-amqplib": 20,
         "symfony/serializer": 20
     },
     "prefer-stable": false,

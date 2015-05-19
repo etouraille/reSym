@@ -19,51 +19,48 @@ class Elastic {
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
         curl_setopt($ch, CURLOPT_POSTFIELDS,$data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $response  = curl_exec($ch);
         curl_close($ch);
+        return $response;
     }
 
    protected function getUrl($index,$type,$indexNumber){
-        return 'http://'.$this->host.':'.$this->port.'/'.$index.'/'.$type.'/'.$indexNumber;
+        return 'http://'.$this->host.':'.$this->port.'/resource/hashtag/'.$indexNumber;
    }
 
-   public function geoSearch($latitude,$longitude) {
-    
-       $search = 
-           array('query'=>
-            array(
-                   'filtered'=>array(
-                        'query'=>array(
-                            'match_all'=>array()
+   public function geoSearch($content,$latitude,$longitude, $distance) {
+       $match = array();
+       if($content) {
+           $match = array(
+               'query'=>
+                    array(
+                        'match'=>array(
+                            'content'=>$content
                         )
-                        ,
-                    'filter'=>array(
-                        'geo_distance'=>array(
-                            'field'=>'geo',
-                            'distance'=>'300km'
-                        )
-                    
                     )
-            )
-        )
-    );
-    $tab = array(
-        "query"=>array(
-            "filtered"=>array(
-                "filter"=>array(
+                );
+       } 
+       $filter = array( 
+            "filter"=>array(
                     "geo_distance"=>array(
-                        "distance"=>"100km",
+                        "distance"=>"50",
                         "geo"=>array(
                             "lat"=>$latitude,
                             "lon"=>$longitude,
                         )
                     )
                 )
-            )
-        )
-    );
+
+        );
+       $query = array_merge($match,$filter);
     
-       $url = 'http://'.$this->host.':'.$this->port.'/resource/_search?pretty';
+       $tab = array(
+           'query'=>array(
+               'filtered'=>$query
+           )    
+       );
+       $url = 'http://'.$this->host.':'.$this->port.'/resource/hashtag/_search?pretty';
        $json = json_encode($tab);
        $method = 'GET';
        return $this->getCurl($url, $method,$json );
@@ -87,7 +84,7 @@ class Elastic {
    }
 
    public function delete(){
-       $url = $this->getRootUrl().'resource/hastag/_query';
+       $url = $this->getRootUrl().'resource/hashtag/_query';
        $method = 'DELETE';
        $data = json_encode(array('query'=>array('match'=>array('content'=>'cool'))));
        return $this->getCurl($url,$method,$data);
@@ -101,7 +98,7 @@ class Elastic {
        $this->getCurl($url,$method,'');
        
        $tab = array('mappings'=>
-           array('resource'=>
+           array('hashtag'=>
                 array('properties'=>
                     array(
                         'content'=>array('type'=>'string'),
