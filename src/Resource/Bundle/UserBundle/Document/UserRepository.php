@@ -62,6 +62,7 @@ class UserRepository extends DocumentRepository implements UserProviderInterface
 
     public function supportsClass($class)
     {
-        return $this->getEntityName() === $class || is_subclass_of($class, $this->getEntityName());
+                
+        return $this->getDocumentName() === $class || is_subclass_of($class, $this->getDocumentName());
     }
 }

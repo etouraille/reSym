@@ -37,5 +37,10 @@ class ResourceController extends Controller
         //$ret = $elastic->delete();
         //$ret = $elastic->mapping();
         return (new Response())->setContent($ret);
+    }
+
+    public function timeAction(){
+        $ret = json_encode(array('microtime'=>time().'000'));
+        return (new Response())->setContent($ret);
     } 
 }

@@ -13,3 +13,8 @@ content_add:
 content_search:
     path:     /logged-area/search
     defaults: { _controller: ResourceUserBundle:Resource:search}
+time:
+    path:     /time
+    defaults: { _controller: ResourceUserBundle:Resource:time}
+
+
