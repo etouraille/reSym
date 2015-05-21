@@ -16,5 +16,9 @@ content_search:
 time:
     path:     /time
     defaults: { _controller: ResourceUserBundle:Resource:time}
+search_hashtag:
+    path:     /logged-area/hashtag
+    defaults: { _controller: ResourceUserBundle:Search:hashtag}
+
 
 

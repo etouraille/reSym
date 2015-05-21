@@ -27,14 +27,9 @@ class Resource
     private $content;
     
     /**
-     * @MongoDB\Float
+     * @MongoDB\String
     */
-    private $lat;
-
-    /**
-     * @MongoDB\Float
-    */
-    private $lon;
+    private $picture;
 
     /**
      * @MongoDB\EmbedOne(targetDocument="Geo")
@@ -92,6 +87,28 @@ class Resource
         $this->userid = $userid;
         return $this;
     }
+     /**
+     * Get picture
+     *
+     * @return string $picture
+     */
+    public function getPicture()
+    {
+        return $this->picture;
+    }
+
+    /**
+     * Set userid
+     *
+     * @param string $picture
+     * @return self
+     */
+    public function setPicture($picture)
+    {
+        $this->picture = $pciture;
+        return $this;
+    }
+
 
     /**
      * Set content
