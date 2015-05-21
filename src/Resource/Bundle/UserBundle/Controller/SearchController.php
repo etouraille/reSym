@@ -6,41 +6,42 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Resource\Bundle\UserBundle\Document\Resource;
 use Symfony\Component\HttpFoundation\Response;
 use Resource\Bundle\UserBundle\Service\Elastic;
-class ResourceController extends Controller
-{
-    public function addAction($content='cool',$lat='0.0001', $lon='0.0001') {
-            $success = true;
-            //$user = $this->get('security.context')->getToken()->getUser();
-            $resource = new Resource($lat,$lon);
-            
-            //$resource->setUserid($user->getId());
-            $resource->setUserid(123);
-            $resource->setContent($content);
+class SearchController extends Controller {
 
-            $dm = $this->get('doctrine_mongodb')->getManager();
-            $dm->persist($resource);
-            $dm->flush();
-            $ret = array(
-                'success' => $success,
-                'id'=>$resource->getId()
-            );
-            $rabbit = new \Resource\Bundle\UserBundle\Service\Rabbit();
-            $rabbit->send(\Resource\Bundle\UserBundle\Service\JSONify::toString($resource));
-            $response = new Response();
-            $response->setContent(json_encode($ret));
-            return $response;
+    public function hashtagAction($filter = null){
+
+        $repository = $this->get('doctrine_mongodb')
+            ->getManager()
+            ->getRepository('ResourceUserBundle:Hashtag');
+    
+        if($filter){
+            $regExp = '/'.$filter.'/';
+            $hashtags = $repository->find(array('hashtag'=>$rexExp));
+        }
+        $hashtags = $repository->find(array('hashtag'=>'/.*/'));
+        $ret = array();
+        if(is_array($hashtags)){
+            foreach($hashtags as $hastag){
+                $ret[] = array('content'=>$hashtag->getHashtag());
+            }
+        }
+        return (new Response())->setContent(json_encode($ret));
     }
 
-    public function searchAction($content='',$lat='45.7677957',$lon='4.8731638',$distance = '1km'){
-        $elastic = new Elastic();
-        $ret = $elastic->geoSearch($content,$lat,$lon,$distance);
-        //$ret = $elastic->delete();
-        //$ret = $elastic->mapping();
-        return (new Response())->setContent($ret);
+    public function myhashtagAction(){
+        $user = $this->get('security.context')
+            ->getToken()
+            ->getUser();
+        $search = $this->get('doctrine_mongodb')
+            ->getManager()
+            ->getRepository('ResourceUserBundle:Search')
+            ->findOneByUserid($user->getId());
+        $ret = array();
+        if($search){
+            foreach($search->getHashtags() as $hashtag){
+                $ret[] = array('content'=>$hashtag);
+            }
+        }
+        return (new Response())->setContent(json_encode($ret));
     }
-
-    public function timeAction(){
-        $ret = json_encode(array('microtime'=>time().'000'));
-        return (new Response())->setContent($ret);
-    } 
 }
