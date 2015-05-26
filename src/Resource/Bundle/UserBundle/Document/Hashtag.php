@@ -17,7 +17,7 @@ class Hashtag
    /**
      * @MongoDB\String
     */
-    private $hastag;
+    private $hashtag;
 
    
 
@@ -32,9 +32,9 @@ class Hashtag
      /**
      * @inheritDoc
      */
-    public function getHastag()
+    public function getHashtag()
     {
-        return $this->hastag;
+        return $this->hashtag;
     }
 
 
@@ -45,9 +45,9 @@ class Hashtag
      * @param string $hastag
      * @return self
      */
-    public function setHastag($hastag)
+    public function setHashtag($hastag)
     {
-        $this->hastag = $hastag;
+        $this->hashtag = $hastag;
         return $this;
     }
 

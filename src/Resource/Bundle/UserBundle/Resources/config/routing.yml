@@ -22,6 +22,10 @@ time:
 search_hashtag:
     path:     /logged-area/hashtag
     defaults: { _controller: ResourceUserBundle:Search:hashtag}
+todo_delete:
+    path:     /hashtag
+    defaults: { _controller: ResourceUserBundle:Search:hashtag}
+
 search_my_hashtag:
     path:     /logged-area/my/hashtag
     defaults: { _controller: ResourceUserBundle:Search:myhashtag}

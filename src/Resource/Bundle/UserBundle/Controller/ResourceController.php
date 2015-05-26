@@ -18,10 +18,11 @@ class ResourceController extends Controller
             $resource->setContent($content);
 
             $dm = $this->get('doctrine_mongodb')->getManager();
-            $hashtag = $dm->getRepository('ResourceUserBundle:Hashtag')->findOneByHastag($content);
-            if(!$hashtag){
+            $hashtag = $dm->getRepository('ResourceUserBundle:Hashtag')->findOneByHashtag($content);
+            
+            if(!isset($hashtag)){
                 $hash = new \Resource\Bundle\UserBundle\Document\Hashtag();
-                $hash->setHastag($content);
+                $hash->setHashtag($content);
                 $dm->persist($hash);
             }
             $dm->persist($resource);

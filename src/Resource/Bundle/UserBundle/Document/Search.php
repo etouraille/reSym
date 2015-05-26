@@ -45,9 +45,9 @@ class Search
      /**
      * @inheritDoc
      */
-    public function getHastags()
+    public function getHashtags()
     {
-        return $this->hastags;
+        return $this->hashtags;
     }
 
     /**
@@ -69,9 +69,9 @@ class Search
      * @param string $hastag
      * @return self
      */
-    public function addHastags($hastag)
+    public function addHashtag($hastag)
     {
-        $this->hastags[] = $hastag;
+        $this->hashtags[] = $hastag;
         return $this;
     }
 
