@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Resource\Bundle\UserBundle\Service\Elastic;
 class ResourceController extends Controller
 {
-    public function addAction($content='cool',$lat='0.0001', $lon='0.0001') {
+    public function addAction($content='cool',$lat='0.0001', $lon='0.0001',$picture = '') {
             $success = true;
             //$user = $this->get('security.context')->getToken()->getUser();
             $resource = new Resource($lat,$lon);
@@ -16,10 +16,11 @@ class ResourceController extends Controller
             //$resource->setUserid($user->getId());
             $resource->setUserid(123);
             $resource->setContent($content);
+            $resource->setPicture($picture);
 
             $dm = $this->get('doctrine_mongodb')->getManager();
             $hashtag = $dm->getRepository('ResourceUserBundle:Hashtag')->findOneByHashtag($content);
-            
+        
             if(!isset($hashtag)){
                 $hash = new \Resource\Bundle\UserBundle\Document\Hashtag();
                 $hash->setHashtag($content);
