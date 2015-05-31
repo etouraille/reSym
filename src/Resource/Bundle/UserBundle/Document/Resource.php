@@ -103,7 +103,7 @@ class Resource
      */
     public function setPicture($picture)
     {
-        $this->picture = $pciture;
+        $this->picture = $picture;
         return $this;
     }
 
