@@ -44,7 +44,7 @@ class Elastic {
        $filter = array( 
             "filter"=>array(
                     "geo_distance"=>array(
-                        "distance"=>"50",
+                        "distance"=>$distance,
                         "geo"=>array(
                             "lat"=>$latitude,
                             "lon"=>$longitude,

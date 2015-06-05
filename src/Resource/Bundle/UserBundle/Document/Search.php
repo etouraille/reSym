@@ -15,7 +15,7 @@ class Search
     private $id;
 
    /**
-     * @MongoDB\id
+     * @MongoDB\String
     */
     private $userid;
 

@@ -16,19 +16,19 @@ content_add_todo_remove:
 content_search:
     path:     /logged-area/search
     defaults: { _controller: ResourceUserBundle:Resource:search}
-time:
-    path:     /time
-    defaults: { _controller: ResourceUserBundle:Resource:time}
 search_hashtag:
     path:     /logged-area/hashtag
     defaults: { _controller: ResourceUserBundle:Search:hashtag}
 todo_delete:
     path:     /hashtag
     defaults: { _controller: ResourceUserBundle:Search:hashtag}
-
 search_my_hashtag:
-    path:     /logged-area/my/hashtag
+    path:     /logged-area/hashtag/mine
     defaults: { _controller: ResourceUserBundle:Search:myhashtag}
+update_my_hashtag:
+    path:     /logged-area/hashtag/update
+    defaults: { _controller: ResourceUserBundle:Search:updateSearch}
+
 
 
 

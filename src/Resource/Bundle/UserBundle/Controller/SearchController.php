@@ -8,6 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SearchController extends Controller {
 
+    /*
+     *Action to get all Hashtags with optional filter
+     */
     public function hashtagAction($filter = null){
 
         $repository = $this->get('doctrine_mongodb')
@@ -28,6 +31,9 @@ class SearchController extends Controller {
         return (new Response())->setContent(json_encode($ret));
     }
 
+    /*
+     * Get the hashtag of the user
+     */
     public function myhashtagAction(){
         $user = $this->get('security.context')
             ->getToken()
@@ -45,18 +51,21 @@ class SearchController extends Controller {
         return (new Response())->setContent(json_encode($ret));
     }
 
+    /*
+     * Update my hashtages, parameter is an array of hashtag.
+     */
     public function updateSearchAction($hashtags = array()){
         $user = $this->get('security.context')
             ->getToken()
             ->getUser();
         $dm = $this->get('doctrine_mongodb')
             ->getManager();
-        $repository = $dm->getRepository('ResourceUserBundle:Search');
-        $repository->delete(array('userid'=>$user->getId()));
+        $repository = $dm->getDocumentCollection('ResourceUserBundle:Search');
+        $repository->remove(array('userid'=>$user->getId()));
         
         $search = new Search();
-        $search->setUserid($user->getId);
-        foreach($hashtags as $hashtag){
+        $search->setUserid($user->getId());
+        foreach($hashtags as $hashtag) {
             $search->addHashtag($hashtag);
         }
         $dm->persist($search);
