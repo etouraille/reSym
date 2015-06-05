@@ -60,7 +60,7 @@ class Elastic {
                'filtered'=>$query
            )    
        );
-       $url = 'http://'.$this->host.':'.$this->port.'/resource/hashtag/_search?pretty';
+       $url = 'http://'.$this->host.':'.$this->port.'/resource/hashtag/_search?pretty&size=50'; //find a way to evalulat quantitiy
        $json = json_encode($tab);
        $method = 'GET';
        return $this->getCurl($url, $method,$json );
