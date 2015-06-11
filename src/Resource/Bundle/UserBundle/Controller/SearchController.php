@@ -23,6 +23,7 @@ class SearchController extends Controller {
                 if(isset($search)) {
                     foreach($search->getHashtags as $hashtag) {
                         $hashtags[] = $hashtag;
+                        var_dump($hashtags);
                     }
                 }
             $elastic = new Elastic();
