@@ -7,8 +7,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
 *  @MongoDB\Document
-*  @MongoDB\Document(
-*  repositoryClass="UserRepository",
+*  @MongoDB\Document(repositoryClass="UserRepository")
 */
 
 class User implements AdvancedUserInterface, \Serializable
