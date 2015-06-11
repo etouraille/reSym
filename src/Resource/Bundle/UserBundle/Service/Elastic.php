@@ -31,7 +31,21 @@ class Elastic {
 
    public function geoSearch($content,$latitude,$longitude, $distance) {
        $match = array();
-       if($content) {
+       if(is_array($content) && count($content)>0){
+           $matches = array();
+           foreach($content as $hashtag) {
+                $matches[] = array('match'=>array('content'=>$hashtag));
+           }
+           $match = array(
+               'query'=>
+                   array(
+                        'bool'=>array(
+                            'should'=>$matches
+                            )
+                        )
+                    );
+       }
+       if($content && !is_array($content)) {
            $match = array(
                'query'=>
                     array(
@@ -58,6 +72,17 @@ class Elastic {
        $tab = array(
            'query'=>array(
                'filtered'=>$query
+           ),
+           'sort'=>array(
+                "_geo_distance"=>array(
+                    'geo'=>array(
+                        'lat'=>$latitude,
+                        'lon'=>$longitude,
+                    ),
+                    'order'=>'asc',
+                    'unit'=>'km',
+                    'distance_type'=>'plane'
+                )
            )    
        );
        $url = 'http://'.$this->host.':'.$this->port.'/resource/hashtag/_search?pretty&size=50'; //find a way to evalulat quantitiy

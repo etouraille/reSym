@@ -5,9 +5,32 @@ namespace Resource\Bundle\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Resource\Bundle\UserBundle\Document\Search;
 use Symfony\Component\HttpFoundation\Response;
+use Resource\Bundle\UserController\Service\Elastic;
 
 class SearchController extends Controller {
 
+
+    public function aroundAction($lat,$lng,$email) {
+        $dm = $this->get('doctrine_mongodb')
+            ->getManager();
+         $user = $dm->getRepository('ResourceUserBundle:User')
+            ->findOneByEmail($email);
+        $ret = '[]';
+        if(isset($user)) {
+            $hashtags = array();
+            $search = $dm->getRepository('ResourceUserBundle:Search')
+                ->findOneByUserid($user->getId());
+                if(isset($search)) {
+                    foreach($search->getHashtags as $hashtag) {
+                        $hashtags[] = $hashtag;
+                    }
+                }
+            $elastic = new Elastic();
+            $ret = $elastic->geoSearch($hashtags,$lat,$lng,'1km');
+            
+        }
+        return (new Response())->setContent($ret);
+    }    
     /*
      *Action to get all Hashtags with optional filter
      */
@@ -16,7 +39,7 @@ class SearchController extends Controller {
         $repository = $this->get('doctrine_mongodb')
             ->getManager()
             ->getRepository('ResourceUserBundle:Hashtag');
-    
+ 
         if($filter){
             $regExp = '/'.$filter.'/';
             $hashtags = $repository->find(array('hashtag'=>$rexExp));

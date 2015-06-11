@@ -28,6 +28,10 @@ search_my_hashtag:
 update_my_hashtag:
     path:     /logged-area/hashtag/update
     defaults: { _controller: ResourceUserBundle:Search:updateSearch}
+around:
+    path:     /around/{lat}/{lng}/for/{email}
+    defaults: { _controller: ResourceUserBundle:Search:around }
+
 
 
 
