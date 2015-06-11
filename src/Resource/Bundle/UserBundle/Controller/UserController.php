@@ -28,11 +28,11 @@ class UserController extends Controller
         return $response;
     }
 
-    public function existsAction($email='edouard.touraille@gmail.com'){
+    public function existsAction(Request $request){
          $repository = $this->get('doctrine_mongodb')
             ->getManager()
             ->getRepository('ResourceUserBundle:User');
-         $user = $repository->findOneByEmail($email);
+         $user = $repository->findOneByEmail($request->get('email'));
          $inDatabase = false;
          if($user){
             $inDatabase = true;
