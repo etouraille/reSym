@@ -9,6 +9,24 @@ use Doctrine\ORM\NoResultException;
 
 class UserRepository extends DocumentRepository implements UserProviderInterface
 {
+
+    public function findAll() {
+
+        $q = $this->createQueryBuilder('u')->find();
+        $query=$q->getQuery();
+
+        try{
+            $users = $query->execute();
+        }
+
+        catch(NoResultsException $e) {
+            throw new UsernameNotFoundException(sprintf('Unable to find actives Users'));
+        }
+
+        return $users;
+    }
+
+    
     public function loadUserByUsername($username)
     {
         $q = $this
