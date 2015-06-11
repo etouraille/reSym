@@ -6,14 +6,15 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
- *  @MongoDB\Document
- *  @MongoDB\Document(repositoryClass="UserRepository")
- */
+*  @MongoDB\Document
+*  @MongoDB\Document(
+*  repositoryClass="UserRepository",
+*/
 
 class User implements AdvancedUserInterface, \Serializable
 {
     /**
-     * @MongoDB\Id
+     * @MongoDB\Id( options={"unique"="true"} )
     */    
     private $id;
 
