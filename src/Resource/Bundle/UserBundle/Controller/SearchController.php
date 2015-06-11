@@ -89,6 +89,7 @@ class SearchController extends Controller {
         
         $search = new Search();
         $search->setUserid($user->getId());
+        var_dump($user->getId());
         foreach($hashtags as $hashtag) {
             $search->addHashtag($hashtag);
         }
