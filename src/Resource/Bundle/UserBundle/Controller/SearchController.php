@@ -21,7 +21,7 @@ class SearchController extends Controller {
             $search = $dm->getRepository('ResourceUserBundle:Search')
                 ->findOneByUserid($user->getId());
                 if(isset($search)) {
-                    foreach($search->getHashtags as $hashtag) {
+                    foreach($search->getHashtags() as $hashtag) {
                         $hashtags[] = $hashtag;
                     }
                 }
