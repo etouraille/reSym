@@ -5,14 +5,16 @@ namespace Resource\Bundle\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Resource\Bundle\UserBundle\Document\User;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller
 {
-    public function saltAction($username='toto') {
+    public function saltAction(Request $request) {
         $repository = $this->get('doctrine_mongodb')
             ->getManager()
             ->getRepository('ResourceUserBundle:User');
-        $user = $repository->loadUserByUsername($username);
+
+        $user = $repository->loadUserByUsername($request->get('username'));
         $ret = array('success'=>false);
         if($user){
             $success = true;
@@ -26,7 +28,7 @@ class UserController extends Controller
         return $response;
     }
 
-    public function existsAction($email='edouard.touraille@gmail.co'){
+    public function existsAction($email='edouard.touraille@gmail.com'){
          $repository = $this->get('doctrine_mongodb')
             ->getManager()
             ->getRepository('ResourceUserBundle:User');
