@@ -48,6 +48,7 @@ class User implements AdvancedUserInterface, \Serializable
     {
         $this->isActive = true;
         $this->salt = md5(uniqid(null, true));
+        $this->id = new \MongoId();
     }
 
     /**
