@@ -31,13 +31,14 @@ class UserController extends Controller
             ->getManager()
             ->getRepository('ResourceUserBundle:User');
          $user = $repository->findOneByEmail($email);
+         
          $inDatabase = false;
-         if($user){
+         if(isset($user)){
             $inDatabase = true;
          }
          $response = new Response();
          $response->setContent(json_encode(array('success'=>$inDatabase)));
-        return $response;
+         return $response;
     }
 
     public function subscribeAction($username='etouraille',$password1='b1otope', $password2='b1otope',$email='edouard.touraille@gmail.com') {

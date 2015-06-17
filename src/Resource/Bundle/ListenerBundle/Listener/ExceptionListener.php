@@ -31,7 +31,8 @@ class ExceptionListener {
         $exception = $event->getException();
         $response = new Response();    
 
-        
+        // everything is fine by default 
+        $status = 200;
         //Manage exception Type, and return appropriate status code
         if($exception instanceof NonceExpiredException){
            $status = 403;

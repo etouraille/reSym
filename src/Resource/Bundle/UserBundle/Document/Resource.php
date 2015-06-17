@@ -34,6 +34,21 @@ class Resource
      **/
     private $geo;
 
+    /**
+    * @MongoDB\Field(type="basic_date_time_type");
+    **/
+    private $startDate;
+
+    /**
+    * @MongoDB\Field(type="basic_date_time_type");
+    **/
+    private $endDate;
+
+   /**
+    * @MongoDB\Boolean
+    */
+    private $available;
+
     public function __construct($lat,$lon)
     {
         $geo = new Geo($lat,$lon);
@@ -73,6 +88,28 @@ class Resource
     {
         return $this->id;
     }
+
+    /**
+     * Get startDate
+     *
+     * @return startDate $startDate
+     */
+    public function getSartDate()
+    {
+        return $this->startDate;
+    }
+
+    /**
+     * Get endDate
+     *
+     * @return endDate $endDate
+     */
+    public function getEndDate()
+    {
+        return $this->endDate;
+    }
+
+
 
     /**
      * Set userid
@@ -131,5 +168,30 @@ class Resource
         $this->geo = $geo;
         return $this;
     }
+     /**
+     * Set startDate
+     *
+     * @param string $startDate 
+     * format any : datetime, string, integer
+     * @return self
+     */
+    public function setStartDate($startDate)
+    {
+        $this->startDate = $startDate;
+        return $this;
+    }
 
+
+     /**
+     * Set endDate
+     *
+     * @param string $endDate 
+     * format any : datetime, string, integer
+     * @return self
+     */
+    public function setEndDate($endDate)
+    {
+        $this->endDate = $endDate;
+        return $this;
+    }
 }

@@ -16,6 +16,12 @@ content_add_todo_remove:
 content_search:
     path:     /logged-area/search
     defaults: { _controller: ResourceUserBundle:Resource:search}
+content_search_unlogged:
+    path:     /search
+    defaults: { _controller: ResourceUserBundle:Resource:search}
+resource_detail:
+    path:     /resource/get
+    defaults: { _controller: ResourceUserBundle:Resource:get}
 search_hashtag:
     path:     /logged-area/hashtag
     defaults: { _controller: ResourceUserBundle:Search:hashtag}
