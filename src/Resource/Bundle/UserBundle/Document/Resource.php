@@ -47,12 +47,18 @@ class Resource
    /**
     * @MongoDB\Boolean
     */
-    private $available;
+    private $reserved;
+
+    /**
+    * @MongoDB\String
+    */
+    private $reservedBy;
 
     public function __construct($lat,$lon)
     {
         $geo = new Geo($lat,$lon);
         $this->setGeo($geo);
+        $this->reserved = false;
     }
 
     /**
@@ -109,7 +115,25 @@ class Resource
         return $this->endDate;
     }
 
+    /**
+     * Get reserved
+     *
+     * @return reserved $reserved
+     */
+    public function getReserved()
+    {
+        return $this->reserved;
+    }
 
+    /**
+     * Get reservedBy
+     *
+     * @return reservedBy $reservedBy
+     */
+    public function getReservedBy()
+    {
+        return $this->reservedBy;
+    }
 
     /**
      * Set userid
@@ -193,5 +217,27 @@ class Resource
     {
         $this->endDate = $endDate;
         return $this;
+    }
+
+    public function reserve($userId)
+    {
+    
+        $this->reserved = true;
+        $this->reservedBy = $userId;
+
+    
+    }
+
+    public function free() {
+    
+        $this->reserved = false;
+        $this->reservedBy = null;
+    
+    }
+
+    public function setReservedBy( $userId ){
+    
+        $this->reservedBy = $userId;
+    
     }
 }

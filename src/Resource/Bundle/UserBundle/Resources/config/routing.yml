@@ -21,7 +21,10 @@ content_search_unlogged:
     defaults: { _controller: ResourceUserBundle:Resource:search}
 resource_detail:
     path:     /resource/get
-    defaults: { _controller: ResourceUserBundle:Resource:get}
+    defaults: { _controller: ResourceUserBundle:Resource:get }
+resource_reserve:
+    path:     /logged-area/resource/reserve
+    defaults: { _controller: ResourceUserBundle:Resource:reserve }
 search_hashtag:
     path:     /logged-area/hashtag
     defaults: { _controller: ResourceUserBundle:Search:hashtag}

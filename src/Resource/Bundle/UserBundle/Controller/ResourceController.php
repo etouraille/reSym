@@ -53,7 +53,7 @@ class ResourceController extends Controller
         return (new Response())->setContent($ret);
     }
 
-    public function getAction($id=null) {
+    public function getAction($id=123) {
         $resource = $this->get('doctrine_mongodb')
             ->getManager()
             ->getRepository('ResourceUserBundle:Resource')
@@ -66,6 +66,26 @@ class ResourceController extends Controller
             \Resource\Bundle\UserBundle\Service\JSONify::toString($ret)
         );
         
+    }
+
+    public function reserveAction( $resourceId ) {
+        $dm = $this->get('doctrine_mongodb')
+            ->getManager();
+        $resource = $dm->getRepository('ResourceUserBundle:Resource')
+            ->findOneById($resourceId);
+        $user = $this->get('security.context')
+            ->getToken()
+            ->getUser();
+        $ret = array('success'=>false);
+        if(isset($resource) && isset($user)) {
+            $resource->reserve($user->getId());
+            $dm->persist($resource);
+            $dm->flush();
+            $rabbit = new \Resource\Bundle\UserBundle\Service\Rabbit();
+            $rabbit->send(\Resource\Bundle\UserBundle\Service\JSONify::toString($resource),'update');
+            $ret['success']=true;
+        }
+        return (new Response())->setContent(json_encode($ret));
     }
     
 }
