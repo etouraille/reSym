@@ -13,20 +13,21 @@ class Elastic {
 
     public function index($index,$type,$data){
         $json_array = json_decode($data,true);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->getUrl($index,$type,$json_array['id']));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json','Content-Length: ' . strlen($data)));
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-        curl_setopt($ch, CURLOPT_POSTFIELDS,$data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-        $response  = curl_exec($ch);
-        curl_close($ch);
-        return $response;
+        return $this->getCurl($this->getUrl($index,$type,$json_array['id']),'PUT',$data);
     }
 
-   protected function getUrl($index,$type,$indexNumber){
-        return 'http://'.$this->host.':'.$this->port.'/resource/hashtag/'.$indexNumber;
+     public function update($index,$type,$data){
+        $json_array = json_decode($data,true);
+        return $this->getCurl($this->getUrl($index,$type,$json_array['id']),'POST',$data, true);
+    }
+
+
+    protected function getUrl($index,$type,$indexNumber,$isUpdate = false){
+        $urlUpdate = '';
+        if($isUpdate){
+            $urlUpdate = '/_update';
+        }
+        return 'http://'.$this->host.':'.$this->port.'/resource/hashtag/'.$indexNumber.$urlUpdate;
    }
 
    public function geoSearch($content,$latitude,$longitude, $distance) {
@@ -44,7 +45,7 @@ class Elastic {
                             )
                         )
                     );
-       }
+             }
        if($content && !is_array($content)) {
            $match = array(
                'query'=>
@@ -98,7 +99,7 @@ class Elastic {
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($ch, CURLOPT_POSTFIELDS,$json);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $response  = curl_exec($ch);
         curl_close($ch);
         return $response;
