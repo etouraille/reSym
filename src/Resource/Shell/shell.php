@@ -59,10 +59,10 @@ class ReceiverCommand {
         $data = $msg->body;
         $key  = $msg->delivery_info['routing_key'];
         switch($key){
-            case : 'index'
+            case  'index' :
                     $return = $elastic->index('resource','hashtag',$data);
                 break;
-            case : 'update'
+            case  'update' :
                     $return = $elastic->update('resource','hashtag',$data);
                 break;
         
