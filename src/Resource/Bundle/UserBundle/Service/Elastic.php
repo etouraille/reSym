@@ -30,7 +30,7 @@ class Elastic {
         return 'http://'.$this->host.':'.$this->port.'/resource/hashtag/'.$indexNumber.$urlUpdate;
    }
 
-   public function geoSearch($content,$latitude,$longitude, $distance) {
+   public function geoSearch($content,$latitude,$longitude, $distance, $userId ) {
        $match = array();
        if(is_array($content) && count($content)>0){
            $matches = array();
@@ -63,6 +63,42 @@ class Elastic {
                         "geo"=>array(
                             "lat"=>$latitude,
                             "lon"=>$longitude,
+                        )
+                    ),
+                    "bool"=>array(
+                        "should"=>array(
+                            "bool"=>array(
+                                "must"=>array(
+                                    "exists"=>array("field"=>"endDate"),
+                                    "range"=>array("startDate"=>array("lte"=>"now")),
+                                    "range"=>array("endDate"=>array("gte"=>"now"))
+                                )
+                            ),
+                            "bool"=>array(
+                                "must"=>array(
+                                    "missing"=>array("field"=>"enDate"),
+                                    "range"=>array("startDate"=>array("lte"=>"now"))
+                                )
+                            ),
+                            "bool"=>array(
+                                "must"=>array(
+                                    "exists"=>array("field"=>"reserved"),
+                                    "term"=>array("reserved"=>true),
+                                    "term"=>array("reservedBy"=>$userId)
+
+                                )
+                            ),
+                            "bool"=>array(
+                                "must"=>array(
+                                    "exists"=>array("field"=>"reserved"),
+                                    "term"=>array("reserved"=>false)
+                                )
+                            ),
+                            'bool'=>array(
+                                "must"=>array(
+                                    "missing"=>array("field"=>"reserved")
+                                )
+                            )
                         )
                     )
                 )

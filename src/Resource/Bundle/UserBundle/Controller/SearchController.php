@@ -26,7 +26,7 @@ class SearchController extends Controller {
                     }
                 }
             $elastic = new Elastic();
-            $ret = $elastic->geoSearch($hashtags,$lat,$lng,'1km');
+            $ret = $elastic->geoSearch($hashtags,$lat,$lng,'1km',$user->getId());
             
         }
         return (new Response())->setContent($ret);
