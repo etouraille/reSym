@@ -65,45 +65,48 @@ class Elastic {
                             "lon"=>$longitude,
                         )
                     ),
-                    "bool"=>array(
-                        "should"=>array(
-                            "bool"=>array(
-                                "must"=>array(
-                                    "exists"=>array("field"=>"endDate"),
-                                    "range"=>array("startDate"=>array("lte"=>"now")),
-                                    "range"=>array("endDate"=>array("gte"=>"now"))
+                    "and"=>array(
+                        array("or"=>array(
+                                array(
+                                    "and"=>array(
+                                            array("exists"=>array("field"=>"endDate")),
+                                            array("range"=>array("startDate"=>array("lte"=>"now"))),
+                                            array("range"=>array("endDate"=>array("gte"=>"now")))
+                                    )   
                                 )
-                            ),
-                            "bool"=>array(
-                                "must"=>array(
-                                    "missing"=>array("field"=>"enDate"),
-                                    "range"=>array("startDate"=>array("lte"=>"now"))
+                                ,
+                                array(
+                                    "and"=>array(
+                                            array("missing"=>array("field"=>"enDate")),
+                                            array("range"=>array("startDate"=>array("lte"=>"now")))
+                                    )
                                 )
-                            ),
-                            "bool"=>array(
-                                "must"=>array(
-                                    "exists"=>array("field"=>"reserved"),
-                                    "term"=>array("reserved"=>true),
-                                    "term"=>array("reservedBy"=>$userId)
-
-                                )
-                            ),
-                            "bool"=>array(
-                                "must"=>array(
-                                    "exists"=>array("field"=>"reserved"),
-                                    "term"=>array("reserved"=>false)
-                                )
-                            ),
-                            'bool'=>array(
-                                "must"=>array(
-                                    "missing"=>array("field"=>"reserved")
-                                )
+                            )
+                        ),
+                        array('or'=>array(
+                                array(
+                                    "and"=>array(
+                                            array("exists"=>array("field"=>"reserved")),
+                                            array("term"=>array("reserved"=>true)),
+                                            array("term"=>array("reservedBy"=>$userId))
+                                    )
+                                ),
+                                array(
+                                    "and"=>array(
+                                           array("exists"=>array("field"=>"reserved")),
+                                           array("term"=>array("reserved"=>false))
+                                        )
+                                ),
+                                array( 
+                                    'and'=>array(
+                                           array( "missing"=>array("field"=>"reserved"))
+                                       )
+                                   )
                             )
                         )
                     )
                 )
-
-        );
+            );
        $query = array_merge($match,$filter);
     
        $tab = array(

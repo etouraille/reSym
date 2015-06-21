@@ -45,10 +45,13 @@ class ResourceController extends Controller
             return $response;
     }
 
-    public function searchAction($content='',$lat='45.7677957',$lon='4.8731638',$distance = '1km') {
-        $user = $this->get('security.context')->getToken()->getUser();
+    public function searchAction($content='',$lat='45.7677957',$lon='4.8731638',$distance = '1km' ) {
+        
+        //$user = $this->get('security.context')->getToken()->getUser();
+        //$userId = $user->getId();
+        $userId = 123;
         $elastic = new Elastic();
-        $ret = $elastic->geoSearch($content,$lat,$lon,$distance,$user->getId());
+        $ret = $elastic->geoSearch($content,$lat,$lon,$distance, $userId);
         //$ret = $elastic->delete();
         //$ret = $elastic->mapping();
         return (new Response())->setContent($ret);
