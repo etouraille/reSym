@@ -3,6 +3,7 @@ namespace Resource\Bundle\UserBundle\Document;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Resource\Bundle\UserBundle\Annotation\BasicDateTime;
 /**
  *  @MongoDB\Document
  */
@@ -37,7 +38,7 @@ class Resource
     /**
     * @MongoDB\Field(type="basic_date_time_type");
     **/
-    private $startDate;
+    public $startDate;
 
     /**
     * @MongoDB\Field(type="basic_date_time_type");
@@ -100,9 +101,27 @@ class Resource
      *
      * @return startDate $startDate
      */
-    public function getSartDate()
+    /*public function getStartDate()
     {
         return $this->startDate;
+    }*/
+
+    /**
+     ** {@inheritDoc}
+     **/
+    public function getStartDate()
+    {
+        return $this->convertMongoDateInString(
+            $this->startDate
+        );
+    }
+
+    protected function convertMongoDateInString($date) {
+        $ret = $date;
+        if(is_object($date) && get_class($date) === 'MongoDate') {
+            $ret = date('Ymd\THisP',$date->sec);
+        }
+        return $ret;
     }
 
     /**
@@ -112,7 +131,9 @@ class Resource
      */
     public function getEndDate()
     {
-        return $this->endDate;
+        return $this->convertMongoDateInString(
+            $this->endDate
+        );
     }
 
     /**

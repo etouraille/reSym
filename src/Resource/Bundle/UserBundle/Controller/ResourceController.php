@@ -45,7 +45,7 @@ class ResourceController extends Controller
             return $response;
     }
 
-    public function searchAction($content='',$lat='45.7677957',$lon='4.8731638',$distance = '1km' ) {
+    public function searchAction($content='',$lat='45.7677957',$lon='4.8731638',$distance = '10km' ) {
         
         //$user = $this->get('security.context')->getToken()->getUser();
         //$userId = $user->getId();
@@ -73,6 +73,7 @@ class ResourceController extends Controller
     }
 
     public function reserveAction( $resourceId ) {
+
         $dm = $this->get('doctrine_mongodb')
             ->getManager();
         $resource = $dm->getRepository('ResourceUserBundle:Resource')

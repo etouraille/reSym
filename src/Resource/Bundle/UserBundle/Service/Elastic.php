@@ -57,58 +57,59 @@ class Elastic {
                 );
        } 
        $filter = array( 
-            "filter"=>array(
+           "filter"=>array(
+               array(
                     "geo_distance"=>array(
                         "distance"=>$distance,
                         "geo"=>array(
                             "lat"=>$latitude,
                             "lon"=>$longitude,
                         )
-                    ),
-                    "and"=>array(
-                        array("or"=>array(
-                                array(
-                                    "and"=>array(
-                                            array("exists"=>array("field"=>"endDate")),
-                                            array("range"=>array("startDate"=>array("lte"=>"now"))),
-                                            array("range"=>array("endDate"=>array("gte"=>"now")))
-                                    )   
-                                )
-                                ,
-                                array(
-                                    "and"=>array(
-                                            array("missing"=>array("field"=>"enDate")),
-                                            array("range"=>array("startDate"=>array("lte"=>"now")))
+                    )
+                ),
+                array(
+                    "bool"=>array(
+                        "must"=>array(
+                            array("or"=>array(
+                                    array(
+                                        "and"=>array(
+                                                array("exists"=>array("field"=>"endDate")),
+                                                array("range"=>array("startDate"=>array("lte"=>"now"))),
+                                                array("range"=>array("endDate"=>array("gte"=>"now")))
+                                        )   
                                     )
-                                )
-                            )
-                        ),
-                        array('or'=>array(
-                                array(
-                                    "and"=>array(
-                                            array("exists"=>array("field"=>"reserved")),
-                                            array("term"=>array("reserved"=>true)),
-                                            array("term"=>array("reservedBy"=>$userId))
-                                    )
-                                ),
-                                array(
-                                    "and"=>array(
-                                           array("exists"=>array("field"=>"reserved")),
-                                           array("term"=>array("reserved"=>false))
+                                    ,
+                                    array(
+                                        "and"=>array(
+                                                array("missing"=>array("field"=>"endDate")),
+                                                array("range"=>array("startDate"=>array("lte"=>"now")))
                                         )
-                                ),
-                                array( 
-                                    'and'=>array(
-                                           array( "missing"=>array("field"=>"reserved"))
-                                       )
-                                   )
+                                    )
+                                )
+                            ),
+                            array('or'=>array(
+                                    array(
+                                        "and"=>array(
+                                                array("exists"=>array("field"=>"reserved")),
+                                                array("term"=>array("reserved"=>true)),
+                                                array("term"=>array("reservedBy"=>$userId))
+                                        )
+                                    ),
+                                    array(
+                                        "and"=>array(
+                                               array("exists"=>array("field"=>"reserved")),
+                                               array("term"=>array("reserved"=>false))
+                                            )
+                                    ),
+                                    array( "missing"=>array("field"=>"reserved"))
+                                )
                             )
                         )
                     )
                 )
-            );
+            )
+        );
        $query = array_merge($match,$filter);
-    
        $tab = array(
            'query'=>array(
                'filtered'=>$query
@@ -123,11 +124,13 @@ class Elastic {
                     'unit'=>'km',
                     'distance_type'=>'plane'
                 )
-           )    
-       );
+            )   
+        );
        $url = 'http://'.$this->host.':'.$this->port.'/resource/hashtag/_search?pretty&size=50'; //find a way to evalulat quantitiy
        $json = json_encode($tab);
+       //echo $json;
        $method = 'GET';
+       
        return $this->getCurl($url, $method,$json );
    }
 
@@ -167,7 +170,15 @@ class Elastic {
                 array('properties'=>
                     array(
                         'content'=>array('type'=>'string'),
-                        'geo'=>array('type'=>'geo_point')
+                        'geo'=>array('type'=>'geo_point'),
+                        'startDate'=>array(
+                            'type'=>'date',
+                            'format'=>'basicDateTimeNoMillis'
+                         ),
+                        'endDate'=>array(
+                            'type'=>'date',
+                            'format'=>'basicDateTimeNoMillis'
+                         ),
                     )
                 )   
             )
