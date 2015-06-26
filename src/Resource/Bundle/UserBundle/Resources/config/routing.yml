@@ -19,6 +19,9 @@ content_search:
 content_search_unlogged:
     path:     /search
     defaults: { _controller: ResourceUserBundle:Resource:search}
+release_resource:
+    path:     /resource/release
+    defaults: { _controller: ResourceUserBundle:Resource:release}
 resource_detail:
     path:     /resource/get
     defaults: { _controller: ResourceUserBundle:Resource:get }
@@ -40,6 +43,10 @@ update_my_hashtag:
 around:
     path:     /around/{lat}/{lng}/for/{email}
     defaults: { _controller: ResourceUserBundle:Search:around }
+reserved:
+    path:     /logged-area/reserved
+    defaults: { _controller: ResourceUserBundle:Resource:reserved }
+
 
 
 

@@ -92,5 +92,43 @@ class ResourceController extends Controller
         }
         return (new Response())->setContent(json_encode($ret));
     }
+
+    public function reservedAction() {
+        $user = $this->get('security.context')->getToken()->getUser();
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $myReservedResources = $dm->createQueryBuilder('ResourceUserBundle:Resource')
+            ->field('reservedBy')
+            ->equals($user->getId())
+            ->getQuery()
+            ->execute();
+        $success = false;
+        if($myReservedResources) $success = true;
+        $ret = array('success'=>$success , 'resources' => $myReservedResources);
+        
+        return (new Response())->setContent(
+            \Resource\Bundle\UserBundle\Service\JSONify::toString($ret)
+        );
+
+    }
+
+    public function releaseAction($resourceId=123)
+    {
+        $dm = $this->get('doctrine_mongodb')
+            ->getManager();
+        $resource = $dm->getRepository('ResourceUserBundle:Resource')
+            ->findOneById($resourceId);
+        $success = false;
+        if(isset($resource)) {
+            $resource->release();
+            $dm->persist($resource);
+            $dm->flush();
+            $rabbit = new \Resource\Bundle\UserBundle\Service\Rabbit();
+            $rabbit->send(\Resource\Bundle\UserBundle\Service\JSONify::toString($resource),'update');
+            $success = true;
+        
+        }
+        $ret = array('success'=>$success);
+        return (new Response())->setContent(json_encode($ret));
+    }
     
 }

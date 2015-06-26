@@ -249,7 +249,7 @@ class Resource
     
     }
 
-    public function free() {
+    public function release() {
     
         $this->reserved = false;
         $this->reservedBy = null;

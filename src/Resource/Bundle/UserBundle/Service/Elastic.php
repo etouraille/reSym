@@ -87,21 +87,24 @@ class Elastic {
                                     )
                                 )
                             ),
-                            array('or'=>array(
+                            array('bool'=>
+                                array('should'=>
                                     array(
-                                        "and"=>array(
-                                                array("exists"=>array("field"=>"reserved")),
-                                                array("term"=>array("reserved"=>true)),
-                                                array("term"=>array("reservedBy"=>$userId))
-                                        )
-                                    ),
-                                    array(
-                                        "and"=>array(
-                                               array("exists"=>array("field"=>"reserved")),
-                                               array("term"=>array("reserved"=>false))
+                                        array(
+                                            "and"=>array(
+                                                    array("exists"=>array("field"=>"reserved")),
+                                                    array("term"=>array("reserved"=>true)),
+                                                    array("term"=>array("reservedBy"=>$userId))
                                             )
-                                    ),
-                                    array( "missing"=>array("field"=>"reserved"))
+                                        ),
+                                        array(
+                                            "and"=>array(
+                                                   array("exists"=>array("field"=>"reserved")),
+                                                   array("term"=>array("reserved"=>false))
+                                                )
+                                        ),
+                                        array( "missing"=>array("field"=>"reserved"))
+                                    )
                                 )
                             )
                         )
