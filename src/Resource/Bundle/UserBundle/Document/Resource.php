@@ -237,7 +237,7 @@ class Resource
      * @param string $place
      * @return self
      */
-    public function setGeo($place)
+    public function setPlace($place)
     {
         $this->place = $place;
         return $this;
