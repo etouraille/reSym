@@ -34,10 +34,27 @@ class Place
      **/
     private $geo;
 
-    public function __construct($lat,$lon)
+    public function __construct($lat=0,$lon=0)
     {
         $geo = new Geo($lat,$lon);
         $this->setGeo($geo);
+    }
+
+    public function initWithJson($json){
+        $ret = false;
+        if(is_array($data = json_decode($json,true))){
+            $ret = true;
+            isset($data['geo']['lat'])?$lat = $data['geo']['lat']:$ret = false;
+            isset($data['geo']['lon'])?$lon = $data['geo']['lon']:$ret = false;
+            isset($data['address'])?$address = $data['address']:$ret = false;
+            isset($data['tag'])?$tag = $data['tag']:$ret = false;
+            if($ret) {
+                $this->setGeo(new Geo($lat,$lon));
+                $this->setTag($tag);
+                $this->setAddress($address);
+            }
+        }
+        return $ret;
     }
 
     /**

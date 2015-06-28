@@ -7,12 +7,12 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class Rabbit{
 
-    public function send($id,$binding_key='index')
+    public function send($data,$binding_key='index')
     {
         $connection = new AMQPConnection('objetspartages.org', 5672, 'toto', 'toto','toto');
         $channel = $connection->channel();
         $channel->exchange_declare('indexing', 'direct', false, false, false);
-        $msg = new AMQPMessage($id);
+        $msg = new AMQPMessage($data);
         $channel->basic_publish($msg, 'indexing', $binding_key);
         $channel->close();
         $connection->close();

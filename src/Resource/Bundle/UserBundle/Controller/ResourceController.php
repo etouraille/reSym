@@ -7,6 +7,8 @@ use Resource\Bundle\UserBundle\Document\Resource;
 use Symfony\Component\HttpFoundation\Response;
 use Resource\Bundle\UserBundle\Service\Elastic;
 use Resource\Bundle\UserBundle\Service\Date;
+use Resource\Bundle\UserBundle\Document\Place;
+
 class ResourceController extends Controller
 {
     public function addAction($content='cool',$lat='0.0001', $lon='0.0001',$picture = '',
@@ -23,8 +25,11 @@ class ResourceController extends Controller
             if($endInterval){
                 $resource->setEndDate((new Date())->inMinutes($endInterval,$now));
             }
-            if($place) {
-                $resource->setPlace($place);
+            if($json = $place) {
+                $place = new Place();
+                if($place->initWithJson($json)) {
+                    $resource->setPlace($place);
+                }
             }
 
             $dm = $this->get('doctrine_mongodb')->getManager();
