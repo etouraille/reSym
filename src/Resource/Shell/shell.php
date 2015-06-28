@@ -68,7 +68,7 @@ class ReceiverCommand {
                     break;
             case  'place' :
                     $return = $elastic->index('resource','place',$data);
-                     break;
+            break;
         
 
         

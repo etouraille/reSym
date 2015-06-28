@@ -28,7 +28,7 @@ class Elastic {
         if($isUpdate){
             $urlUpdate = '/_update';
         }
-        return 'http://'.$this->host.':'.$this->port.'/resource/hashtag/'.$indexNumber.$urlUpdate;
+        return 'http://'.$this->host.':'.$this->port.'/resource/'.$type.'/'.$indexNumber.$urlUpdate;
    }
 
    public function geoSearch($content,$latitude,$longitude, $distance, $userId ) {
@@ -132,7 +132,6 @@ class Elastic {
         );
        $url = 'http://'.$this->host.':'.$this->port.'/resource/hashtag/_search?pretty&size=50'; //find a way to evalulat quantitiy
        $json = json_encode($tab);
-       //echo $json;
        $method = 'GET';
        
        return Curl::get($url, $method,$json );
@@ -171,11 +170,8 @@ class Elastic {
         );
        $url = 'http://'.$this->host.':'.$this->port.'/resource/place/_search?pretty&size=50'; //find a way to evalulat quantitiy
        $json = json_encode($tab);
-       //echo $json;
        $method = 'GET';
-       
        return Curl::get($url, $method,$json );
-
    }
 
     protected function getRootUrl(){
@@ -212,13 +208,8 @@ class Elastic {
                             'format'=>'basicDateTimeNoMillis'
                          ),
                     )
-                )
-                          
-            )
-        );
-         $mappingPlace = array('mappings'=>
-           array(
-               'place'=>
+                ),
+                'place'=>
                 array('properties'=>
                     array(
                         'tag'=>array('type'=>'string'),
@@ -229,16 +220,10 @@ class Elastic {
                           
             )
         );
-
-
-
        $url = $this->getRootUrl().'resource';
        $method = 'PUT';
        $json = json_encode($tab);
-       Curl::get($url,$method, json_encode($mappingPlace));
        return Curl::get($url,$method,$json);
-   
    }
-
 }
 

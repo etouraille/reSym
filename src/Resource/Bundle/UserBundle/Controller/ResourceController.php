@@ -59,9 +59,9 @@ class ResourceController extends Controller
         //$userId = $user->getId();
         $userId = 123;
         $elastic = new Elastic();
+        //$ret = $elastic->mapping();
         $ret = $elastic->geoSearch($content,$lat,$lon,$distance, $userId);
         //$ret = $elastic->delete();
-        //$ret = $elastic->mapping();
         return (new Response())->setContent($ret);
     }
 
