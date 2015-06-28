@@ -46,6 +46,16 @@ around:
 reserved:
     path:     /logged-area/reserved
     defaults: { _controller: ResourceUserBundle:Resource:reserved }
+tag_a_place:
+    path:     /logged-area/place/tag
+    defaults: { _controller: ResourceUserBundle:Place:tag }
+search_for_place_around:
+    path:     /place/search
+    defaults: { _controller: ResourceUserBundle:Place:search }
+address:
+    path:     /place/address
+    defaults: { _controller: ResourceUserBundle:Place:address }
+
 
 
 

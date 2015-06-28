@@ -10,7 +10,7 @@ use Resource\Bundle\UserBundle\Service\Date;
 class ResourceController extends Controller
 {
     public function addAction($content='cool',$lat='0.0001', $lon='0.0001',$picture = '',
-    $endInterval = 0) {
+    $endInterval = 0, $place = null) {
             $success = true;
             //$user = $this->get('security.context')->getToken()->getUser();
             $resource = new Resource($lat,$lon);
@@ -22,6 +22,9 @@ class ResourceController extends Controller
             $resource->setStartDate($now = (new Date())->now());
             if($endInterval){
                 $resource->setEndDate((new Date())->inMinutes($endInterval,$now));
+            }
+            if($place) {
+                $resource->setPlace($place);
             }
 
             $dm = $this->get('doctrine_mongodb')->getManager();

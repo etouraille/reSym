@@ -36,6 +36,13 @@ class Resource
     private $geo;
 
     /**
+     * @MongoDB\EmbedOne(targetDocument="Place")
+     **/
+    private $place;
+
+
+
+    /**
     * @MongoDB\Field(type="basic_date_time_type");
     **/
     public $startDate;
@@ -85,6 +92,16 @@ class Resource
     {
         return $this->geo;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPlace()
+    {
+        return $this->place;
+    }
+
+
 
     /**
      * Get id
@@ -213,6 +230,19 @@ class Resource
         $this->geo = $geo;
         return $this;
     }
+
+     /**
+     * Set place
+     *
+     * @param string $place
+     * @return self
+     */
+    public function setGeo($place)
+    {
+        $this->place = $place;
+        return $this;
+    }
+    
      /**
      * Set startDate
      *

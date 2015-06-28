@@ -64,7 +64,12 @@ class ReceiverCommand {
                 break;
             case  'update' :
                     $return = $elastic->update('resource','hashtag',$data);
-                break;
+                    break;
+            case  'place' :
+                    $return = $elastic->index('resource','place',$data);
+                     break;
+        
+
         
         }
 

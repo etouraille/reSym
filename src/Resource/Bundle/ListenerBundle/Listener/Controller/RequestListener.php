@@ -28,6 +28,7 @@ class RequestListener
             $data = is_array($data)?$data:array();
             //todo might be usefull to set every key as a post data
             foreach($data as $key=>$value){
+                if(is_array($value)) $value = json_encode($value);
                 $event->getRequest()->attributes->set($key,$value);
             }
         }

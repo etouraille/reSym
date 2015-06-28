@@ -1,6 +1,7 @@
 <?php
 namespace Resource\Bundle\UserBundle\Service;
 
+use Resource\Bundle\UserBundle\Service\Curl;
 class Elastic {
 
     protected $host;
@@ -13,12 +14,12 @@ class Elastic {
 
     public function index($index,$type,$data){
         $json_array = json_decode($data,true);
-        return $this->getCurl($this->getUrl($index,$type,$json_array['id']),'PUT',$data);
+        return Curl::get($this->getUrl($index,$type,$json_array['id']),'PUT',$data);
     }
 
      public function update($index,$type,$data){
         $json_array = json_decode($data,true);
-        return $this->getCurl($this->getUrl($index,$type,$json_array['id']),'POST',$data, true);
+        return Curl::get($this->getUrl($index,$type,$json_array['id']),'POST',$data, true);
     }
 
 
@@ -134,23 +135,50 @@ class Elastic {
        //echo $json;
        $method = 'GET';
        
-       return $this->getCurl($url, $method,$json );
+       return Curl::get($url, $method,$json );
    }
 
-   protected  function getCurl($url,$method, $json){
-         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json','Content-Length: ' . strlen($json)));
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-        curl_setopt($ch, CURLOPT_POSTFIELDS,$json);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-        $response  = curl_exec($ch);
-        curl_close($ch);
-        return $response;
+   public function placeAround($latitude, $longitude, $distance ) {
+       $filter = array( 
+           "filter"=>array(
+               array(
+                    "geo_distance"=>array(
+                        "distance"=>$distance,
+                        "geo"=>array(
+                            "lat"=>$latitude,
+                            "lon"=>$longitude,
+                        )
+                    )
+                )
+            )
+        );
+        
+       $tab = array(
+           'query'=>array(
+               'filtered'=>$filter
+           ),
+           'sort'=>array(
+                "_geo_distance"=>array(
+                    'geo'=>array(
+                        'lat'=>$latitude,
+                        'lon'=>$longitude,
+                    ),
+                    'order'=>'asc',
+                    'unit'=>'km',
+                    'distance_type'=>'plane'
+                )
+            )   
+        );
+       $url = 'http://'.$this->host.':'.$this->port.'/resource/place/_search?pretty&size=50'; //find a way to evalulat quantitiy
+       $json = json_encode($tab);
+       //echo $json;
+       $method = 'GET';
+       
+       return Curl::get($url, $method,$json );
+
    }
 
-   protected function getRootUrl(){
+    protected function getRootUrl(){
         return 'http://'.$this->host.':'.$this->port.'/';
    }
 
@@ -158,7 +186,7 @@ class Elastic {
        $url = $this->getRootUrl().'resource/hashtag/_query';
        $method = 'DELETE';
        $data = json_encode(array('query'=>array('match'=>array('content'=>'cool'))));
-       return $this->getCurl($url,$method,$data);
+       return Curl::get($url,$method,$data);
    }
 
    public function mapping(){
@@ -166,10 +194,11 @@ class Elastic {
        //delete index
        $url = $this->getRootUrl().'resource';
        $method = 'DELETE';
-       $this->getCurl($url,$method,'');
+       Curl::get($url,$method,'');
        
        $tab = array('mappings'=>
-           array('hashtag'=>
+           array(
+               'hashtag'=>
                 array('properties'=>
                     array(
                         'content'=>array('type'=>'string'),
@@ -183,14 +212,31 @@ class Elastic {
                             'format'=>'basicDateTimeNoMillis'
                          ),
                     )
-                )   
+                )
+                          
             )
         );
+         $mappingPlace = array('mappings'=>
+           array(
+               'place'=>
+                array('properties'=>
+                    array(
+                        'tag'=>array('type'=>'string'),
+                        'address'=>array('type'=>'string'),
+                        'geo'=>array('type'=>'geo_point'),
+                    )
+                )
+                          
+            )
+        );
+
+
 
        $url = $this->getRootUrl().'resource';
        $method = 'PUT';
        $json = json_encode($tab);
-       return $this->getCurl($url,$method,$json);
+       Curl::get($url,$method, json_encode($mappingPlace));
+       return Curl::get($url,$method,$json);
    
    }
 
