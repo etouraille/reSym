@@ -7,6 +7,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpAmqpLib\Connection\AMQPConnection;
+
+define('AMQP_DEBUG', true);
+
 class ReceiverCommand extends ContainerAwareCommand {
 
     protected $oputput; 
@@ -20,36 +23,77 @@ class ReceiverCommand extends ContainerAwareCommand {
     protected function execute(InputInterface $input, OutputInterface $output) {
         $this->output = $output;
         
-        //listen to the brocker
-         $connection = new AMQPConnection('objetspartages.org', 5672, 'toto', 'toto', 'toto');
-        $channel = $connection->channel();
+        #thread
+        while(true){
+            //listen to the brocker
+        try{
+            $connection = new AMQPConnection('objetspartages.org', 5672, 'toto', 'toto', 'toto',
+            false, 'AMQPLAIN',null,'en_US', 3, 3, null, false, 2);
+             $channel = $connection->channel();
+             
+            $channel->exchange_declare('indexing', 'direct', false, false, false);
 
-        $channel->exchange_declare('indexing', 'direct', false, false, false);
+            list($queue_name, ,) = $channel->queue_declare("", false, false, true, false);
 
-        list($queue_name, ,) = $channel->queue_declare("", false, false, true, false);
-        
-        $channel->queue_bind($queue_name, 'indexing', 'index');
+                            
+            
+            $channel->queue_bind($queue_name, 'indexing', 'index');
+            $channel->queue_bind($queue_name, 'indexing', 'update');
+            $channel->queue_bind($queue_name, 'indexing', 'place');
 
 
-        $channel->basic_consume($queue_name, '', false, true, false, false, array($this, 'callBack'));
+            $channel->basic_consume($queue_name, '', false, true, false, false, array($this, 'callBack'));
 
-        while(count($channel->callbacks)) {
-               $channel->wait();
+            $this->wait = false;
+            while(count($channel->callbacks)) {
+                   $channel->wait();
+            }
+
+
+            $channel->close();
+            $connection->close(); 
+        }
+         catch(\Exception $e){
+            $this->wait();
+            echo $e->getMessage();
+            var_dump($e->getTrace());
+         } 
         }
 
-        $channel->close();
-        $connection->close(); 
     }
 
-    public function callBack($msg){
-        $data = $msg->body;
-        $this->output->writeln($data);
-        //read from database
+    protected function callBack($msg){
         $elastic = new \Resource\Bundle\UserBundle\Service\Elastic();
-        $elastic->index('resource','hastag',$data);
-    
+        
+        $data = $msg->body;
+        $key  = $msg->delivery_info['routing_key'];
+        switch($key){
+            case  'index' :
+                    $return = $elastic->index('resource','hashtag',$data);
+                break;
+            case  'update' :
+                    $return = $elastic->update('resource','hashtag',$data);
+                    break;
+            case  'place' :
+                    $return = $elastic->index('resource','place',$data);
+            break;
+        
+
+        
+        }
+
+        echo $data;
+        //read from database
+       echo $return;
     }
 
-
-
+    protected function wait(){
+        if(false === $this->wait){
+            sleep(10);
+            $this->wait = 10;
+        }else{
+            $this->wait = $this->wait/2;
+            sleep($this->wait);
+        }
+    }
 }
