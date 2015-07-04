@@ -40,7 +40,10 @@ class Resource
      **/
     private $place;
 
-
+    /**
+     * @MongoDB\String
+     **/
+    private $address;
 
     /**
     * @MongoDB\Field(type="basic_date_time_type");
@@ -99,6 +102,14 @@ class Resource
     public function getPlace()
     {
         return $this->place;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAddress()
+    {
+        return $this->address;
     }
 
 
@@ -242,7 +253,19 @@ class Resource
         $this->place = $place;
         return $this;
     }
-    
+
+    /**
+     * Set place
+     *
+     * @param string $address
+     * @return self
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+        return $this;
+    }
+
      /**
      * Set startDate
      *

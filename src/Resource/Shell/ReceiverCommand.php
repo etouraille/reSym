@@ -69,7 +69,14 @@ class ReceiverCommand extends ContainerAwareCommand {
         $key  = $msg->delivery_info['routing_key'];
         switch($key){
             case  'index' :
-                    $return = $elastic->index('resource','hashtag',$data);
+                //we defer the call to the reverseGeoCoding API
+                //and we update the resource datbase accordingly
+                //we also 
+                    $dataWithAddress = DeferResourceAddressSetting::defer(
+                        $this->getContainer()->get('doctrine_mongodb'),
+                        $data
+                    );
+                    $return = $elastic->index('resource','hashtag',$dataWithAddress);
                 break;
             case  'update' :
                     $return = $elastic->update('resource','hashtag',$data);
