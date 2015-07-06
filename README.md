@@ -19,7 +19,9 @@ Service :
         - reindex
     - delete a resource 
         - desindexation
-    - percolation: 
+    - percolation:i
+        * The store search 
+            - an availlable resource, with certain keword in a quite large area 
         * Store research and percolate 
         * When adding or updating : percolate
         * Send a notification

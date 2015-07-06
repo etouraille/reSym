@@ -29,9 +29,17 @@ class Elastic {
             $urlUpdate = '/_update';
         }
         return 'http://'.$this->host.':'.$this->port.'/resource/'.$type.'/'.$indexNumber.$urlUpdate;
-   }
+  }
 
-   public function geoSearch($content,$latitude,$longitude, $distance, $userId ) {
+    public function geoSearh($content,$latitude,$longitude, $distance, $userId) {
+       $json = $this->geoSearchJson($content,$latitude,$longitude, $distance, $userId ); 
+       $method = 'GET';
+       $url = 'http://'.$this->host.':'.$this->port.'/resource/hashtag/_search?pretty&size=50'; //find a way to evalulat quantitiy
+       return Curl::get($url, $method,$json );
+ 
+    } 
+
+   public function geoSearchJson($content,$latitude,$longitude, $distance, $userId ) {
        $match = array();
        if(is_array($content) && count($content)>0){
            $matches = array();
@@ -130,11 +138,9 @@ class Elastic {
                 )
             )   
         );
-       $url = 'http://'.$this->host.':'.$this->port.'/resource/hashtag/_search?pretty&size=50'; //find a way to evalulat quantitiy
        $json = json_encode($tab);
-       $method = 'GET';
+       return $json;
        
-       return Curl::get($url, $method,$json );
    }
 
    public function placeAround($latitude, $longitude, $distance ) {
