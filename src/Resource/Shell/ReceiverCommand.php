@@ -84,12 +84,13 @@ class ReceiverCommand extends ContainerAwareCommand {
                 //we defer the call to the reverseGeoCoding API
                 //and we update the resource datbase accordingly
                 //we also 
+                    $doc = array('doc'=>$data);
                     $dataWithAddress = DeferResourceAddressSetting::defer(
                         $this->getContainer()->get('doctrine_mongodb'),
                         $data
                     );
                     $return = $elastic->index('resource','hashtag',$dataWithAddress);
-                    $return = $elastic->percolate('resource', 'hashtag', $dataWithAddress );
+                    $return = $elastic->percolate('resource', 'hashtag', $doc );
                 break;
             case  'update' :
                     $return = $elastic->update('resource','hashtag',$data);
