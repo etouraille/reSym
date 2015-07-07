@@ -86,7 +86,7 @@ class ReceiverCommand extends ContainerAwareCommand {
                 //we also 
                     $doc = json_encode(array('doc'=>json_decode($data,true)));
                     $dataWithAddress = DeferResourceAddressSetting::defer(
-                        $this->getContainer()->get('doctrine_mongodb'),
+                        $this->getContainer()->get('doctrine_mongodb')->getManager(),
                         $data
                     );
                     $return = $elastic->index('resource','hashtag',$dataWithAddress);
