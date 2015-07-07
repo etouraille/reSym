@@ -50,7 +50,7 @@ class Elastic {
          return 'http://'.$this->host.':'.$this->port.'/'; 
     }
 
-    public function geoSearh($content,$latitude,$longitude, $distance, $userId) {
+    public function geoSearch($content,$latitude,$longitude, $distance, $userId) {
        $json = $this->geoSearchJson($content,$latitude,$longitude, $distance, $userId ); 
        $method = 'GET';
        $url = 'http://'.$this->host.':'.$this->port.'/resource/hashtag/_search?pretty&size=50'; //find a way to evalulat quantitiy
@@ -199,11 +199,7 @@ class Elastic {
        return Curl::get($url, $method,$json );
    }
 
-    protected function getRootUrl(){
-        return 'http://'.$this->host.':'.$this->port.'/';
-   }
-
-   public function delete(){
+    public function delete(){
        $url = $this->getRootUrl().'resource/hashtag/_query';
        $method = 'DELETE';
        $data = json_encode(array('query'=>array('match'=>array('content'=>'cool'))));

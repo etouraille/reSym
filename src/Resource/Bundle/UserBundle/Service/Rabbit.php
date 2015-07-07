@@ -3,7 +3,7 @@ namespace Resource\Bundle\UserBundle\Service;
 
 use PhpAmqpLib\Connection\AMQPConnection;
 use PhpAmqpLib\Message\AMQPMessage;
-use PhpAmqpLib\Wire\AMQTable;
+use PhpAmqpLib\Wire\AMQPTable;
 
 
 class Rabbit{
@@ -15,7 +15,7 @@ class Rabbit{
         $channel->exchange_declare('indexing', 'direct', false, false, false);
         $msg = new AMQPMessage($data);
         if(count($headers) > 0){
-            $hdrs = new AMQTable($header);
+            $hdrs = new AMQPTable($headers);
             $msg->set('application_headers',$hdrs);
         }
         $channel->basic_publish($msg, 'indexing', $binding_key);
