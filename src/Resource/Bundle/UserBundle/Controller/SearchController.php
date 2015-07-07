@@ -91,8 +91,10 @@ class SearchController extends Controller {
         
         $search = new Search();
         $search->setUserid($user->getId());
-        foreach($hashtags as $hashtag) {
-            $search->addHashtag($hashtag);
+        if(is_array($hashtags)){
+            foreach($hashtags as $hashtag) {
+                $search->addHashtag($hashtag);
+            }
         }
         $dm->persist($search);
         $dm->flush();
@@ -103,7 +105,7 @@ class SearchController extends Controller {
         // to read : how use headers to send more data, like searchid.
         // to do : refacto, especially elastic class. 
 
-        $rabbit = new Rabbit()
+        $rabbit = new Rabbit();
         $rabbit->send($jsonToPercolate, 'percolate', array('search_id'=>$search->getId())); 
     
         return (new Response())->setContent(json_encode(array('success'=>true)));
