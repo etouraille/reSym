@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpAmqpLib\Connection\AMQPConnection;
-use Resource\Bundle\UserBundle\Service\DeferResourceAddressSeting;
+use Resource\Bundle\UserBundle\Service\DeferResourceAddressSetting;
 
 define('AMQP_DEBUG', true);
 
