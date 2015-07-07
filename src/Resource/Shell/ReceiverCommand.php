@@ -84,7 +84,7 @@ class ReceiverCommand extends ContainerAwareCommand {
                 //we defer the call to the reverseGeoCoding API
                 //and we update the resource datbase accordingly
                 //we also 
-                    $doc = array('doc'=>$data);
+                    $doc = json_encode(array('doc'=>json_decode($data,true)));
                     $dataWithAddress = DeferResourceAddressSetting::defer(
                         $this->getContainer()->get('doctrine_mongodb'),
                         $data
