@@ -14,7 +14,7 @@ class DeferResourceAddressSetting {
         $resourceObject = $dm->getRespository('ResourceUserBundle:Resource')
             ->findOnById($resourceId);
         
-        if(isset $resourceObject ) {
+        if(isset( $resourceObject) ) {
         
             $lat = $resourceObject->getGeo()->getLat();
             $lon = $resourceObject->getGeo()->getLon();
