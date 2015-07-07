@@ -32,7 +32,7 @@ class Elastic {
 
     public function percolate($index, $type, $document ) {
         return Curl::get(
-            $this->getRootUrl(). $index . '/'. . $type .'/_percolate',
+            $this->getRootUrl(). $index . '/'. $type .'/_percolate',
             'GET',
             $document
         )
