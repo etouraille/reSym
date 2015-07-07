@@ -63,7 +63,7 @@ class ReceiverCommand extends ContainerAwareCommand {
 
     }
 
-    protected function callBack($msg){
+    public function callBack($msg){
         $elastic = new \Resource\Bundle\UserBundle\Service\Elastic();
         
         $data = $msg->body;
