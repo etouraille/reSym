@@ -99,7 +99,7 @@ class ReceiverCommand extends ContainerAwareCommand {
                     break;
 
             case 'percolate' : 
-                    $return = $elatic->percolator('resource', 'hashtag', $data, $search_id);
+                    $return = $elastic->percolator('resource', 'hashtag', $data, $search_id);
                     break;
         
 
