@@ -55,7 +55,7 @@ class ReceiverCommand extends ContainerAwareCommand {
             $channel->close();
             $connection->close(); 
         }
-         catch(\Exception $e){
+         catch(\Exception $e){ // todo we have only to catch the amq exception, or socket exception 
             $this->wait();
             echo $e->getMessage();
             var_dump($e->getTrace());
@@ -89,7 +89,7 @@ class ReceiverCommand extends ContainerAwareCommand {
                         $data
                     );
                     $return = $elastic->index('resource','hashtag',$dataWithAddress);
-                    $return = $elastic->percolate('resource', 'hashtag');
+                    $return = $elastic->percolate('resource', 'hashtag', $dataWithAddress );
                 break;
             case  'update' :
                     $return = $elastic->update('resource','hashtag',$data);
