@@ -35,7 +35,7 @@ class Elastic {
             $this->getRootUrl(). $index . '/'. $type .'/_percolate',
             'GET',
             $document
-        )
+        );
     }
     protected function getUrl($index,$type,$indexNumber,$isUpdate = false){
         $urlUpdate = '';
