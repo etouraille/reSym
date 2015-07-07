@@ -40,6 +40,7 @@ class ReceiverCommand extends ContainerAwareCommand {
             $channel->queue_bind($queue_name, 'indexing', 'index');
             $channel->queue_bind($queue_name, 'indexing', 'update');
             $channel->queue_bind($queue_name, 'indexing', 'place');
+            $channel->queue_bind($queue_name, 'indexing', 'percolate');
 
 
             $channel->basic_consume($queue_name, '', false, true, false, false, array($this, 'callBack'));
@@ -67,6 +68,11 @@ class ReceiverCommand extends ContainerAwareCommand {
         
         $data = $msg->body;
         $key  = $msg->delivery_info['routing_key'];
+        $headers = $msg->get('application_headers')->getNativeData();
+        $search_id = null;
+        if(isset($headers['search_id'])) { 
+            $search_id = $headers['search_id'];
+        }
         switch($key){
             case  'index' :
                 //we defer the call to the reverseGeoCoding API
@@ -77,13 +83,18 @@ class ReceiverCommand extends ContainerAwareCommand {
                         $data
                     );
                     $return = $elastic->index('resource','hashtag',$dataWithAddress);
+                    $return = $elastic->percolate('resource', 'hashtag');
                 break;
             case  'update' :
                     $return = $elastic->update('resource','hashtag',$data);
                     break;
             case  'place' :
                     $return = $elastic->index('resource','place',$data);
-            break;
+                    break;
+
+            case 'percolate' : 
+                    $return = $elatic->percolator('resource', 'hashtag', $data, $search_id);
+                    break;
         
 
         

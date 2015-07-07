@@ -22,14 +22,33 @@ class Elastic {
         return Curl::get($this->getUrl($index,$type,$json_array['id']),'POST',$data, true);
     }
 
+    public function percolator($index,$type, $data, $percolate_id) {
+        return Curl::get(
+            $this->getRootUrl(). $index .'/.percolator/' . $percolate_id, 
+            'PUT' , 
+            $data
+        );
+    }
 
+    public function percolate($index, $type, $document ) {
+        return Curl::get(
+            $this->getRootUrl(). $index . '/'. . $type .'/_percolate',
+            'GET',
+            $document
+        )
+    }
     protected function getUrl($index,$type,$indexNumber,$isUpdate = false){
         $urlUpdate = '';
         if($isUpdate){
             $urlUpdate = '/_update';
         }
-        return 'http://'.$this->host.':'.$this->port.'/resource/'.$type.'/'.$indexNumber.$urlUpdate;
-  }
+        return $this->getRootUrl() .$index . '/'.$type.'/'.$indexNumber.$urlUpdate;
+    }
+
+    protected function getRootUrl()
+    {
+         return 'http://'.$this->host.':'.$this->port.'/'; 
+    }
 
     public function geoSearh($content,$latitude,$longitude, $distance, $userId) {
        $json = $this->geoSearchJson($content,$latitude,$longitude, $distance, $userId ); 

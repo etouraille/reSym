@@ -103,8 +103,9 @@ class SearchController extends Controller {
         // to read : how use headers to send more data, like searchid.
         // to do : refacto, especially elastic class. 
 
-        
-        
+        $rabbit = new Rabbit()
+        $rabbit->send($jsonToPercolate, 'percolate', array('search_id'=>$search->getId())); 
+    
         return (new Response())->setContent(json_encode(array('success'=>true)));
     }
 }
