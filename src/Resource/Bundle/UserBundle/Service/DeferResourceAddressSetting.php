@@ -12,7 +12,7 @@ class DeferResourceAddressSetting {
         $resourceId = $resource['id'];
         
         $resourceObject = $dm->getRepository('ResourceUserBundle:Resource')
-            ->findOnById($resourceId);
+            ->findOneById($resourceId);
         
         if(isset( $resourceObject) ) {
         
