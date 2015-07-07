@@ -68,10 +68,15 @@ class ReceiverCommand extends ContainerAwareCommand {
         
         $data = $msg->body;
         $key  = $msg->delivery_info['routing_key'];
-        $headers = $msg->get('application_headers')->getNativeData();
         $search_id = null;
-        if(isset($headers['search_id'])) { 
-            $search_id = $headers['search_id'];
+        try{
+            $headers = $msg->get('application_headers')->getNativeData();
+            if(isset($headers['search_id'])) { 
+                $search_id = $headers['search_id'];
+            }
+        } catch(\Exception $e){
+            //NO HEADERS IS DEFINED
+            //todo we can be more generic and define a document id as header.
         }
         switch($key){
             case  'index' :
