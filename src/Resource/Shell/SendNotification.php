@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Resource\Bundles\UserBundle\Service\Notification;
+use Resource\Bundle\UserBundle\Service\Notification;
 
 class SendNotification extends ContainerAwareCommand
 {

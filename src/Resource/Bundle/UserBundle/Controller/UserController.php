@@ -88,6 +88,7 @@ class UserController extends Controller
     public function notificationRegisterAction($device='android', $regId ='123') {
         
         $user = $this->get('security.context')->getToken()->getUser();
+        //$user = new \Resource\Bundle\UserBundle\Document\User();
         $success = false;
         if(isset($user)) {
             $dm = $this->get('doctrine_mongodb')->getManager();
