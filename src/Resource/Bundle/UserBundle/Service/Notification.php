@@ -11,7 +11,7 @@ use Sly\NotificationPusher\Model\Push;
 
 class Notification {
 
-    public static send($regId, $message ) {
+    public static function send($regId, $message ) {
         
         $pushManager = new PushManager(PushManager::ENVIRONMENT_DEV);
 
