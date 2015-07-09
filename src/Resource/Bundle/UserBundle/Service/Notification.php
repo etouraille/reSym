@@ -18,7 +18,7 @@ class Notification {
         // Then declare an adapter.
         // Only for android for the test.
         $gcmAdapter = new GcmAdapter(array(
-            'apiKey' => 'AIzaSyCr5WEghudoeh0iMBAyKTEw7Wdxt7eTF2g', // ugly, I Know !
+            'apiKey' => 'AIzaSyBtzgwOHGYK5i2w5GAh-pF2bdlA5qPxhhs', // ugly, I Know !
         ));
 
         // Set the device(s) to push the notification to.
