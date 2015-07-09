@@ -23,7 +23,8 @@
         "doctrine/mongodb-odm-bundle": "3.0.*@beta",
         "symfony/console": "2.8.*@dev",
         "videlalvaro/php-amqplib": "dev-master",
-        "symfony/serializer": "3.0.*@dev"
+        "symfony/serializer": "3.0.*@dev",
+        "sly/notification-pusher": "2.x"
     },
     "repositories": [
         {

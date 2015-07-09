@@ -40,6 +40,12 @@ class User implements AdvancedUserInterface, \Serializable
     private $email;
 
     /**
+     * @MongoDB\String
+    */
+    private $androidNotificationId=0;
+
+
+    /**
      * @MongoDB\Boolean
     */
     private $isActive;
@@ -68,11 +74,28 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
-    public function getPassword()
+    public function getpassword()
     {
         return $this->password;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setAndroidNotificationId( $regId )
+    {
+        $this->androidNotificationId = $regId;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAndroidNotificationId()
+    {
+        return $this->androidNotificationId;
     }
 
     /**

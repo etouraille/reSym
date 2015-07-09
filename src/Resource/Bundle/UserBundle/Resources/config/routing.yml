@@ -7,6 +7,9 @@ user_salt:
 user_exists:
     path:     /exists
     defaults: { _controller: ResourceUserBundle:User:exists }
+user_notfication_register:
+    path:     /logged-area/notification/register
+    defaults: { _controller: ResourceUserBundle:User:notificationRegister }
 content_add:
     path:     /logged-area/add
     defaults: { _controller: ResourceUserBundle:Resource:add }

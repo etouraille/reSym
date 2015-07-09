@@ -84,4 +84,26 @@ class UserController extends Controller
             $response->setContent(json_encode($ret));
             return $response;
     }
+
+    public function notificationRegisterAction($device='android', $regId ='123') {
+        
+        $user = $this->get('security.context')->getToken()->getUser();
+        $success = false;
+        if(isset($user)) {
+            $dm = $this->get('doctrine_mongodb')->getManager();
+            switch($device) {
+                case 'android': 
+                        $user->setAndroidNotificationId($regId);
+                        break;
+                default : 
+                    break;
+
+            } 
+            $dm->persist($user);
+            $dm->flush();
+            $success = true;
+        }
+        return (new Response())->setContent(json_encode(array('success'=>$success)));
+
+    }
 }
