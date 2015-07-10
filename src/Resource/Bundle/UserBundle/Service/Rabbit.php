@@ -16,6 +16,9 @@ class Rabbit{
         $msg = new AMQPMessage($data);
         if(count($headers) > 0){
             $hdrs = new AMQPTable($headers);
+            //headears are set to send document id
+            //hence, on percolation we send the request in json and the search id 
+            //so as to set the percolation id equals to the percolation id in database
             $msg->set('application_headers',$hdrs);
         }
         $channel->basic_publish($msg, 'indexing', $binding_key);
