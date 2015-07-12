@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Resource\Bundle\UserBundle\ResourceUserBundle(),
             new Resource\Bundle\ListenerBundle\ResourceListenerBundle(),
             new Resource\Bundle\LoggedControllerBundle\ResourceLoggedControllerBundle(),
+            new Resource\WebSecurityBundle\ResourceWebSecurityBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

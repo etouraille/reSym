@@ -1,0 +1,14 @@
+services:
+  token.security.authentication.provider:
+    class:  Resource\WebSecurityBundle\Authentication\Provider\WebProvider
+    arguments: [security.tokenservice]
+
+  token.security.authentication.listener:
+    class:  Resource\WebSecurityBundle\Security\Firewall\TokenListener
+    arguments: [@security.context, @token.security.authentication.manager]
+  security.tokenservice:
+    class: Resource\WebSecurityBundle\Service\TokenService
+    arguments: [@doctrine.odm.mongodb]
+  token.security.authentication.manager:
+      class: Resource\WebSecurityBundle\Authentication\Provider\WebProvider
+      arguments: [@security.tokenservice]

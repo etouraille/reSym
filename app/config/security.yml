@@ -8,6 +8,9 @@ security:
         wsse_secured:
             pattern:   /logged-area/.*
             wsse:      true
+        token_secured:
+            pattern: /authenticated/.*
+            token:   true
     encoders:
         Resource\Bundle\UserBundle\Document\User:
             id : security.encoder.custom
