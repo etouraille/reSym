@@ -4,6 +4,7 @@ namespace Resource\WebSecurityBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Resource\WebSecurityBundle\DependencyInjection\Security\Factory\TokenFactory;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ResourceWebSecurityBundle extends Bundle
 {

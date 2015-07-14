@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Resource\WebSecurityBundle\Authentication\Token\WebToken;
 
-class WsseListener implements ListenerInterface
+class TokenListener implements ListenerInterface
 {
     protected $securityContext;
     protected $authenticationManager;
