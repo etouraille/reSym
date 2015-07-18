@@ -34,6 +34,11 @@ class Place
      **/
     private $geo;
 
+    /**
+    *@MongoDB\Hash
+    **/
+    protected $resources = array();   
+
     public function __construct($lat=0,$lon=0)
     {
         $geo = new Geo($lat,$lon);
@@ -147,6 +152,15 @@ class Place
     {
         $this->address = $address;
         return $this;
+    }
+
+    public function addResource(Resource $resource) {
+        $this->resources[] = $resource;
+        return $this;
+    }
+
+    public function getResources(){
+        return $this->resources;
     }
 
 }

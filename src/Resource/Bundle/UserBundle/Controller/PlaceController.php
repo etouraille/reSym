@@ -27,9 +27,10 @@ class PlaceController extends Controller {
             ->setAddress($address);
         $dm->persist($place);
         $dm->flush();
+        $placeId = $place->getId();
         $rabbit = new \Resource\Bundle\UserBundle\Service\Rabbit();
         $rabbit->send(\Resource\Bundle\UserBundle\Service\JSONify::toString($place),'place');
-        return (new Response())->setContent(json_encode(array('success'=>true)));
+        return (new Response())->setContent(json_encode(array('success'=>true,'id'=>$placeId)));
     
     }
     public function addressAction($lat='45.7677957',$lng='4.8731638') {
