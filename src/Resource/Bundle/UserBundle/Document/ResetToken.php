@@ -15,9 +15,9 @@ class ResetToken
     private $id;
 
    /**
-     * @MongoDB\String
+     * @MongoDB\Id
     */
-    private $userId;
+    private $userid;
 
     /**
      * @MongoDB\String
@@ -39,9 +39,6 @@ class ResetToken
         return $this->id;
     }
 
-     /**
-     * @inheritDoc
-     */
     public function getUserid()
     {
         return $this->userid;
@@ -54,6 +51,12 @@ class ResetToken
     public function getTimestamp(){
         return $this->timestamp;
     }
+    
+    public function setUserid($userid ) {
+        $this->userid = $userid;
+        return $this;
+    }
+
 
     public function setToken($token ) {
         $this->token = $token;

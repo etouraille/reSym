@@ -32,7 +32,7 @@ class Forgotten {
     public function sendEmail($token, $email ) {
         $message = ' Pour réinitialiser votre mot de passe <a href="freePress://create-password?token='.$token.'">Clikez</a> la validité dans le temps de ce lien est limitée';
         $subject = "Réinitilisation de votre mot de passe";
-        mail($emai,$subject,$message);
+        mail($email,$subject,$message);
     }
 
     public function setPassword($token, $pass1, $pass2 ) {
@@ -45,8 +45,9 @@ class Forgotten {
         if(time()>$token->getTimestamp()) {
             throw new \Exception('Invalid Token');
         }
-        $user = $dm->getRepository('ResourceUserBundle:User')->find($token->getUserid());
-
+        var_dump($token);
+        $user = $dm->getRepository('ResourceUserBundle:User')->findOneById($token->getUserid());
+        echo $token->getUserid();
         if(!isset($user)) {
             throw new \Exception('Invalid User');
         }

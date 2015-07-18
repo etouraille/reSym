@@ -9,3 +9,6 @@ services:
     place:
         class: Resource\Bundle\UserBundle\Service\Place
         arguments: [@doctrine_mongodb,@jms_serializer,@rabbit]
+    forgotten:
+        class: Resource\Bundle\UserBundle\Service\Forgotten
+        arguments: [@doctrine_mongodb]

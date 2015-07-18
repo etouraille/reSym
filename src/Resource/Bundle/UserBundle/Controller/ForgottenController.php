@@ -30,7 +30,7 @@ class ForgottenController extends Controller {
     /*
      *Action to get all Hashtags with optional filter
      */
-    public function changePasswordAction($token, $password1, $password2){
+    public function changePasswordAction($token='YWQ2Y2IxOTZjNzQxYjRhMjQyOTBlOGMxOTdlMzNlN2YxNDM3MjQ2ODY2', $password1='b1otope', $password2='b1otope') {
 
         $forgotten = $this->get('forgotten');
 
@@ -45,6 +45,6 @@ class ForgottenController extends Controller {
         
 
         return (new Response())->setContent(json_encode(array('success'=>$success,'message'=>$message)));
-    
+    } 
 
 }
