@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\Exception\TokenNotFoundException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Resource\WebSecurityBundle\Authentication\Token\WebUserToken;
 
-class WsseProvider implements AuthenticationProviderInterface
+class WebProvider implements AuthenticationProviderInterface
 {
     private $userProvider;
     private $cacheDir;

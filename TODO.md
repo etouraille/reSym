@@ -27,9 +27,17 @@
 - realiser un site web
 - generation de page wiki à chaque creation de hashtag
 - les liens entre les page de wiki permette de realiser des proximité de hashtag
+- une page par hashtag de wiki
+- accueil : une carto
+- une timeline : des hashtag
+- dans le header : un search mot clé, localisation. 
+- une pagination.
+- une page de détail
+- une page d'ajout.
+- plus tard : les hashtag les plus populaires.
+- page developpeur : creation des comptes avec creation de token
+- chat / conversation.
 
-- developpeur : creation des comptes avec creation de token 
-- 
 #Archi 
 - un fichier de conf non disponible sur le repos
 - injection de dépendance
@@ -44,4 +52,4 @@
 - utilisation d'open street map : cf nominatis php surcouche 
 - système de retribution.
 
-#code du velo : 2115
+

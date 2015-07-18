@@ -28,6 +28,16 @@ class Resource
     /**
      * @MongoDB\String
     */
+    private $category;
+    
+    /**
+     * @MongoDB\String
+    */
+    private $message;
+    
+    /**
+     * @MongoDB\String
+    */
     private $picture;
 
     /**
@@ -203,6 +213,24 @@ class Resource
     public function getPicture()
     {
         return $this->picture;
+    }
+
+    public function getCategory() {
+        return $this->category;
+    }
+
+    public function setCategory($category) {
+        $this->category = $category;
+        return $this;
+    }
+
+    public function getMessage() {
+        return $this->message;
+    }
+
+    public function setMessage( $message) {
+        $this->message = $message;
+        return $this;
     }
 
     /**

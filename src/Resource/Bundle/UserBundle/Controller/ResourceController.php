@@ -11,15 +11,15 @@ use Resource\Bundle\UserBundle\Document\Place;
 
 class ResourceController extends Controller
 {
-    public function addAction($content='cool',$lat='0.0001', $lon='0.0001',$picture = '',
-    $endInterval = 0, $place = null) {
+    public function addAction($tag='cool',$lat='0.0001', $lon='0.0001',$picture = '',
+    $endInterval = 0, $place = null, $message = '', $category = 'the world is a vampire') {
             $success = true;
             //$user = $this->get('security.context')->getToken()->getUser();
             $resource = new Resource($lat,$lon);
         
             //$resource->setUserid($user->getId());
             $resource->setUserid(123);
-            $resource->setContent($content);
+            $resource->setContent($tag);
             $resource->setPicture($picture);
             $resource->setStartDate($now = (new Date())->now());
             if($endInterval){
@@ -31,13 +31,18 @@ class ResourceController extends Controller
                     $resource->setPlace($place);
                 }
             }
+            $resource->setMessage($message);
+            $resource->setCategory($category);
+
+            $categoryService = $this->get('category');
+            $categoryService->add($tag, $category);
 
             $dm = $this->get('doctrine_mongodb')->getManager();
-            $hashtag = $dm->getRepository('ResourceUserBundle:Hashtag')->findOneByHashtag($content);
+            $hashtag = $dm->getRepository('ResourceUserBundle:Hashtag')->findOneByHashtag($tag);
         
             if(!isset($hashtag)) {
                 $hash = new \Resource\Bundle\UserBundle\Document\Hashtag();
-                $hash->setHashtag($content);
+                $hash->setHashtag($tag);
                 $dm->persist($hash);
             }
             $dm->persist($resource);
