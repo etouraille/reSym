@@ -24,7 +24,8 @@
         "symfony/console": "2.8.*@dev",
         "videlalvaro/php-amqplib": "dev-master",
         "symfony/serializer": "3.0.*@dev",
-        "sly/notification-pusher": "2.x"
+        "sly/notification-pusher": "2.x",
+        "jms/serializer-bundle" : "1.0.0"
     },
     "repositories": [
         {

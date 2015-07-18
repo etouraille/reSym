@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new Resource\Bundle\ListenerBundle\ResourceListenerBundle(),
             new Resource\Bundle\LoggedControllerBundle\ResourceLoggedControllerBundle(),
             new Resource\WebSecurityBundle\ResourceWebSecurityBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

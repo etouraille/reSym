@@ -25,6 +25,8 @@ framework:
     fragments:       ~
     http_method_override: true
 
+jms_serializer: 
+
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"

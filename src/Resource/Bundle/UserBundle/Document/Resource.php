@@ -4,6 +4,7 @@ namespace Resource\Bundle\UserBundle\Document;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Resource\Bundle\UserBundle\Annotation\BasicDateTime;
+use JMS\Serializer\Annotation as JMS;
 /**
  *  @MongoDB\Document
  */
@@ -46,6 +47,7 @@ class Resource
     private $geo;
 
     /**
+     * @JMS\Exclude
      * @MongoDB\EmbedOne(targetDocument="Place")
      **/
     private $place;

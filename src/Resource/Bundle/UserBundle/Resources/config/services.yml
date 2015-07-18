@@ -2,3 +2,10 @@ services:
     category:
         class: Resource\Bundle\UserBundle\Service\Category
         arguments: [@doctrine_mongodb]
+    jsonify: 
+        class: Resource\Bundle\UserBundle\Service\JSONify
+    rabbit:
+        class: Resource\Bundle\UserBundle\Service\Rabbit
+    place:
+        class: Resource\Bundle\UserBundle\Service\Place
+        arguments: [@doctrine_mongodb,@jms_serializer,@rabbit]

@@ -25,9 +25,10 @@ class ResourceController extends Controller
             if($endInterval){
                 $resource->setEndDate((new Date())->inMinutes($endInterval,$now));
             }
+            $thereIsAPlace = false;
             if($json = $place) {
                 $place = new Place();
-                if($place->initWithJson($json)) {
+                if($thereIsAPlace = $place->initWithJson($json)) {
                     $resource->setPlace($place);
                 }
             }
@@ -51,8 +52,13 @@ class ResourceController extends Controller
                 'success' => $success,
                 'id'=>$resource->getId()
             );
+            // todo : to much call to the database in the service
+            // we could differ to later
+            if($thereIsAPlace) {
+              $this->get('place')->associateResourceToPlace($resource,$place->getId());
+            }    
             $rabbit = new \Resource\Bundle\UserBundle\Service\Rabbit();
-            $rabbit->send(\Resource\Bundle\UserBundle\Service\JSONify::toString($resource));
+            $rabbit->send($this->get('jms_serializer')->serialize($resource,'json'));
             $response = new Response();
             $response->setContent(json_encode($ret));
             return $response;

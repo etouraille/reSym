@@ -70,10 +70,15 @@ class ReceiverCommand extends ContainerAwareCommand {
         $data = $msg->body;
         $key  = $msg->delivery_info['routing_key'];
         $search_id = null;
+        $update_id = null;
+
         try{
             $headers = $msg->get('application_headers')->getNativeData();
             if(isset($headers['search_id'])) { 
                 $search_id = $headers['search_id'];
+            }
+            if(isset($headers['update_id'])) {
+                $update_id = $headers['update_id'];
             }
         } catch(\Exception $e){
             //NO HEADERS IS DEFINED
@@ -96,7 +101,12 @@ class ReceiverCommand extends ContainerAwareCommand {
                     $return = $elastic->update('resource','hashtag',$data);
                     break;
             case  'place' :
-                    $return = $elastic->index('resource','place',$data);
+                if(isset($update_id)) {
+                        $data['id'] = $update_id;
+                        $return = $elastic->update('resource','place',$data);
+                    } else {
+                        $return = $elastic->index('resource','place',$data);
+                    }
                     break;
 
             case 'percolate' : 
