@@ -1,3 +1,9 @@
+forgotten_init:
+    path:     /forgotten/createtoken
+    defaults: { _controller: ResourceUserBundle:Forgotten:createToken }
+forgotten_change:
+    path:     /forgotten/changepassword
+    defaults: { _controller: ResourceUserBundle:Forgotten:changePassword }
 user_subscribe:
     path:     /subscribe
     defaults: { _controller: ResourceUserBundle:User:subscribe }
