@@ -15,7 +15,7 @@ class ResetToken
     private $id;
 
    /**
-     * @MongoDB\Id
+    * @MongoDB\String
     */
     private $userid;
 
@@ -28,6 +28,11 @@ class ResetToken
      * @MongoDB\String
     */
     private $timestamp;
+
+    /**
+     * @MongoDB\Bool
+    */
+    private $used;
 
 
 
@@ -51,7 +56,10 @@ class ResetToken
     public function getTimestamp(){
         return $this->timestamp;
     }
-    
+
+    public function getUsed(){
+        return $this->used;
+    }
     public function setUserid($userid ) {
         $this->userid = $userid;
         return $this;
@@ -66,5 +74,10 @@ class ResetToken
     public function setTimestamp($timestamp) {
         $this->timestamp = $timestamp;
         return $this;
+    }
+    public function setUsed($used) {
+        $this->used = $used; 
+        return $this;
+        
     }
 }

@@ -8,6 +8,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
 *  @MongoDB\Document
 *  @MongoDB\Document(repositoryClass="UserRepository")
+*  @ORM\HasLifecycleCallbacks
 */
 
 class User implements AdvancedUserInterface, \Serializable

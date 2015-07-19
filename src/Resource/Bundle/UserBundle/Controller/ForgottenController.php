@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ForgottenController extends Controller {
 
 
-    public function createTokenAction($email = 'edouard.touraille@gmail.com') {
+    public function createTokenAction($email = 'edy@free.fr') {
         $dm = $this->get('doctrine_mongodb')
             ->getManager();
          $user = $dm->getRepository('ResourceUserBundle:User')

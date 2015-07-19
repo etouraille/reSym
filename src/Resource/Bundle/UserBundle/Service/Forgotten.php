@@ -21,6 +21,7 @@ class Forgotten {
             $token->setToken($tokenValue);
             $token->setUserid($user->getId());
             $token->setTimestamp(time()+24*3600*$this->validityInDays);
+            $token->setUsed(false);
             $dm->persist($token);
             $dm->flush();
             return $tokenValue;
@@ -38,16 +39,20 @@ class Forgotten {
     public function setPassword($token, $pass1, $pass2 ) {
         
         $dm = $this->odm->getManager();
-        $token = $dm->getRepository('ResourceUserBundle:ResetToken')->findOneByToken($token);
+        //todo add false condition
+        $token = $dm->getRepository('ResourceUserBundle:ResetToken')
+            ->findOneBy(array(
+                'token'=>$token,
+                'used'=>false
+            )
+        );
         if(!isset($token)) {
             throw new \Exception('Invalid Token');
         }
         if(time()>$token->getTimestamp()) {
             throw new \Exception('Invalid Token');
         }
-        var_dump($token);
         $user = $dm->getRepository('ResourceUserBundle:User')->findOneById($token->getUserid());
-        echo $token->getUserid();
         if(!isset($user)) {
             throw new \Exception('Invalid User');
         }
@@ -56,6 +61,8 @@ class Forgotten {
         }
         $user->setPassword($pass1);
         $dm->persist($user);
+        $token->setUsed(true);
+        $dm->persist($token);
         $dm->flush();
         return true;
 
