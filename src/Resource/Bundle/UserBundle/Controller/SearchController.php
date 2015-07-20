@@ -7,6 +7,7 @@ use Resource\Bundle\UserBundle\Document\Search;
 use Symfony\Component\HttpFoundation\Response;
 use Resource\Bundle\UserBundle\Service\Elastic;
 use Resource\Bundle\UserBundle\Service\Rabbit;
+use Resource\Bundle\UserBundle\Document\Geo;
 
 class SearchController extends Controller {
 
@@ -76,10 +77,30 @@ class SearchController extends Controller {
         return (new Response())->setContent(json_encode($ret));
     }
 
+    public function mySearchAction() {
+        $user = $this->get('security.context')
+            ->getToken()
+            ->getUser();
+        $success = false;
+        $ret = array();
+        if(isset($user)) {
+            $search = $this->get('doctrine_mongodb')
+                ->getManager()
+                ->getRepository('ResourceUserBundle:Search')
+                ->findOneByUserid($user->getId());
+            if(isset($search)) {
+                $success = true;
+                $ret['search'] = $search;
+            }
+        }
+        $ret['success'] = $success;
+        return (new Response())->setContent($this->get('jms_serializer')->serialize($ret,'json'));
+    }
+
     /*
      * Update my hashtages, parameter is an array of hashtag.
      */
-    public function updateSearchAction($hashtags = array(), $lat , $lon , $distance = '20km'){
+    public function updateSearchAction($hashtags = array(), $lat , $lon , $distance = '20000', $address ){
         $hashtags = json_decode($hashtags,true);
         $user = $this->get('security.context')
             ->getToken()
@@ -96,10 +117,15 @@ class SearchController extends Controller {
                 $search->addHashtag($hashtag);
             }
         }
+        $search->setDistance($distance);
+        $geo = new Geo($lat,$lon);
+        $search->setGeo($geo);
+        $search->setAddress($address);
         $dm->persist($search);
         $dm->flush();
         //percolate the search : key words arround my location in a geographic area.
         $elastic = new Elastic();
+        $distance = ($distance/1000) . 'km';
         $jsonToPercolate =  $elastic->geoSearchJson($hashtags,$lat,$lon, $distance, $user->getId() );
         // todo implement the percolation 
         // to read : how use headers to send more data, like searchid.

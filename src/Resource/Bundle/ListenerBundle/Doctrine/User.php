@@ -20,7 +20,6 @@ class User
     public function prePersist($args)
     {
         $user = $args->getDocument();
-        echo get_class($user); 
         if(get_class($user) === "Resource\Bundle\UserBundle\Document\User" ) {
             echo 'in cond';
             $args->getDocument()->setPassword(

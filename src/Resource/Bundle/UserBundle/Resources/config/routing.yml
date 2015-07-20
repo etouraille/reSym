@@ -46,8 +46,11 @@ todo_delete:
 search_my_hashtag:
     path:     /logged-area/hashtag/mine
     defaults: { _controller: ResourceUserBundle:Search:myhashtag}
+search_my_search:
+    path:     /logged-area/search/mine
+    defaults: { _controller: ResourceUserBundle:Search:mySearch}
 update_my_hashtag:
-    path:     /logged-area/hashtag/update
+    path:     /logged-area/search/update
     defaults: { _controller: ResourceUserBundle:Search:updateSearch}
 around:
     path:     /around/{lat}/{lng}/for/{email}
