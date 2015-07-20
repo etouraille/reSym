@@ -85,7 +85,7 @@ class Elastic {
                 );
        }
        if($notByMe){
-           $notByMe =
+           $notByMeFilter = 
                array('not'=>
                     array(
                         'term'=>
@@ -94,25 +94,9 @@ class Elastic {
                             )
                         )
                 );
-       } else {
-            $notByMe = array();
-       }
+       }    
        
-       $filter = array( 
-           "filter"=>array(
-               array(
-                    "geo_distance"=>array(
-                        "distance"=>$distance,
-                        "geo"=>array(
-                            "lat"=>$latitude,
-                            "lon"=>$longitude,
-                        )
-                    )
-                ),
-                array(
-                    "bool"=>array(
-                        "must"=>array(
-                            array("or"=>array(
+       $dateFilter = array("or"=>array(
                                     array(
                                         "and"=>array(
                                                 array("exists"=>array("field"=>"endDate")),
@@ -128,8 +112,9 @@ class Elastic {
                                         )
                                     )
                                 )
-                            ),
-                            array('bool'=>
+                            );
+
+       $reservedFilter =  array('bool'=>
                                 array('should'=>
                                     array(
                                         array(
@@ -148,9 +133,30 @@ class Elastic {
                                         array( "missing"=>array("field"=>"reserved"))
                                     )
                                 )
-                            ),
-                            $notByMe
+                            );
+    
+       $must = array();
+       $must[] = $dateFilter;
+       $must[] = $reservedFilter;
+       if($notByMe) {
+            $must[] = $notByMeFilter;
+
+       }
+       
+       $filter = array( 
+           "filter"=>array(
+               array(
+                    "geo_distance"=>array(
+                        "distance"=>$distance,
+                        "geo"=>array(
+                            "lat"=>$latitude,
+                            "lon"=>$longitude,
                         )
+                    )
+                ),
+                array(
+                    "bool"=>array(
+                        "must"=> $must
                     )
                 )
             )
