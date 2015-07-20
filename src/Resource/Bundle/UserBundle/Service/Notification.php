@@ -11,7 +11,7 @@ use Sly\NotificationPusher\Model\Push;
 
 class Notification {
 
-    public static function send($regId, $message ) {
+    public function send($regId, $message , $options = array()) {
         
         $pushManager = new PushManager(PushManager::ENVIRONMENT_DEV);
 
@@ -27,8 +27,7 @@ class Notification {
         ));
 
         // Then, create the push skel.
-        $message = new Message($message);
-
+        $message = new Message($message, $options );
         // Finally, create and add the push to the manager, and push it!
         $push = new Push($gcmAdapter, $devices, $message);
         $pushManager->add($push);

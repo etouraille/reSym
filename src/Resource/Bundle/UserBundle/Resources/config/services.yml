@@ -12,3 +12,8 @@ services:
     forgotten:
         class: Resource\Bundle\UserBundle\Service\Forgotten
         arguments: [@doctrine_mongodb]
+    notification:
+        class: Resource\Bundle\UserBundle\Service\Notification
+    percolate_notifier:
+        class: Resource\Bundle\UserBundle\Service\PercolateNotifier
+        arguments: [@doctrine_mongodb,@notification]

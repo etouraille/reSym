@@ -58,11 +58,13 @@ class Resource
     private $address;
 
     /**
+     *@JMS\SerializedName("startDate")
     * @MongoDB\Field(type="basic_date_time_type");
     **/
     public $startDate;
 
     /**
+     *@JMS\SerializedName("endDate")
     * @MongoDB\Field(type="basic_date_time_type");
     **/
     private $endDate;
@@ -73,6 +75,7 @@ class Resource
     private $reserved;
 
     /**
+     * @JMS\SerializedName("reservedBy")
     * @MongoDB\String
     */
     private $reservedBy;

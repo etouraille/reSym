@@ -96,6 +96,9 @@ class ReceiverCommand extends ContainerAwareCommand {
                     );
                     $return = $elastic->index('resource','hashtag',$dataWithAddress);
                     $return = $elastic->percolate('resource', 'hashtag', $doc );
+                    $this->getContainer()
+                        ->get('percolate_notifier')
+                        ->process($return, $dataWithAddress);
                 break;
             case  'update' :
                     $return = $elastic->update('resource','hashtag',$data);

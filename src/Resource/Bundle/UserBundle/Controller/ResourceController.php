@@ -58,7 +58,7 @@ class ResourceController extends Controller
               $this->get('place')->associateResourceToPlace($resource,$place->getId());
             }    
             $rabbit = new \Resource\Bundle\UserBundle\Service\Rabbit();
-            $rabbit->send($this->get('jms_serializer')->serialize($resource,'json'));
+            $rabbit->send($json = $this->get('jms_serializer')->serialize($resource,'json'));
             $response = new Response();
             $response->setContent(json_encode($ret));
             return $response;
