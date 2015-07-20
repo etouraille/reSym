@@ -58,7 +58,7 @@ class Elastic {
  
     } 
 
-   public function geoSearchJson($content,$latitude,$longitude, $distance, $userId ) {
+   public function geoSearchJson($content,$latitude,$longitude, $distance, $userId, $notByMe = false ) {
        $match = array();
        if(is_array($content) && count($content)>0){
            $matches = array();
@@ -83,7 +83,21 @@ class Elastic {
                         )
                     )
                 );
-       } 
+       }
+       if($notByMe){
+           $notByMe =
+               array('not'=>
+                    array(
+                        'term'=>
+                            array(
+                                'userid'=>$userId
+                            )
+                        )
+                );
+       } else {
+            $notByMe = array();
+       }
+       
        $filter = array( 
            "filter"=>array(
                array(
@@ -134,7 +148,8 @@ class Elastic {
                                         array( "missing"=>array("field"=>"reserved"))
                                     )
                                 )
-                            )
+                            ),
+                            $notByMe
                         )
                     )
                 )

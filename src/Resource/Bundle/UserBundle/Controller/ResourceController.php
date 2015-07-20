@@ -14,11 +14,11 @@ class ResourceController extends Controller
     public function addAction($tag='cool',$lat='0.0001', $lon='0.0001',$picture = '',
     $endInterval = 0, $place = null, $message = '', $category = 'the world is a vampire') {
             $success = true;
-            //$user = $this->get('security.context')->getToken()->getUser();
+            $user = $this->get('security.context')->getToken()->getUser();
             $resource = new Resource($lat,$lon);
         
-            //$resource->setUserid($user->getId());
-            $resource->setUserid(123);
+            $resource->setUserid($user->getId());
+            //$resource->setUserid(123);
             $resource->setContent($tag);
             $resource->setPicture($picture);
             $resource->setStartDate($now = (new Date())->now());
