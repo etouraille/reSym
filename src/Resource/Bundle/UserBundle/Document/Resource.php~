@@ -347,16 +347,4 @@ class Resource
         $this->reservedBy = $userId;
     
     }
-
-    /**
-     * Set reserved
-     *
-     * @param boolean $reserved
-     * @return self
-     */
-    public function setReserved($reserved)
-    {
-        $this->reserved = $reserved;
-        return $this;
-    }
 }

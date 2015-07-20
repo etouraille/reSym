@@ -259,4 +259,14 @@ class User implements AdvancedUserInterface, \Serializable
     {
         return $this->isActive;
     }
+
+    /**
+     * Get password
+     *
+     * @return string $password
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
 }

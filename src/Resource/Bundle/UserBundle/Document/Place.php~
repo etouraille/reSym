@@ -169,14 +169,4 @@ class Place
         return $this->resources;
     }
 
-
-    /**
-     * Remove resource
-     *
-     * @param Resource\Bundle\UserBundle\Document\Resource $resource
-     */
-    public function removeResource(\Resource\Bundle\UserBundle\Document\Resource $resource)
-    {
-        $this->resources->removeElement($resource);
-    }
 }

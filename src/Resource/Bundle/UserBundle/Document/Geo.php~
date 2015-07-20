@@ -84,14 +84,4 @@ class Geo
         $this->lon = $lon;
         return $this;
     }
-
-    /**
-     * Get id
-     *
-     * @return id $id
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 }

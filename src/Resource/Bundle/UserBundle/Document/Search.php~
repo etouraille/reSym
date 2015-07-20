@@ -118,16 +118,4 @@ class Search
         return $this;
     }
 
-
-    /**
-     * Set hashtags
-     *
-     * @param hash $hashtags
-     * @return self
-     */
-    public function setHashtags($hashtags)
-    {
-        $this->hashtags = $hashtags;
-        return $this;
-    }
 }
