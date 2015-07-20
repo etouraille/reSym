@@ -239,6 +239,8 @@ class Elastic {
                'hashtag'=>
                 array('properties'=>
                     array(
+                        'reservedBy'=>array('type'=>'string'),
+                        'reserved'=>array('type'=>'boolean'),
                         'content'=>array('type'=>'string'),
                         'userid'=>array('type'=>'string'),
                         'geo'=>array('type'=>'geo_point'),
