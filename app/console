@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Debug\Debug;
 use Resource\Shell\ReceiverCommand;
 use Resource\Shell\SendNotification;
+use Resource\Shell\Elastic;
 
 $input = new ArgvInput();
 $env = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'dev');
@@ -28,4 +29,5 @@ $kernel = new AppKernel($env, $debug);
 $application = new Application($kernel);
 $application->add(new ReceiverCommand);
 $application->add(new SendNotification);
+$application->add(new Elastic);
 $application->run($input);

@@ -240,6 +240,7 @@ class Elastic {
                 array('properties'=>
                     array(
                         'content'=>array('type'=>'string'),
+                        'userid'=>array('type'=>'string'),
                         'geo'=>array('type'=>'geo_point'),
                         'startDate'=>array(
                             'type'=>'date',
