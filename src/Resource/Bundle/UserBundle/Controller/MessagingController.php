@@ -67,7 +67,12 @@ class MessagingController extends Controller {
          $dm->flush();
 
 
-        // Messaging send the message to device ...
+         // Messaging send the message to device ...
+         $dm->getRepository('ResourceUserBundle:User')
+             ->findOneById($to);
+         if(isset($user)) {
+            $this->get('notification')->send($user,$content, array('from'=>$from));
+         }
     
     }
     public function addressAction($lat='45.7677957',$lng='4.8731638') {

@@ -39,10 +39,9 @@ class PercolateNotifier {
         //addapt notification service to various os
         $doc = json_decode($document, true);
         $docId = $doc['id'];
-        $regId = $user->getAndroidNotificationId();
         //if($regId) {
             $this->notification->send(
-                $regId,
+                $user,
                 $message = 'Some Newspaper is available around',
                 array('id'=>$docId) 
             );

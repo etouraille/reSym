@@ -11,7 +11,7 @@ use Sly\NotificationPusher\Model\Push;
 
 class Notification {
 
-    public function send($regId, $message , $options = array()) {
+    public function send($user, $message , $options = array()) {
         
         $pushManager = new PushManager(PushManager::ENVIRONMENT_DEV);
 
@@ -20,6 +20,9 @@ class Notification {
         $gcmAdapter = new GcmAdapter(array(
             'apiKey' => 'AIzaSyBtzgwOHGYK5i2w5GAh-pF2bdlA5qPxhhs', // ugly, I Know !
         ));
+
+        // test the nature of device
+        $regId = $user->getAndroidNotificationId();
 
         // Set the device(s) to push the notification to.
         $devices = new DeviceCollection(array(
