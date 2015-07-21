@@ -11,6 +11,8 @@
 - soigner l'UX
 - reevoir le process d'authentification.
 - rajouter une zone de commentaire.
+- one localization on loading the application.
+- a database for unread messages , with message identification.
 
 
 * API 
@@ -20,8 +22,11 @@
 - prevoir un processus d'authentification anonyme
 - when localization is given fire an event : and change the search 
 - we could also log the last positions.
-- when a new tag is localized to a place , add it to the place : now it's added to the 
-
+- when a new tag is localized to a place , add it to the place : now it's added to the
+- refactor the ReceiverCommand : only three option : update, index, percolate, and refinement with the headers
+- new message is store to database, with identifier : to permit unread messages, stored localy
+- localy : a hash or read messages.
+- new message is sent with the identification of conversation
 #web
 
 - realiser un site web

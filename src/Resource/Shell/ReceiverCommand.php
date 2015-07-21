@@ -105,7 +105,11 @@ class ReceiverCommand extends ContainerAwareCommand {
                     break;
             case  'place' :
                 if(isset($update_id)) {
-                        $data['id'] = $update_id;
+                        $array_json = json_decode($data, true);
+                        if(is_array($array_json)) {
+                            $array_json['id'] = $update_id;
+                            $data = json_encode($array_json);
+                        }
                         $return = $elastic->update('resource','place',$data);
                     } else {
                         $return = $elastic->index('resource','place',$data);
