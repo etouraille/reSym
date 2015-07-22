@@ -41,7 +41,7 @@ class ReceiverCommand extends ContainerAwareCommand {
             $channel->queue_bind($queue_name, 'indexing', 'index');
             $channel->queue_bind($queue_name, 'indexing', 'update');
             $channel->queue_bind($queue_name, 'indexing', 'place');
-            $channel->queue_bind($queue_name, 'indexing', 'percolate');
+            $channel->queue_bind($queue_name, 'indexing', 'percolatator');
 
 
             $channel->basic_consume($queue_name, '', false, true, false, false, array($this, 'callBack'));
@@ -69,23 +69,24 @@ class ReceiverCommand extends ContainerAwareCommand {
         
         $data = $msg->body;
         $key  = $msg->delivery_info['routing_key'];
-        $search_id = null;
-        $update_id = null;
+        $id = null;
+        $type = null;
 
         try{
             $headers = $msg->get('application_headers')->getNativeData();
-            if(isset($headers['search_id'])) { 
-                $search_id = $headers['search_id'];
+            if(isset($headers['type'])) { 
+                $type = $headers['type'];
             }
-            if(isset($headers['update_id'])) {
-                $update_id = $headers['update_id'];
+            if(isset($headers['id'])) {
+                $id = $headers['id'];
             }
         } catch(\Exception $e){
             //NO HEADERS IS DEFINED
             //todo we can be more generic and define a document id as header.
         }
         switch($key){
-            case  'index' :
+        case  'index' :
+                // $type = hashtag
                 //we defer the call to the reverseGeoCoding API
                 //and we update the resource datbase accordingly
                 //we also 
@@ -94,30 +95,22 @@ class ReceiverCommand extends ContainerAwareCommand {
                         $this->getContainer()->get('doctrine_mongodb')->getManager(),
                         $data
                     );
-                    $return = $elastic->index('resource','hashtag',$dataWithAddress);
-                    $return = $elastic->percolate('resource', 'hashtag', $doc );
-                    $this->getContainer()
-                        ->get('percolate_notifier')
-                        ->process($return, $dataWithAddress);
+                    $return = $elastic->index('resource',$type,$dataWithAddress,$id);
+                    if($type = 'hashtag') {
+                        $return = $elastic->percolate('resource', $type, $doc );
+                    
+                        $this->getContainer()
+                            ->get('percolate_notifier')
+                            ->process($return, $dataWithAddress);
+                    }
                 break;
             case  'update' :
-                    $return = $elastic->update('resource','hashtag',$data);
+                    $return = $elastic->update('resource',$type , $data, $id );
                     break;
-            case  'place' :
-                if(isset($update_id)) {
-                        $array_json = json_decode($data, true);
-                        if(is_array($array_json)) {
-                            $array_json['id'] = $update_id;
-                            $data = json_encode($array_json);
-                        }
-                        $return = $elastic->update('resource','place',$data);
-                    } else {
-                        $return = $elastic->index('resource','place',$data);
-                    }
-                    break;
+                        
 
-            case 'percolate' : 
-                    $return = $elastic->percolator('resource', 'hashtag', $data, $search_id);
+            case 'percolator' : 
+                    $return = $elastic->percolator('resource', $type, $data, $id);
                     break;
         
 

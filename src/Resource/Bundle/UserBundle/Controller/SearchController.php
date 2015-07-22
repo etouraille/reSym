@@ -126,14 +126,27 @@ class SearchController extends Controller {
         //percolate the search : key words arround my location in a geographic area.
         $elastic = new Elastic();
         $distance = ($distance/1000) . 'km';
-        $jsonToPercolate =  $elastic->geoSearchJson($hashtags,$lat,$lon, $distance, $user->getId() );
+        $jsonToPercolate =  $elastic->geoSearchJson(
+            $hashtags,
+            $lat,
+            $lon, 
+            $distance, 
+            $user->getId(),
+            $notByMe = true
+        );
         // todo implement the percolation 
         // to read : how use headers to send more data, like searchid.
         // to do : refacto, especially elastic class. 
 
         $rabbit = new Rabbit();
-        $rabbit->send($jsonToPercolate, 'percolate', array('search_id'=>$search->getId())); 
-    
+        $rabbit->send($jsonToPercolate, 
+            'percolator', 
+            array(
+                'id'=>$search->getId(),
+                'type'=>'hashtag' 
+           )
+        ); 
+
         return (new Response())->setContent(json_encode(array('success'=>true)));
     }
 }

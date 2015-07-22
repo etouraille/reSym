@@ -29,7 +29,11 @@ class PlaceController extends Controller {
         $dm->flush();
         $placeId = $place->getId();
         $rabbit = new \Resource\Bundle\UserBundle\Service\Rabbit();
-        $rabbit->send(\Resource\Bundle\UserBundle\Service\JSONify::toString($place),'place');
+        $rabbit->send(
+            \Resource\Bundle\UserBundle\Service\JSONify::toString($place),
+            'index', 
+            array( 'type'=>'place', 'id'=>$place->getId())
+        );
         return (new Response())->setContent(json_encode(array('success'=>true,'id'=>$placeId)));
     
     }

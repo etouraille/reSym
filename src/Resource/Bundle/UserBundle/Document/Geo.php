@@ -50,18 +50,7 @@ class Geo
 
 
 
-    /**
-     * Get id
-     *
-     * @return id $id
-     */
-    /*
-    public function getId()
-    {
-        return $this->id;
-    }*/
-
-    /**
+   /**
      * Set lat
      *
      * @param string $lat
@@ -85,13 +74,4 @@ class Geo
         return $this;
     }
 
-    /**
-     * Get id
-     *
-     * @return id $id
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 }

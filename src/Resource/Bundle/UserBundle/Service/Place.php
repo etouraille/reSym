@@ -30,9 +30,10 @@ class Place {
             $dm->flush();
             $this->rabbit->send(
                 $this->jsonify->serialize($place,'json'),
-                'place', 
+                'update', 
                 array(
-                    'update_id'=>$place->getId()
+                    'id'=>$place->getId(),
+                    'type'=>'place'
                 )
             );
             return true;

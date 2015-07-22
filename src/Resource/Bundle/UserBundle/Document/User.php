@@ -77,14 +77,6 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @inheritdoc
      */
-    public function getpassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function setAndroidNotificationId( $regId )
     {
         $this->androidNotificationId = $regId;

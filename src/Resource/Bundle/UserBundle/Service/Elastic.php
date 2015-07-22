@@ -12,14 +12,12 @@ class Elastic {
         $this->port = $port;
     }
 
-    public function index($index,$type,$data){
-        $json_array = json_decode($data,true);
-        return Curl::get($this->getUrl($index,$type,$json_array['id']),'PUT',$data);
+    public function index($index,$type,$data,$id){
+        return Curl::get($this->getUrl($index,$type,$id),'PUT',$data);
     }
 
-     public function update($index,$type,$data){
-        $json_array = json_decode($data,true);
-        return Curl::get($this->getUrl($index,$type,$json_array['id']),'POST',$data, true);
+     public function update($index,$type,$data,$id){
+        return Curl::get($this->getUrl($index,$type,$id),'POST',$data, true);
     }
 
     public function percolator($index,$type, $data, $percolate_id) {
