@@ -40,8 +40,7 @@ class ReceiverCommand extends ContainerAwareCommand {
             
             $channel->queue_bind($queue_name, 'indexing', 'index');
             $channel->queue_bind($queue_name, 'indexing', 'update');
-            $channel->queue_bind($queue_name, 'indexing', 'place');
-            $channel->queue_bind($queue_name, 'indexing', 'percolatator');
+            $channel->queue_bind($queue_name, 'indexing', 'percolator');
 
 
             $channel->basic_consume($queue_name, '', false, true, false, false, array($this, 'callBack'));

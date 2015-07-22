@@ -110,7 +110,14 @@ class ResourceController extends Controller
             $dm->persist($resource);
             $dm->flush();
             $rabbit = new \Resource\Bundle\UserBundle\Service\Rabbit();
-            $rabbit->send(\Resource\Bundle\UserBundle\Service\JSONify::toString($resource),'update');
+            $rabbit->send(
+                \Resource\Bundle\UserBundle\Service\JSONify::toString($resource),
+                'update',
+                array(
+                    'id'=>$resource->getId(),
+                    'type'=>'hashtag'
+                )
+            );
             $ret['success']=true;
         }
         return (new Response())->setContent(json_encode($ret));
@@ -146,7 +153,14 @@ class ResourceController extends Controller
             $dm->persist($resource);
             $dm->flush();
             $rabbit = new \Resource\Bundle\UserBundle\Service\Rabbit();
-            $rabbit->send(\Resource\Bundle\UserBundle\Service\JSONify::toString($resource),'update');
+            $rabbit->send(
+                \Resource\Bundle\UserBundle\Service\JSONify::toString($resource),
+                'update',
+                array(
+                    'id'=>$resource->getId(),
+                    'type'=>'hashtag'
+                )
+            );
             $success = true;
         
         }
