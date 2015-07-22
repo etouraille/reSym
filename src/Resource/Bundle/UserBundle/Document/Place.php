@@ -37,7 +37,7 @@ class Place
 
     /**
     * @MongoDB\EmbedMany(
-    *     strategy="set",
+    *     strategy="addToSet",
     *     targetDocument="Resource"
     * )
     **/

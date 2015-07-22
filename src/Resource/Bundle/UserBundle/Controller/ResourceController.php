@@ -61,7 +61,10 @@ class ResourceController extends Controller
             $rabbit->send(
                 $json = $this->get('jms_serializer')->serialize($resource,'json'),
                 'index', 
-                 array('type'=>'hashtag','id'=> $resource->getId()
+                array(
+                    'type'=>'hashtag',
+                    'id'=> $resource->getId()
+                )
             );
             $response = new Response();
             $response->setContent(json_encode($ret));

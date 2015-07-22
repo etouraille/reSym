@@ -13,11 +13,11 @@ use Resource\Bundle\UserBundle\Document\Place;
 class MessagingController extends Controller {
 
 
-    public function conversationsAction( $userId) {
+    public function conversationsAction( $userId ) {
 
         $q = $this->get('doctrine_mongodb')
             ->getManager()
-            ->createQueryBuilder('ResourceUserBundle:Conversation')->find();
+            ->createQueryBuilder('ResourceUserBundle:Conversation');
          $q = $q->addOr(
                 $q->expr()->field('from')->equals($userId),
                 $q->expr()->field('to')->equals($userId)
@@ -31,11 +31,11 @@ class MessagingController extends Controller {
 
     }
 
-    public function messageAction($from, $to , $content ) {
-        
-         $dm = $this->get('doctrine_mongodb')
+    protected function getConversation($from, $to) {
+
+        $dm = $this->get('doctrine_mongodb')
             ->getManager();
-         $q = $dm->createQueryBuilder('ResourceUserBundle:Conversation')->find();
+         $q = $dm->createQueryBuilder('ResourceUserBundle:Conversation');
          $q = $q->addOr(
              $q->expr()->addAnd(
                  $q->expr()->field('from')->equals($from),
@@ -49,8 +49,40 @@ class MessagingController extends Controller {
             ->getQuery();
 
          $conversation = $q->getSingleResult();
+
+         return $conversation;
     
-         $message = new Message();
+    }
+
+    public function conversationAction($to) {
+        $user = $this->get('security.context')
+            ->getToken()
+            ->getUser();
+        $success = false;
+        $ret = array();
+        if(isset($user)) {
+            $conversation = $this->getConversation($user->getId(),$to);
+            $ret['me'] = $user->getId();
+            if(isset($conversation)){
+                $ret['messages'] = $conversation->getMessages();
+                $success = true;
+            }
+        }
+        $ret['success'] = $success;
+        return (new Response())->setContent(
+            $this->get('jms_serializer')->serialize($ret,'json')
+        );
+    }
+
+    public function sendAction( $to , $content ) {
+        
+        $from = $this->get('security.context')->getToken()->getUser()->getId();
+        
+        $conversation = $this->getConversation($from, $to);
+        
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        
+        $message = new Message();
          $message->setContent($content)
              ->setTimestamp($time=time())
              ->setFrom($from)
@@ -68,13 +100,26 @@ class MessagingController extends Controller {
 
 
          // Messaging send the message to device ...
-         $dm->getRepository('ResourceUserBundle:User')
+         $userTo = $dm->getRepository('ResourceUserBundle:User')
              ->findOneById($to);
-         if(isset($user)) {
-            $this->get('notification')->send($user,$content, array('from'=>$from));
+         if(isset($userTo)) {
+            $this->get('notification')->send($userTo,$content, array('from'=>$from));
          }
+         return (new Response())->setContent(json_encode(array('success'=>true)));
     
     }
-    public function addressAction($lat='45.7677957',$lng='4.8731638') {
+    public function meAction() {
+        $user = $this->get('security.context')
+            ->getToken()
+            ->getUser();
+        $ret = array();
+        $success = false;
+        if(isset($user)) 
+        {
+            $ret['me']=$user->getId();
+            $success = true;
+        }
+        $ret['success'] = $success;
+        return (new Response())->setContent(json_encode($ret));
     }
 }

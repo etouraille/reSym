@@ -10,6 +10,13 @@ use JMS\Serializer\Annotation as JMS;
 
 class Message
 {
+
+    /**
+     * @MongoDB\Id
+    */    
+    private $id;
+
+
     /**
      * @MongoDB\String
     */    

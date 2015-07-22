@@ -27,7 +27,7 @@ class Conversation
 
     /**
     * @MongoDB\EmbedMany(
-    *     strategy="set",
+    *     strategy="addToSet",
     *     targetDocument="Message"
     * )
     **/
