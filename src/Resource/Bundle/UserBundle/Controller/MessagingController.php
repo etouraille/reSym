@@ -13,7 +13,16 @@ use Resource\Bundle\UserBundle\Document\Place;
 class MessagingController extends Controller {
 
 
-    public function conversationsAction( $userId ) {
+    public function conversationsAction() {
+
+        //todo remove, usefull for debug
+        
+        $userId = $this->get('security.context')
+            ->getToken()
+            ->getUser()
+            ->getId();
+         
+        //$userId = '55ab75fbf08871c3048b4583';
 
         $q = $this->get('doctrine_mongodb')
             ->getManager()
@@ -25,10 +34,23 @@ class MessagingController extends Controller {
             ->sort('timestamp','desc')
             ->getQuery();
 
-        $conversations = $q->execute();
+        $conversationsIterator = $q->execute(); 
+        $ret = array();
+        $success = false;
+        $conversations = array();
+        foreach($conversationsIterator as $conversation) {
+            $conversations[] = $conversation;
+        }
+        if(count($conversations)>0) {
+            $ret['conversations']=$conversations;
+            $success = true;
+        }
+        $ret['success'] = $success; 
 
-
-
+        return (new Response())->setContent(
+            $this->get('jms_serializer')
+            ->serialize($ret,'json')
+        );
     }
 
     protected function getConversation($from, $to) {
@@ -81,7 +103,14 @@ class MessagingController extends Controller {
         $conversation = $this->getConversation($from, $to);
         
         $dm = $this->get('doctrine_mongodb')->getManager();
-        
+        $userRepository = $dm->getRepository('ResourceUserBundle:User');
+        $userTo = $userRepository->findOneById($to);
+        $userFrom = $userRepository->findOneById($from);
+
+        if(!isset($userTo) || !isset($userFrom)) {
+            return (new Response())->setContent(json_encode(array('success'=>false)));
+        }
+ 
         $message = new Message();
          $message->setContent($content)
              ->setTimestamp($time=time())
@@ -90,8 +119,9 @@ class MessagingController extends Controller {
          if(!isset($conversation)) {
             $conversation = new Conversation();
             $conversation->setFrom($from);
-            $conversation->setTo($to);            
-         
+            $conversation->setTo($to);
+            $conversation->setFromName($userFrom->getUsername());
+            $conversation->setToName($userTo->getUsername());
          }
          $conversation->setTimestamp($time);
          $conversation->addMessage($message);
@@ -102,24 +132,11 @@ class MessagingController extends Controller {
          // Messaging send the message to device ...
          $userTo = $dm->getRepository('ResourceUserBundle:User')
              ->findOneById($to);
+         
          if(isset($userTo)) {
             $this->get('notification')->send($userTo,$content, array('from'=>$from));
          }
          return (new Response())->setContent(json_encode(array('success'=>true)));
     
-    }
-    public function meAction() {
-        $user = $this->get('security.context')
-            ->getToken()
-            ->getUser();
-        $ret = array();
-        $success = false;
-        if(isset($user)) 
-        {
-            $ret['me']=$user->getId();
-            $success = true;
-        }
-        $ret['success'] = $success;
-        return (new Response())->setContent(json_encode($ret));
     }
 }

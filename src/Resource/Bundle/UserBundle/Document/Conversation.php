@@ -21,9 +21,26 @@ class Conversation
     private $from;
 
     /**
+     * @JMS\SerializedName("fromName")
+     * @MongoDB\String
+    */
+    private $fromName;
+
+
+
+    /**
      * @MongoDB\String
     */
     private $to;
+
+
+    /**
+     * @JMS\SerializedName("toName")
+     * @MongoDB\String
+    */
+    private $toName;
+
+
 
     /**
     * @MongoDB\EmbedMany(
@@ -75,6 +92,15 @@ class Conversation
         return $this->from;
     }
 
+    public function setFromName($fromName) {
+        $this->fromName = $fromName;
+        return $this;
+    }
+
+    public function getFromName($fromName) {
+        return $this->fromName;
+    }
+
     /**
      * Set to
      *
@@ -95,6 +121,15 @@ class Conversation
     public function getTo()
     {
         return $this->to;
+    }
+
+    public function setToName($toName) {
+        $this->toName = $toName;
+        return $this;
+    }
+
+    public function getToName() {
+        return $this->toName;
     }
 
     /**

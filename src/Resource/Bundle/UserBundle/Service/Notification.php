@@ -21,7 +21,7 @@ class Notification {
             'apiKey' => 'AIzaSyBtzgwOHGYK5i2w5GAh-pF2bdlA5qPxhhs', // ugly, I Know !
         ));
 
-        // test the nature of device
+        // todo : test the nature of device
         $regId = $user->getAndroidNotificationId();
 
         // Set the device(s) to push the notification to.

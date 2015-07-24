@@ -67,12 +67,15 @@ search_for_place_around:
 address:
     path:     /place/address
     defaults: { _controller: ResourceUserBundle:Place:address }
+conversations:
+    path:     /logged-area/conversations
+    defaults: { _controller: ResourceUserBundle:Messaging:conversations }
+conversations_not_protected:
+    path:     /conversations
+    defaults: { _controller: ResourceUserBundle:Messaging:conversations }
 conversation:
     path:     /logged-area/conversation
     defaults: { _controller: ResourceUserBundle:Messaging:conversation }
-conversation_me:
-    path:     /logged-area/me
-    defaults: { _controller: ResourceUserBundle:Messaging:me }
 conversation_send_message:
     path:     /logged-area/send/message
     defaults: { _controller: ResourceUserBundle:Messaging:send }

@@ -17,6 +17,7 @@ class UserController extends Controller
         if($user){
             $success = true;
             $ret = array(
+                'id'=>$user->getId(),
                 'salt'=>$user->getSalt(),
                 'success'=>$success,
             );
