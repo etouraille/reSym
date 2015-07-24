@@ -21,7 +21,6 @@ class User
     {
         $user = $args->getDocument();
         if(get_class($user) === "Resource\Bundle\UserBundle\Document\User" ) {
-            echo 'in cond';
             $args->getDocument()->setPassword(
                 $this->passwordEncoder->encodePassword(
                     $user->getPassword(),
