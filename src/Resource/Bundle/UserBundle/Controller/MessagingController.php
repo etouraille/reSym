@@ -136,7 +136,7 @@ class MessagingController extends Controller {
 
          // Messaging send the message to device ...
          
-         $this->get('notification')->send($userTo,$content, array('from'=>$from));
+         $this->get('notification')->send($userTo,$content);
          return (new Response())->setContent(json_encode(array('success'=>true)));
     
     }

@@ -23,6 +23,7 @@ class Notification {
 
         // todo : test the nature of device
         $regId = $user->getAndroidNotificationId();
+        echo $regId;
 
         // Set the device(s) to push the notification to.
         $devices = new DeviceCollection(array(
