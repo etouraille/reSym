@@ -21,14 +21,16 @@ class MessagingController extends Controller {
             ->getToken()
             ->getUser()
             ->getId();
+
          
         //$userId = '55ab75fbf08871c3048b4583';
 
         $q = $this->get('doctrine_mongodb')
             ->getManager()
             ->createQueryBuilder('ResourceUserBundle:Conversation');
-         $q = $q->addOr(
-                $q->expr()->field('from')->equals($userId),
+            $q = $q->addOr(
+                $q->expr()->field('from')->equals($userId)
+            )->addOr(
                 $q->expr()->field('to')->equals($userId)
             )
             ->sort('timestamp','desc')
@@ -59,14 +61,17 @@ class MessagingController extends Controller {
             ->getManager();
          $q = $dm->createQueryBuilder('ResourceUserBundle:Conversation');
          $q = $q->addOr(
-             $q->expr()->addAnd(
-                 $q->expr()->field('from')->equals($from),
-                 $q->expr()->field('to')->equals($to)
-             ),
-             $q->expr()->addAnd(
-                 $q->expr()->field('from')->equals($to),
-                 $q->expr()->field('to')->equals($from)
-             )
+                $q->expr()->addAnd(
+                    $q->expr()->field('to')->equals($to)
+                )->addAnd(
+                    $q->expr()->field('from')->equals($from)
+                )
+             )->addOr(
+                $q->expr()->addAnd(
+                    $q->expr()->field('to')->equals($from)
+                )->addAnd(
+                    $q->expr()->field('from')->equals($to)
+                )
             )
             ->getQuery();
 

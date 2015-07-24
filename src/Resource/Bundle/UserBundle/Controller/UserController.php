@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-    public function saltAction($username='toto') {
+    public function saltAction($username='edouard.touraille@gmail.com') {
         $repository = $this->get('doctrine_mongodb')
             ->getManager()
             ->getRepository('ResourceUserBundle:User');
@@ -54,7 +54,8 @@ class UserController extends Controller
 
             $validator = $this->get('validator');
             $errorList = $validator->validate($user);
-            if(count($errorList) > 0 ){
+            $messages = array();
+            if(count($errorList) > 0 ) { 
                 $success = false;
                 $messages = array();
                     foreach($errorList as $value){
@@ -69,13 +70,10 @@ class UserController extends Controller
                         }
                 }
             }
-            else
-            {
+            else {
                 $dm = $this->get('doctrine_mongodb')->getManager();
                 $dm->persist($user);
                 $dm->flush();
-                $salt = $user->getSalt();
-                $messages = array('salt'=>$salt);
             }
             $ret = array(
                 'success' => $success,
