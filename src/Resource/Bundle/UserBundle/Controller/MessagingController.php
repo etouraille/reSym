@@ -135,12 +135,8 @@ class MessagingController extends Controller {
 
 
          // Messaging send the message to device ...
-         $userTo = $dm->getRepository('ResourceUserBundle:User')
-             ->findOneById($to);
          
-         if(isset($userTo)) {
-            $this->get('notification')->send($userTo,$content, array('from'=>$from));
-         }
+         $this->get('notification')->send($userTo,$content, array('from'=>$from));
          return (new Response())->setContent(json_encode(array('success'=>true)));
     
     }
