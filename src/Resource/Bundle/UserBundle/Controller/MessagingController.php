@@ -112,7 +112,7 @@ class MessagingController extends Controller {
         $userTo = $userRepository->findOneById($to);
         $userFrom = $userRepository->findOneById($from);
 
-        if(!isset($userTo) || !isset($userFrom)) {
+        if(!isset($userTo) && !isset($userFrom)) {
             return (new Response())->setContent(json_encode(array('success'=>false)));
         }
  
