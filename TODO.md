@@ -13,6 +13,9 @@
 - rajouter une zone de commentaire.
 - one localization on loading the application.
 - a database for unread messages , with message identification.
+- prevoir une carte des resource non authentifiée
+- prevoir un mode d'utilisation anonyme
+- prevoir de logguer les connexion
 
 
 * API 

@@ -39,14 +39,14 @@ class PercolateNotifier {
         //addapt notification service to various os
         $doc = json_decode($document, true);
         $docId = $doc['id'];
-        //if($regId) {
-            $this->notification->send(
-                $user,
-                $message = 'Some Newspaper is available around',
-                array('id'=>$docId) 
-            );
-        //}
-        echo 'message send to ' . $user->getEmail();
+        $this->notification->send(
+            $user,
+            $message = 'Some Newspaper is available around',
+            array(
+                'id'=>$docId, 
+                'type'=>'around'
+            ) 
+        );
     }
 
 }
