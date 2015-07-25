@@ -141,7 +141,7 @@ class MessagingController extends Controller {
              $content, 
              array(
                  'id'=>$from,
-                 'genre'=>'message'
+                 'blup'=>'message'
              )
          );
          return (new Response())->setContent(json_encode(array('success'=>true)));
