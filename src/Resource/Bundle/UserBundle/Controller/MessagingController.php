@@ -140,8 +140,8 @@ class MessagingController extends Controller {
              $userTo,
              $content, 
              array(
-                 'id'=>$from,
-                 'blup'=>'message'
+                 'identification'=>$from,
+                 'genre'=>'message'
              )
          );
          return (new Response())->setContent(json_encode(array('success'=>true)));
