@@ -44,7 +44,7 @@ class PercolateNotifier {
             $message = 'Some Newspaper is available around',
             array(
                 'id'=>$docId, 
-                'type'=>'around'
+                'genre'=>'around'
             ) 
         );
     }
