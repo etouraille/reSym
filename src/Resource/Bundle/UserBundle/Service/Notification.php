@@ -28,7 +28,6 @@ class Notification {
         $devices = new DeviceCollection(array(
             new Device($regId),
         ));
-
         // Then, create the push skel.
         $message = new Message($message, $options );
         // Finally, create and add the push to the manager, and push it!
