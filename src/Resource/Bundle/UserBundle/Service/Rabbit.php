@@ -4,6 +4,7 @@ namespace Resource\Bundle\UserBundle\Service;
 use PhpAmqpLib\Connection\AMQPConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Wire\AMQPTable;
+use Resource\Bundle\UserBundle\Document\User;
 
 
 class Rabbit{
@@ -26,4 +27,9 @@ class Rabbit{
         $connection->close();
     }
 
+    public function sendPushMessage(User $user, $message, $headers ) {
+        $userid = $user->getId();
+        $headers['userid'] = $userid;
+        $this->send($message, 'message', $headers);
+    }
 }

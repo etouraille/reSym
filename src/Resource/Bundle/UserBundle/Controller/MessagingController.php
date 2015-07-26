@@ -136,7 +136,7 @@ class MessagingController extends Controller {
 
          // Messaging send the message to device ...
          
-         $this->get('notification')->send(
+         $this->get('rabbit')->sendPushMessage(
              $userTo,
              $content, 
              array(

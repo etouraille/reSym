@@ -41,6 +41,7 @@ class ReceiverCommand extends ContainerAwareCommand {
             $channel->queue_bind($queue_name, 'indexing', 'index');
             $channel->queue_bind($queue_name, 'indexing', 'update');
             $channel->queue_bind($queue_name, 'indexing', 'percolator');
+            $channel->queue_bind($queue_name, 'indexing', 'send');
 
 
             $channel->basic_consume($queue_name, '', false, true, false, false, array($this, 'callBack'));
@@ -70,6 +71,7 @@ class ReceiverCommand extends ContainerAwareCommand {
         $key  = $msg->delivery_info['routing_key'];
         $id = null;
         $type = null;
+        $userid = null;
 
         try{
             $headers = $msg->get('application_headers')->getNativeData();
@@ -79,6 +81,10 @@ class ReceiverCommand extends ContainerAwareCommand {
             if(isset($headers['id'])) {
                 $id = $headers['id'];
             }
+            if(isset($header['userid'])) {
+                $userid = $headers['userid'];
+            }
+            
         } catch(\Exception $e){
             //NO HEADERS IS DEFINED
             //todo we can be more generic and define a document id as header.
@@ -111,8 +117,26 @@ class ReceiverCommand extends ContainerAwareCommand {
             case 'percolator' : 
                     $return = $elastic->percolator('resource', $type, $data, $id);
                     break;
-        
 
+            case 'message' : 
+                
+                $user = $this->getContext()->get('doctrine_mongodb')
+                    ->getManager()
+                    ->getRepository('ResourceUserBundle:User')
+                    ->getOneById($userid);
+                
+                if(isset($user)) { 
+                    $this->getContext()
+                        ->get('notification')
+                        ->send($userid,$data, 
+                        array(
+                            'type'=>$type,
+                            'id'=>$id
+                        ));
+                }
+
+
+            break;
         
         }
 

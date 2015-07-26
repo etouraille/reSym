@@ -4,11 +4,11 @@ namespace Resource\Bundle\UserBundle\Service;
 class PercolateNotifier {
     
     protected $odm;
-    protected $notification;
+    protected $rabbit;
     
-    public function __construct($odm, $notification) {
+    public function __construct($odm, $rabbit) {
         $this->odm = $odm;
-        $this->notification = $notification;
+        $this->rabbit = $rabbit;
     }
 
     public function process($json, $document) {
@@ -39,14 +39,13 @@ class PercolateNotifier {
         //addapt notification service to various os
         $doc = json_decode($document, true);
         $docId = $doc['id'];
-        $this->notification->send(
+        $this->rabbit->sendPushMessage(
             $user,
-            $message = 'Some Newspaper is available around',
+            'Y en a pas loin', 
             array(
-                'id'=>$docId, 
-                'genre'=>'around'
-            ) 
+                'type'=>'around',
+                'id'=>$docId
+            )
         );
     }
-
 }

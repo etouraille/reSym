@@ -16,4 +16,4 @@ services:
         class: Resource\Bundle\UserBundle\Service\Notification
     percolate_notifier:
         class: Resource\Bundle\UserBundle\Service\PercolateNotifier
-        arguments: [@doctrine_mongodb,@notification]
+        arguments: [@doctrine_mongodb,@rabbit]
