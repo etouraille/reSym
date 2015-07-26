@@ -26,7 +26,7 @@ class UserRepository extends DocumentRepository implements UserProviderInterface
         return $users;
     }
 
-    
+
     public function loadUserByUsername($username)
     {
         $q = $this
