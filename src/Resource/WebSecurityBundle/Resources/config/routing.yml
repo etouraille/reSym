@@ -1,0 +1,3 @@
+resource_web_security_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: ResourceWebSecurityBundle:Default:index }

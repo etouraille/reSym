@@ -2,14 +2,80 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1f8f2e99-8e3b-46d8-bc80-dfb3059407ad" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/SecurityBundle/Authentication/Service/Token.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/SymfonyRequirements.php" afterPath="$PROJECT_DIR$/app/SymfonyRequirements.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Annotation/BasicDateTime.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/MappingType/BasicDateTimeType.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/Category.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Service/Category.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/Conversation.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Service/Curl.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Service/Date.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Tests/Service/DateTest.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/WebSecurityBundle/Controller/DefaultController.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Service/DeferResourceAddressSetting.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Shell/Elastic.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/WebSecurityBundle/Authentication/Service/Encryption.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Service/Forgotten.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Controller/ForgottenController.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/Message.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Controller/MessagingController.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Service/Notification.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Service/PercolateNotifier.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/Place.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Service/Place.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Controller/PlaceController.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/ResetToken.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/WebSecurityBundle/ResourceWebSecurityBundle.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Service/ReverseGeoCoding.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/Shell/SendNotification.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/TODO.md" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/WebSecurityBundle/DependencyInjection/Security/Factory/TokenFactory.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/WebSecurityBundle/Security/Firewall/TokenListener.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/WebSecurityBundle/Service/TokenService.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/WebSecurityBundle/Authentication/Provider/WebProvider.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/WebSecurityBundle/Document/WebToken.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/WebSecurityBundle/Authentication/Token/WebUserToken.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/freePress.md" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/WebSecurityBundle/Resources/config/routing.yml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Resource/WebSecurityBundle/Resources/config/services.yml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/cache/.gitkeep" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/logs/.gitkeep" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Resource/Bundle/TestBundle/Controller/TestUserController.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Resource/Bundle/TestBundle/ResourceTestBundle.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Resource/Bundle/TestBundle/Resources/config/routing.yml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Resource/Bundle/TestBundle/Resources/config/services.yml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Resource/Bundle/TestBundle/Tests/Controller/DefaultControllerTest.php" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/Resource/Bundle/TestBundle/DependencyInjection/Configuration.php" afterPath="$PROJECT_DIR$/src/Resource/WebSecurityBundle/DependencyInjection/Configuration.php" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/Resource/Bundle/TestBundle/DependencyInjection/ResourceTestExtension.php" afterPath="$PROJECT_DIR$/src/Resource/WebSecurityBundle/DependencyInjection/ResourceWebSecurityExtension.php" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/Resource/Bundle/TestBundle/Resources/views/Default/index.html.twig" afterPath="$PROJECT_DIR$/src/Resource/WebSecurityBundle/Resources/views/Default/index.html.twig" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Tests/Controller/DefaultControllerTest.php" afterPath="$PROJECT_DIR$/src/Resource/WebSecurityBundle/Tests/Controller/DefaultControllerTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/AppKernel.php" afterPath="$PROJECT_DIR$/app/AppKernel.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Service/Elastic.php" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Service/Elastic.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Resource/Bundle/ListenerBundle/Listener/ExceptionListener.php" afterPath="$PROJECT_DIR$/src/Resource/Bundle/ListenerBundle/Listener/ExceptionListener.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/Geo.php" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/Geo.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Service/Rabbit.php" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Service/Rabbit.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Resource/Shell/ReceiverCommand.php" afterPath="$PROJECT_DIR$/src/Resource/Shell/ReceiverCommand.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Resource/Bundle/ListenerBundle/Listener/Controller/RequestListener.php" afterPath="$PROJECT_DIR$/src/Resource/Bundle/ListenerBundle/Listener/Controller/RequestListener.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/Resource.php" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/Resource.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Controller/ResourceController.php" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Controller/ResourceController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/Search.php" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/Search.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Controller/SearchController.php" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Controller/SearchController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Resource/Bundle/ListenerBundle/Doctrine/User.php" afterPath="$PROJECT_DIR$/src/Resource/Bundle/ListenerBundle/Doctrine/User.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/User.php" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/User.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Controller/UserController.php" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Controller/UserController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/UserRepository.php" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/UserRepository.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/autoload.php" afterPath="$PROJECT_DIR$/app/autoload.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.json" afterPath="$PROJECT_DIR$/composer.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.lock" afterPath="$PROJECT_DIR$/composer.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/config/config.yml" afterPath="$PROJECT_DIR$/app/config/config.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/console" afterPath="$PROJECT_DIR$/app/console" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/config/routing.yml" afterPath="$PROJECT_DIR$/app/config/routing.yml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Resources/config/routing.yml" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Resources/config/routing.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Resource/Bundle/SecurityBundle/Resources/config/services.yml" afterPath="$PROJECT_DIR$/src/Resource/Bundle/SecurityBundle/Resources/config/services.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/config/security.yml" afterPath="$PROJECT_DIR$/app/config/security.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/config/services.yml" afterPath="$PROJECT_DIR$/app/config/services.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Resource/Bundle/ListenerBundle/Resources/config/services.yml" afterPath="$PROJECT_DIR$/src/Resource/Bundle/ListenerBundle/Resources/config/services.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Resources/config/services.yml" afterPath="$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Resources/config/services.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Resource/Shell/shell.php" afterPath="$PROJECT_DIR$/src/Resource/Shell/shell.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="reSym.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -31,23 +97,45 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="services.yml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/ListenerBundle/Resources/config/services.yml">
+      <file leaf-file-name="UserController.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Controller/UserController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="0.9166667">
+              <caret line="41" column="5" selection-start-line="22" selection-start-column="26" selection-end-line="41" selection-end-column="5" />
+              <folding>
+                <element signature="e#57#114#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="User.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/User.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-2.7916667">
+              <caret line="17" column="10" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ResourceUserBundle.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/UserBundle/ResourceUserBundle.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserController.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Controller/UserController.php">
+      <file leaf-file-name="ResetToken.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/ResetToken.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.16014235">
-              <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+            <state vertical-scroll-proportion="-3.4166667">
+              <caret line="33" column="6" selection-start-line="33" selection-start-column="6" selection-end-line="33" selection-end-column="6" />
               <folding>
-                <element signature="e#57#114#0#PHP" expanded="true" />
+                <element signature="e#54#86#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -58,16 +146,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="131" column="9" selection-start-line="131" selection-start-column="9" selection-end-line="131" selection-end-column="9" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ResourceController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Controller/ResourceController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="46" selection-start-line="15" selection-start-column="46" selection-end-line="30" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -86,9 +164,11 @@
       <file leaf-file-name="routing.yml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Resources/config/routing.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="5" column="16" selection-start-line="5" selection-start-column="16" selection-end-line="5" selection-end-column="16" />
-              <folding />
+            <state vertical-scroll-proportion="-6.6666665">
+              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+              <folding>
+                <marker date="1438024232000" expanded="true" signature="3289:3293" placeholder="search_my_hashtag:" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -153,7 +233,8 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="y" value="64" />
+    <option name="x" value="90" />
+    <option name="y" value="26" />
     <option name="width" value="1280" />
     <option name="height" value="683" />
   </component>
@@ -180,6 +261,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -209,13 +291,122 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="reSym" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="reSym" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Resource" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="reSym" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="reSym" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Resource" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Bundle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="UserBundle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="reSym" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="reSym" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Resource" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Bundle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="UserBundle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Document" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="reSym" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="reSym" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Resource" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Bundle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="reSym" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="reSym" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -268,29 +459,29 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="64" width="1280" height="683" extended-state="0" />
+    <frame x="90" y="26" width="1280" height="683" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32899022" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.234375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.234375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32899022" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Framework" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -306,25 +497,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="3" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/config/config.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="57" column="67" selection-start-line="57" selection-start-column="67" selection-end-line="57" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Resources/config/routing.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="62" selection-start-line="14" selection-start-column="62" selection-end-line="14" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Controller/UserController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -504,13 +681,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/TestBundle/Controller/TestUserController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7916667">
-          <caret line="58" column="27" selection-start-line="19" selection-start-column="32" selection-end-line="58" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/symfony/symfony/src/Symfony/Component/Security/Core/Authentication/Token/AbstractToken.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
@@ -614,14 +784,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/User.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1" column="45" selection-start-line="1" selection-start-column="10" selection-end-line="1" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/UserBundle/DependencyInjection/Configuration.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -659,14 +821,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Resources/config/routing.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="16" selection-start-line="5" selection-start-column="16" selection-end-line="5" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/SecurityBundle/Authentication/Service/Token.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -677,10 +831,46 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Resources/config/routing.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.6666665">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding>
+            <marker date="1438024232000" expanded="true" signature="3289:3293" placeholder="search_my_hashtag:" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/User.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.7916667">
+          <caret line="17" column="10" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/UserBundle/ResourceUserBundle.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Document/ResetToken.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.4166667">
+          <caret line="33" column="6" selection-start-line="33" selection-start-column="6" selection-end-line="33" selection-end-column="6" />
+          <folding>
+            <element signature="e#54#86#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Resource/Bundle/UserBundle/Controller/UserController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.16014235">
-          <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.9166667">
+          <caret line="41" column="5" selection-start-line="22" selection-start-column="26" selection-end-line="41" selection-end-column="5" />
           <folding>
             <element signature="e#57#114#0#PHP" expanded="true" />
           </folding>

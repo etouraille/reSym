@@ -31,7 +31,8 @@ class ExceptionListener {
         $exception = $event->getException();
         $response = new Response();    
 
-        
+        // everything is fine by default 
+        $status = 200;
         //Manage exception Type, and return appropriate status code
         if($exception instanceof NonceExpiredException){
            $status = 403;
@@ -52,7 +53,7 @@ class ExceptionListener {
         $response->setStatusCode($status);
         //manage stack trace.
         $stack = array();
-        if($this->kernel->getEnvironment() == 'dev' && $status >= 500){
+        if($this->kernel->getEnvironment() == 'dev' ) { // && $status >= 500) {
     
             $stack = array('stack'=>$exception->getTrace());
         }

@@ -1,4 +1,19 @@
 services:
-#    resource_user.example:
-#        class: Resource\Bundle\UserBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    category:
+        class: Resource\Bundle\UserBundle\Service\Category
+        arguments: [@doctrine_mongodb]
+    jsonify: 
+        class: Resource\Bundle\UserBundle\Service\JSONify
+    rabbit:
+        class: Resource\Bundle\UserBundle\Service\Rabbit
+    place:
+        class: Resource\Bundle\UserBundle\Service\Place
+        arguments: [@doctrine_mongodb,@jms_serializer,@rabbit]
+    forgotten:
+        class: Resource\Bundle\UserBundle\Service\Forgotten
+        arguments: [@doctrine_mongodb]
+    notification:
+        class: Resource\Bundle\UserBundle\Service\Notification
+    percolate_notifier:
+        class: Resource\Bundle\UserBundle\Service\PercolateNotifier
+        arguments: [@doctrine_mongodb,@notification]

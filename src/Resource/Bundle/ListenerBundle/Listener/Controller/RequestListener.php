@@ -18,25 +18,20 @@ class RequestListener
     {
         $controller = $event->getController();
 
-        /*
-         * $controller peut être une classe ou une closure. Ce n'est pas
-         * courant dans Symfony2 mais ça peut arriver.
-         * Si c'est une classe, elle est au format array
-         */
         if (!is_array($controller)) {
             return;
         }
 
         $request = $event->getRequest();
-        //if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
-            
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $data = json_decode($request->getContent(), true);
             $data = is_array($data)?$data:array();
             //todo might be usefull to set every key as a post data
             foreach($data as $key=>$value){
+                if(is_array($value)) $value = json_encode($value);
                 $event->getRequest()->attributes->set($key,$value);
             }
-        //}
+        }
     }
 
     public function onKernelResponse(FilterResponseEvent $event){

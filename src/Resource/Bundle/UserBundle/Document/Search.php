@@ -15,7 +15,7 @@ class Search
     private $id;
 
    /**
-     * @MongoDB\id
+     * @MongoDB\String
     */
     private $userid;
 
@@ -24,7 +24,22 @@ class Search
     */
     private $hashtags = array();
 
+    /**
+    * distance in meters    
+    * @MongoDB\String
+    */
+    private $distance;
 
+    /**    
+    * @MongoDB\String
+    */
+    private $address;
+
+    /**
+     * @MongoDB\EmbedOne(targetDocument="Geo")
+     **/
+
+    private $geo;
 
     /**
      * @inheritDoc
@@ -50,6 +65,18 @@ class Search
         return $this->hashtags;
     }
 
+    public function getDistance() {
+        return $this->distance;
+    }
+
+    public function getAddress() {
+        return $this->address;
+    }
+
+    public function getGeo() {
+        return $this->geo;
+    }
+
     /**
      * set userid
      *
@@ -59,6 +86,17 @@ class Search
     public function setUserid($userid)
     {
         $this->userid = $userid;
+        return $this;
+    }
+
+    public function setAddress($address) {
+        $this->address = $address;
+        return $this;
+    
+    }
+
+    public function setGeo(Geo $geo) {
+        $this->geo = $geo;
         return $this;
     }
 
@@ -75,4 +113,21 @@ class Search
         return $this;
     }
 
+    public function setDistance($distance) {
+        $this->distance = $distance;
+        return $this;
+    }
+
+
+    /**
+     * Set hashtags
+     *
+     * @param hash $hashtags
+     * @return self
+     */
+    public function setHashtags($hashtags)
+    {
+        $this->hashtags = $hashtags;
+        return $this;
+    }
 }

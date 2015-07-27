@@ -23,9 +23,14 @@
         "symfony/console": "2.8.*@dev",
         "videlalvaro/php-amqplib": "dev-master",
         "symfony/serializer": "3.0.*@dev",
+<<<<<<< HEAD
         "doctrine/mongodb-odm": "1.0.0-BETA13",
 	"doctrine/mongodb": "1.1.*@dev",
         "doctrine/data-fixtures": "~1.1"
+=======
+        "sly/notification-pusher": "2.x",
+        "jms/serializer-bundle" : "1.0.0"
+>>>>>>> a5f42ca2d5e7d19fffcb09a8e6aec05d21768801
     },
     "repositories": [
         {

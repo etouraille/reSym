@@ -3,6 +3,7 @@ namespace Resource\Bundle\UserBundle\Document;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use JMS\Serializer\Annotation as JMS;
 /**
  *  @MongoDB\Document
  */
@@ -10,6 +11,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 class Geo
 {
     /**
+     * @JMS\Exclude
      * @MongoDB\Id
     */    
     private $id;
@@ -48,18 +50,7 @@ class Geo
 
 
 
-    /**
-     * Get id
-     *
-     * @return id $id
-     */
-    /*
-    public function getId()
-    {
-        return $this->id;
-    }*/
-
-    /**
+   /**
      * Set lat
      *
      * @param string $lat
@@ -82,4 +73,5 @@ class Geo
         $this->lon = $lon;
         return $this;
     }
+
 }

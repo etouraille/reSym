@@ -14,10 +14,11 @@ use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 class UserController extends Controller
 {
+
     private $sessionStorage;
     private $session;
 
-    public function saltAction(Request $request) {
+    public function saltAction($username='edouard.touraille@gmail.com') {
         $repository = $this->get('doctrine_mongodb')
             ->getManager()
             ->getRepository('ResourceUserBundle:User');
@@ -27,6 +28,7 @@ class UserController extends Controller
         if($user){
             $success = true;
             $ret = array(
+                'id'=>$user->getId(),
                 'salt'=>$user->getSalt(),
                 'success'=>$success,
             );
@@ -91,14 +93,16 @@ class UserController extends Controller
          $repository = $this->get('doctrine_mongodb')
             ->getManager()
             ->getRepository('ResourceUserBundle:User');
-         $user = $repository->findOneByEmail($request->get('email'));
+
+         $user = $repository->findOneByEmail($email);
+
          $inDatabase = false;
-         if($user){
+         if(isset($user)){
             $inDatabase = true;
          }
          $response = new Response();
          $response->setContent(json_encode(array('success'=>$inDatabase)));
-        return $response;
+         return $response;
     }
 
     public function subscribeAction(Request $request) {
@@ -118,7 +122,8 @@ class UserController extends Controller
 
             $validator = $this->get('validator');
             $errorList = $validator->validate($user);
-            if(count($errorList) > 0 ){
+            $messages = array();
+            if(count($errorList) > 0 ) { 
                 $success = false;
                 $messages = array();
                     foreach($errorList as $value){
@@ -133,13 +138,10 @@ class UserController extends Controller
                         }
                 }
             }
-            else
-            {
+            else {
                 $dm = $this->get('doctrine_mongodb')->getManager();
                 $dm->persist($user);
                 $dm->flush();
-                $salt = $user->getSalt();
-                $messages = array('salt'=>$salt);
             }
             $ret = array(
                 'success' => $success,
@@ -150,14 +152,30 @@ class UserController extends Controller
             return $response;
     }
 
-    public function addAction(Request $request) {
 
-        $hashtag = $request->get('hashtag');
-        $resource = array($hashtag);
 
-        $response = json_encode("hashtag",$resource);
 
-        return new Response($response,200);
+    public function notificationRegisterAction($device='android', $regId ='123') {
+        
+        $user = $this->get('security.context')->getToken()->getUser();
+        //$user = new \Resource\Bundle\UserBundle\Document\User();
+        $success = false;
+        if(isset($user)) {
+            $dm = $this->get('doctrine_mongodb')->getManager();
+            switch($device) {
+                case 'android': 
+                        $user->setAndroidNotificationId($regId);
+                        break;
+                default : 
+                    break;
+
+            } 
+            $dm->persist($user);
+            $dm->flush();
+            $success = true;
+        }
+        return (new Response())->setContent(json_encode(array('success'=>$success)));
+
 
     }
 }
