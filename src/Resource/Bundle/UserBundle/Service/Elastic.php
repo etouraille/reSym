@@ -1,6 +1,7 @@
 <?php
 namespace Resource\Bundle\UserBundle\Service;
 
+use Resource\Bundle\UserBundle\Service\Curl;
 class Elastic {
 
     protected $host;
@@ -11,27 +12,67 @@ class Elastic {
         $this->port = $port;
     }
 
-    public function index($index,$type,$data){
-        $json_array = json_decode($data,true);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->getUrl($index,$type,$json_array['id']));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json','Content-Length: ' . strlen($data)));
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-        curl_setopt($ch, CURLOPT_POSTFIELDS,$data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-        $response  = curl_exec($ch);
-        curl_close($ch);
-        return $response;
+    public function index($index,$type,$data,$id){
+        return Curl::get($this->getUrl($index,$type,$id),'PUT',$data);
     }
 
-   protected function getUrl($index,$type,$indexNumber){
-        return 'http://'.$this->host.':'.$this->port.'/resource/hashtag/'.$indexNumber;
-   }
+     public function update($index,$type,$data,$id){
+        return Curl::get($this->getUrl($index,$type,$id),'POST',$data, true);
+    }
 
-   public function geoSearch($content,$latitude,$longitude, $distance) {
+    public function percolator($index,$type, $data, $percolate_id) {
+        return Curl::get(
+            $this->getRootUrl(). $index .'/.percolator/' . $percolate_id, 
+            'PUT' , 
+            $data
+        );
+    }
+
+    public function percolate($index, $type, $document ) {
+        return Curl::get(
+            $this->getRootUrl(). $index . '/'. $type .'/_percolate',
+            'GET',
+            $document
+        );
+    }
+    protected function getUrl($index,$type,$indexNumber,$isUpdate = false){
+        $urlUpdate = '';
+        if($isUpdate){
+            $urlUpdate = '/_update';
+        }
+        return $this->getRootUrl() .$index . '/'.$type.'/'.$indexNumber.$urlUpdate;
+    }
+
+    protected function getRootUrl()
+    {
+         return 'http://'.$this->host.':'.$this->port.'/'; 
+    }
+
+    public function geoSearch($content,$latitude,$longitude, $distance, $userId) {
+       $json = $this->geoSearchJson($content,$latitude,$longitude, $distance, $userId ); 
+       $method = 'GET';
+       $url = 'http://'.$this->host.':'.$this->port.'/resource/hashtag/_search?pretty&size=50'; //find a way to evalulat quantitiy
+       return Curl::get($url, $method,$json );
+ 
+    } 
+
+   public function geoSearchJson($content,$latitude,$longitude, $distance, $userId, $notByMe = false ) {
        $match = array();
-       if($content) {
+       if(is_array($content) && count($content)>0){
+           $matches = array();
+           foreach($content as $hashtag) {
+                $matches[] = array('match'=>array('content'=>$hashtag));
+           }
+           $match = array(
+               'query'=>
+                   array(
+                        'bool'=>array(
+                            'should'=>$matches
+                            )
+                        )
+                    );
+             }
+       if($content && !is_array($content)) {
            $match = array(
                'query'=>
                     array(
@@ -40,54 +81,148 @@ class Elastic {
                         )
                     )
                 );
-       } 
+       }
+       if($notByMe){
+           $notByMeFilter = 
+               array('not'=>
+                    array(
+                        'term'=>
+                            array(
+                                'userid'=>$userId
+                            )
+                        )
+                );
+       }    
+       
+       $dateFilter = array("or"=>array(
+                                    array(
+                                        "and"=>array(
+                                                array("exists"=>array("field"=>"endDate")),
+                                                array("range"=>array("startDate"=>array("lte"=>"now"))),
+                                                array("range"=>array("endDate"=>array("gte"=>"now")))
+                                        )   
+                                    )
+                                    ,
+                                    array(
+                                        "and"=>array(
+                                                array("missing"=>array("field"=>"endDate")),
+                                                array("range"=>array("startDate"=>array("lte"=>"now")))
+                                        )
+                                    )
+                                )
+                            );
+
+       $reservedFilter =  array('bool'=>
+                                array('should'=>
+                                    array(
+                                        array(
+                                            "and"=>array(
+                                                    array("exists"=>array("field"=>"reserved")),
+                                                    array("term"=>array("reserved"=>true)),
+                                                    array("term"=>array("reservedBy"=>$userId))
+                                            )
+                                        ),
+                                        array(
+                                            "and"=>array(
+                                                   array("exists"=>array("field"=>"reserved")),
+                                                   array("term"=>array("reserved"=>false))
+                                                )
+                                        ),
+                                        array( "missing"=>array("field"=>"reserved"))
+                                    )
+                                )
+                            );
+    
+       $must = array();
+       $must[] = $dateFilter;
+       $must[] = $reservedFilter;
+       if($notByMe) {
+            $must[] = $notByMeFilter;
+
+       }
+       
        $filter = array( 
-            "filter"=>array(
+           "filter"=>array(
+               array(
                     "geo_distance"=>array(
-                        "distance"=>"50",
+                        "distance"=>$distance,
+                        "geo"=>array(
+                            "lat"=>$latitude,
+                            "lon"=>$longitude,
+                        )
+                    )
+                ),
+                array(
+                    "bool"=>array(
+                        "must"=> $must
+                    )
+                )
+            )
+        );
+       $query = array_merge($match,$filter);
+       $tab = array(
+           'query'=>array(
+               'filtered'=>$query
+           ),
+           'sort'=>array(
+                "_geo_distance"=>array(
+                    'geo'=>array(
+                        'lat'=>$latitude,
+                        'lon'=>$longitude,
+                    ),
+                    'order'=>'asc',
+                    'unit'=>'km',
+                    'distance_type'=>'plane'
+                )
+            )   
+        );
+       $json = json_encode($tab);
+       return $json;
+       
+   }
+
+   public function placeAround($latitude, $longitude, $distance ) {
+       $filter = array( 
+           "filter"=>array(
+               array(
+                    "geo_distance"=>array(
+                        "distance"=>$distance,
                         "geo"=>array(
                             "lat"=>$latitude,
                             "lon"=>$longitude,
                         )
                     )
                 )
-
+            )
         );
-       $query = array_merge($match,$filter);
-    
+        
        $tab = array(
            'query'=>array(
-               'filtered'=>$query
-           )    
-       );
-       $url = 'http://'.$this->host.':'.$this->port.'/resource/hashtag/_search?pretty';
+               'filtered'=>$filter
+           ),
+           'sort'=>array(
+                "_geo_distance"=>array(
+                    'geo'=>array(
+                        'lat'=>$latitude,
+                        'lon'=>$longitude,
+                    ),
+                    'order'=>'asc',
+                    'unit'=>'km',
+                    'distance_type'=>'plane'
+                )
+            )   
+        );
+       $url = 'http://'.$this->host.':'.$this->port.'/resource/place/_search?pretty&size=50'; //find a way to evalulat quantitiy
        $json = json_encode($tab);
        $method = 'GET';
-       return $this->getCurl($url, $method,$json );
+       return Curl::get($url, $method,$json );
    }
 
-   protected  function getCurl($url,$method, $json){
-         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json','Content-Length: ' . strlen($json)));
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-        curl_setopt($ch, CURLOPT_POSTFIELDS,$json);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        $response  = curl_exec($ch);
-        curl_close($ch);
-        return $response;
-   }
-
-   protected function getRootUrl(){
-        return 'http://'.$this->host.':'.$this->port.'/';
-   }
-
-   public function delete(){
+    public function delete(){
        $url = $this->getRootUrl().'resource/hashtag/_query';
        $method = 'DELETE';
        $data = json_encode(array('query'=>array('match'=>array('content'=>'cool'))));
-       return $this->getCurl($url,$method,$data);
+       return Curl::get($url,$method,$data);
    }
 
    public function mapping(){
@@ -95,25 +230,43 @@ class Elastic {
        //delete index
        $url = $this->getRootUrl().'resource';
        $method = 'DELETE';
-       $this->getCurl($url,$method,'');
+       Curl::get($url,$method,'');
        
        $tab = array('mappings'=>
-           array('hashtag'=>
+           array(
+               'hashtag'=>
                 array('properties'=>
                     array(
+                        'reservedBy'=>array('type'=>'string'),
+                        'reserved'=>array('type'=>'boolean'),
                         'content'=>array('type'=>'string'),
-                        'geo'=>array('type'=>'geo_point')
+                        'userid'=>array('type'=>'string'),
+                        'geo'=>array('type'=>'geo_point'),
+                        'startDate'=>array(
+                            'type'=>'date',
+                            'format'=>'basicDateTimeNoMillis'
+                         ),
+                        'endDate'=>array(
+                            'type'=>'date',
+                            'format'=>'basicDateTimeNoMillis'
+                         ),
                     )
-                )   
+                ),
+                'place'=>
+                array('properties'=>
+                    array(
+                        'tag'=>array('type'=>'string'),
+                        'address'=>array('type'=>'string'),
+                        'geo'=>array('type'=>'geo_point'),
+                    )
+                )
+                          
             )
         );
-
        $url = $this->getRootUrl().'resource';
        $method = 'PUT';
        $json = json_encode($tab);
-       return $this->getCurl($url,$method,$json);
-   
+       return Curl::get($url,$method,$json);
    }
-
 }
 

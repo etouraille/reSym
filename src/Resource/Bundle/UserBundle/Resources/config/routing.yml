@@ -1,3 +1,9 @@
+forgotten_init:
+    path:     /forgotten/createtoken
+    defaults: { _controller: ResourceUserBundle:Forgotten:createToken }
+forgotten_change:
+    path:     /forgotten/changepassword
+    defaults: { _controller: ResourceUserBundle:Forgotten:changePassword }
 user_subscribe:
     path:     /subscribe
     defaults: { _controller: ResourceUserBundle:User:subscribe }
@@ -12,6 +18,9 @@ user_check_token:
 user_exists:
     path:     /exists
     defaults: { _controller: ResourceUserBundle:User:exists }
+user_notfication_register:
+    path:     /logged-area/notification/register
+    defaults: { _controller: ResourceUserBundle:User:notificationRegister }
 content_add:
     path:     /logged-area/add
     defaults: { _controller: ResourceUserBundle:Resource:add }
@@ -21,19 +30,70 @@ content_add_todo_remove:
 content_search:
     path:     /logged-area/search
     defaults: { _controller: ResourceUserBundle:Resource:search}
-time:
-    path:     /time
-    defaults: { _controller: ResourceUserBundle:Resource:time}
+content_search_unlogged:
+    path:     /search
+    defaults: { _controller: ResourceUserBundle:Resource:search}
+release_resource:
+    path:     /resource/release
+    defaults: { _controller: ResourceUserBundle:Resource:release}
+resource_detail:
+    path:     /resource/get
+    defaults: { _controller: ResourceUserBundle:Resource:get }
+resource_reserve:
+    path:     /logged-area/resource/reserve
+    defaults: { _controller: ResourceUserBundle:Resource:reserve }
 search_hashtag:
     path:     /logged-area/hashtag
     defaults: { _controller: ResourceUserBundle:Search:hashtag}
 todo_delete:
     path:     /hashtag
     defaults: { _controller: ResourceUserBundle:Search:hashtag}
-
 search_my_hashtag:
-    path:     /logged-area/my/hashtag
+    path:     /logged-area/hashtag/mine
     defaults: { _controller: ResourceUserBundle:Search:myhashtag}
+search_my_search:
+    path:     /logged-area/search/mine
+    defaults: { _controller: ResourceUserBundle:Search:mySearch}
+update_my_hashtag:
+    path:     /logged-area/search/update
+    defaults: { _controller: ResourceUserBundle:Search:updateSearch}
+around:
+    path:     /around/{lat}/{lng}/for/{email}
+    defaults: { _controller: ResourceUserBundle:Search:around }
+reserved:
+    path:     /logged-area/reserved
+    defaults: { _controller: ResourceUserBundle:Resource:reserved }
+tag_a_place:
+    path:     /logged-area/place/tag
+    defaults: { _controller: ResourceUserBundle:Place:tag }
+search_for_place_around:
+    path:     /place/search
+    defaults: { _controller: ResourceUserBundle:Place:search }
+address:
+    path:     /place/address
+    defaults: { _controller: ResourceUserBundle:Place:address }
+conversations:
+    path:     /logged-area/conversations
+    defaults: { _controller: ResourceUserBundle:Messaging:conversations }
+conversations_not_protected:
+    path:     /conversations
+    defaults: { _controller: ResourceUserBundle:Messaging:conversations }
+conversation:
+    path:     /logged-area/conversation
+    defaults: { _controller: ResourceUserBundle:Messaging:conversation }
+conversation_send_message:
+    path:     /logged-area/send/message
+    defaults: { _controller: ResourceUserBundle:Messaging:send }
+
+
+
+
+
+
+
+
+
+
 
 
 

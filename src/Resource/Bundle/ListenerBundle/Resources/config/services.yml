@@ -15,5 +15,11 @@ services:
         arguments: [@security.encoder.custom]
         tags:
             - { name: doctrine_mongodb.odm.event_listener , event: prePersist }
+    report.listener2:
+        class: Resource\Bundle\ListenerBundle\Doctrine\User
+        arguments: [@security.encoder.custom]
+        tags:
+            - { name: doctrine_mongodb.odm.event_listener , event: preUpdate }
+
     response.formater.service:
         class: Resource\Bundle\ListenerBundle\Services\ResponseFormaterService

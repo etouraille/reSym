@@ -6,14 +6,15 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
- *  @MongoDB\Document
- *  @MongoDB\Document(repositoryClass="UserRepository")
- */
+*  @MongoDB\Document
+*  @MongoDB\Document(repositoryClass="UserRepository")
+*  @ORM\HasLifecycleCallbacks
+*/
 
 class User implements AdvancedUserInterface, \Serializable
 {
     /**
-     * @MongoDB\Id
+     * @MongoDB\Id( options={"unique"="true"} )
     */    
     private $id;
 
@@ -40,6 +41,12 @@ class User implements AdvancedUserInterface, \Serializable
     private $email;
 
     /**
+     * @MongoDB\String
+    */
+    private $androidNotificationId=0;
+
+
+    /**
      * @MongoDB\Boolean
     */
     private $isActive;
@@ -48,6 +55,7 @@ class User implements AdvancedUserInterface, \Serializable
     {
         $this->isActive = true;
         $this->salt = md5(uniqid(null, true));
+        $this->id = new \MongoId();
     }
 
     /**
@@ -67,11 +75,20 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
-    public function getPassword()
+    public function setAndroidNotificationId( $regId )
     {
-        return $this->password;
+        $this->androidNotificationId = $regId;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAndroidNotificationId()
+    {
+        return $this->androidNotificationId;
     }
 
     /**
@@ -233,5 +250,15 @@ class User implements AdvancedUserInterface, \Serializable
     public function getIsActive()
     {
         return $this->isActive;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string $password
+     */
+    public function getPassword()
+    {
+        return $this->password;
     }
 }

@@ -31,6 +31,8 @@ class ReceiverCommand {
                             
             
             $channel->queue_bind($queue_name, 'indexing', 'index');
+            $channel->queue_bind($queue_name, 'indexing', 'update');
+            $channel->queue_bind($queue_name, 'indexing', 'place');
 
 
             $channel->basic_consume($queue_name, '', false, true, false, false, array($this, 'callBack'));
@@ -53,12 +55,28 @@ class ReceiverCommand {
     }
 
     public function callBack($msg){
+        $elastic = new \Resource\Bundle\UserBundle\Service\Elastic();
+        
         $data = $msg->body;
+        $key  = $msg->delivery_info['routing_key'];
+        switch($key){
+            case  'index' :
+                    $return = $elastic->index('resource','hashtag',$data);
+                break;
+            case  'update' :
+                    $return = $elastic->update('resource','hashtag',$data);
+                    break;
+            case  'place' :
+                    $return = $elastic->index('resource','place',$data);
+            break;
+        
+
+        
+        }
+
         echo $data;
         //read from database
-        $elastic = new \Resource\Bundle\UserBundle\Service\Elastic();
-        $return = $elastic->index('resource','hashtag',$data);
-        echo $return;
+       echo $return;
     }
 
     public function wait(){

@@ -7,6 +7,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpAmqpLib\Connection\AMQPConnection;
+use Resource\Bundle\UserBundle\Service\DeferResourceAddressSetting;
+
+define('AMQP_DEBUG', true);
+
 class ReceiverCommand extends ContainerAwareCommand {
 
     protected $oputput; 
@@ -20,36 +24,110 @@ class ReceiverCommand extends ContainerAwareCommand {
     protected function execute(InputInterface $input, OutputInterface $output) {
         $this->output = $output;
         
-        //listen to the brocker
-         $connection = new AMQPConnection('objetspartages.org', 5672, 'toto', 'toto', 'toto');
-        $channel = $connection->channel();
+        #thread
+        while(true){
+            //listen to the brocker
+        try{
+            $connection = new AMQPConnection('objetspartages.org', 5672, 'toto', 'toto', 'toto',
+            false, 'AMQPLAIN',null,'en_US', 3, 3, null, false, 2);
+             $channel = $connection->channel();
+             
+            $channel->exchange_declare('indexing', 'direct', false, false, false);
 
-        $channel->exchange_declare('indexing', 'direct', false, false, false);
+            list($queue_name, ,) = $channel->queue_declare("", false, false, true, false);
 
-        list($queue_name, ,) = $channel->queue_declare("", false, false, true, false);
-        
-        $channel->queue_bind($queue_name, 'indexing', 'index');
+                            
+            
+            $channel->queue_bind($queue_name, 'indexing', 'index');
+            $channel->queue_bind($queue_name, 'indexing', 'update');
+            $channel->queue_bind($queue_name, 'indexing', 'percolator');
 
 
-        $channel->basic_consume($queue_name, '', false, true, false, false, array($this, 'callBack'));
+            $channel->basic_consume($queue_name, '', false, true, false, false, array($this, 'callBack'));
 
-        while(count($channel->callbacks)) {
-               $channel->wait();
+            $this->wait = false;
+            while(count($channel->callbacks)) {
+                   $channel->wait();
+            }
+
+
+            $channel->close();
+            $connection->close(); 
+        }
+         catch(\Exception $e){ // todo we have only to catch the amq exception, or socket exception 
+            $this->wait();
+            echo $e->getMessage();
+            var_dump($e->getTrace());
+         } 
         }
 
-        $channel->close();
-        $connection->close(); 
     }
 
     public function callBack($msg){
-        $data = $msg->body;
-        $this->output->writeln($data);
-        //read from database
         $elastic = new \Resource\Bundle\UserBundle\Service\Elastic();
-        $elastic->index('resource','hastag',$data);
-    
+        
+        $data = $msg->body;
+        $key  = $msg->delivery_info['routing_key'];
+        $id = null;
+        $type = null;
+
+        try{
+            $headers = $msg->get('application_headers')->getNativeData();
+            if(isset($headers['type'])) { 
+                $type = $headers['type'];
+            }
+            if(isset($headers['id'])) {
+                $id = $headers['id'];
+            }
+        } catch(\Exception $e){
+            //NO HEADERS IS DEFINED
+            //todo we can be more generic and define a document id as header.
+        }
+        switch($key){
+        case  'index' :
+                // $type = hashtag
+                //we defer the call to the reverseGeoCoding API
+                //and we update the resource datbase accordingly
+                //we also 
+                    $doc = json_encode(array('doc'=>json_decode($data,true)));
+                    $dataWithAddress = DeferResourceAddressSetting::defer(
+                        $this->getContainer()->get('doctrine_mongodb')->getManager(),
+                        $data
+                    );
+                    $return = $elastic->index('resource',$type,$dataWithAddress,$id);
+                    if($type = 'hashtag') {
+                        $return = $elastic->percolate('resource', $type, $doc );
+                    
+                        $this->getContainer()
+                            ->get('percolate_notifier')
+                            ->process($return, $dataWithAddress);
+                    }
+                break;
+            case  'update' :
+                    $return = $elastic->update('resource',$type , $data, $id );
+                    break;
+                        
+
+            case 'percolator' : 
+                    $return = $elastic->percolator('resource', $type, $data, $id);
+                    break;
+        
+
+        
+        }
+
+        echo $data;
+        //read from database
+       echo $return;
     }
 
-
-
+    protected function wait(){
+        if(false === $this->wait){
+            sleep(10);
+            $this->wait = 10;
+        }else{
+            $this->wait = $this->wait/2;
+            sleep($this->wait);
+        }
+    }
 }

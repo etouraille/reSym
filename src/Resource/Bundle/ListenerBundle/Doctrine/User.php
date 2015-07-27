@@ -29,4 +29,20 @@ class User
             );
         }
     }
+
+    public function preUpdate($eventArgs) {
+        $user = $eventArgs->getDocument();
+        if(get_class($user) === "Resource\Bundle\UserBundle\Document\User" ) {
+            $eventArgs->getDocument()->setPassword(
+                $this->passwordEncoder->encodePassword(
+                    $user->getPassword(),
+                    $user->getSalt()
+                )
+            );
+            $dm   = $eventArgs->getDocumentManager();
+            $uow  = $dm->getUnitOfWork();
+            $meta = $dm->getClassMetadata(get_class($user));
+            $uow->recomputeSingleDocumentChangeSet($meta, $user); 
+        }
+    }
 }
