@@ -1,5 +1,5 @@
-forgotten_init:
-    path:     /forgotten/createtoken
+reset_pass:
+    path:   /get-token
     defaults: { _controller: ResourceUserBundle:Forgotten:createToken }
 forgotten_change:
     path:     /forgotten/changepassword
@@ -7,9 +7,42 @@ forgotten_change:
 user_subscribe:
     path:     /subscribe
     defaults: { _controller: ResourceUserBundle:User:subscribe }
+
+reserved_auth:
+    path:     /auth-reserved
+    defaults: {_controller: ResourceUserBundle:Resource:hasReserved}
+
+resource_oauth_server_auth_login:
+    path:     /oauth/v2/auth_login
+    defaults: {_controller: ResourceUserBundle:Security:login}
+
+resource_oauth_server_auth_login_check:
+   path:     /oauth/v2/auth_login_check
+   defaults: {_controller: ResourceUserBundle:Security:loginCheck}
+
+
+
+api_articles:
+    path:     /api/articles
+    defaults: {_controller: ResourceUserBundle:Api:articles}
+
+oauth_client_callback:
+    path:     /callBack
+    defaults: {_controller: ResourceUserBundle:User:client}
+
+oauth_client:
+    path:     /create-client
+    defaults: {_controller: ResourceUserBundle:User:createClient}
+
 user_salt:
     path:     /salt
     defaults: { _controller: ResourceUserBundle:User:salt }
+
+
+
+user_list:
+    path:     /lists
+    defaults: { _controller: ResourceUserBundle:User:users }
 
 user_check_token:
     path:     /reset/{token}
@@ -18,9 +51,11 @@ user_check_token:
 user_exists:
     path:     /exists
     defaults: { _controller: ResourceUserBundle:User:exists }
+
 user_notfication_register:
     path:     /logged-area/notification/register
     defaults: { _controller: ResourceUserBundle:User:notificationRegister }
+
 content_add:
     path:     /logged-area/add
     defaults: { _controller: ResourceUserBundle:Resource:add }
