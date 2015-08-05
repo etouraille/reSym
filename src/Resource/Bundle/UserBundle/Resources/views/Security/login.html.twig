@@ -1,0 +1,23 @@
+{% extends '::base.html.twig' %}
+
+{%  block body %}
+<div class="form">
+
+    <div class="form_title">
+        OAuth Authorization
+
+    </div>
+    <form name="formAuth" action="{{ path('resource_oauth_server_auth_login_check') }}" method="POST">
+        {{ form_start(formAuth) }}
+            {{ form_errors(formAuth) }}
+            {{ form_widget(formAuth._username) }}
+            {{ form_widget(formAuth._password) }}
+            {{ form_widget(formAuth._submit) }}
+
+    </form>
+
+
+
+</div>
+
+{% endblock %}
