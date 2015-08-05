@@ -59,15 +59,12 @@ class UserController extends Controller
          return $response;
     }
 
-    public function subscribeAction(Request $request) {
+    public function subscribeAction($username,$password1,$password2,$email) {
             $success = true;
             
             $user = new User();
 
-            $username = $request->get('username');
-            $password1 = $request->get('password1');
-            $password2 = $request->get('password2');
-            $email = $request->get('email');
+
 
             $user->setUsername($username);
             $user->setPassword($password1);
