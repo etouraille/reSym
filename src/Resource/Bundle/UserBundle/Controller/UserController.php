@@ -4,6 +4,7 @@ namespace Resource\Bundle\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Resource\Bundle\UserBundle\Document\User;
+use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Serializer;
@@ -18,14 +19,16 @@ class UserController extends Controller
     private $sessionStorage;
     private $session;
 
-    public function saltAction($username='edouard.touraille@gmail.com') {
+    public function saltAction($username="edouard.touraille@gmail.com") {
         $repository = $this->get('doctrine_mongodb')
             ->getManager()
             ->getRepository('ResourceUserBundle:User');
 
-        $user = $repository->loadUserByUsername($request->get('username'));
+
+        $user = $repository->loadUserByUsername($username);
+
         $ret = array('success'=>false);
-        if($user){
+       if($user){
             $success = true;
             $ret = array(
                 'id'=>$user->getId(),
@@ -38,58 +41,9 @@ class UserController extends Controller
         return $response;
     }
 
-    public function tokenAction(Request $request) {
-        $salt = self::saltAction($request);
-        $encoders = array(new JsonEncoder());
-        $normalizers = array(new GetSetMethodNormalizer());
-        $repository = $this->get('doctrine_mongodb')
-            ->getManager()
-            ->getRepository('ResourceUserBundle:User');
-
-        $user = $repository->loadUserByUsername($request->get('username'));
-        $serializer = new Serializer($normalizers, $encoders);
-        $user = json_decode($serializer->serialize($user,"json"));
-        //$user[]
-        $salt = $user->salt;
-        //begin service token//
-        $token = $this->get('security.token');
-        $tokenVal = $token->createToken($request->get('username'), $salt);
-
-        $subject = "reset password #@t";
-        $body = "please follow this link to reset your password <a href='ec2-52-24-103-97.us-west-2.compute.amazonaws.com/app_dev.php/reset/".$tokenVal."'>".$tokenVal."</a>";
-        $dest = "clemansles@gmail.com";
-        $from = "resource@objet-partages.org";
-        $headers = "From:".$from." \r\n".
-            "Reply-To: ".$from. "\r\n".
-            "X-Mailer: PHP/". phpversion();
-        $headers .= "MIME-Version: 1.0\r\n";
-        $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-         mail($dest,$subject,$body,$headers);
-
-        $this->sessionStorage = new NativeSessionStorage(array("cookie_lifetime"=>1400));
-        $this->session = new Session($this->sessionStorage);
-        $this->session->start();
-
-        $arrToken = array();
-        $arrToken["date"] = time();
-        $arrToken["mail"] = $request->get('username');
-        $arrToken["token"] = $tokenVal;
-        $this->session->set("token",$arrToken);
-        return new Response(var_dump($this->session->get("token")));
-    }
-    
-
-    public function resetAction($token){
-
-        $token = $this->get('security.token');
-        $sessionStorage = new NativeSessionStorage(array("cookie_lifetime"=>1400));
 
 
-
-        $response = new Response();
-        $response->setContent(var_dump($this->session->get("token")));
-    }
-    public function existsAction(Request $request) {
+    public function existsAction($email="clemansles@gmail.com") {
          $repository = $this->get('doctrine_mongodb')
             ->getManager()
             ->getRepository('ResourceUserBundle:User');
@@ -154,6 +108,30 @@ class UserController extends Controller
 
 
 
+
+
+    public function createClientAction(){
+
+        $clientManager = $this->get('fos_oauth_server.client_manager.default');
+        $client = $clientManager->createClient();
+        $client->setRedirectUris(array('http://192.168.33.10/resource/reSym/web/app_dev.php/callBack'));
+        $client->setAllowedGrantTypes(array('token', 'authorization_code'));
+        $clientManager->updateClient($client);
+
+        return $this->redirect($this->generateUrl('fos_oauth_server_authorize', array(
+            'client_id'     => $client->getPublicId(),
+            'redirect_uri'  => 'http://192.168.33.10/resource/reSym/web/app_dev.php/callBack',
+            'response_type' => 'code'
+        )));
+    }
+
+    public function clientAction() {
+
+        $clientManager = $this->getContainer()->get('fos_oauth_server.client_manager.default');
+        //$clientManager->getC
+        return new Response("auth",200);
+
+    }
 
     public function notificationRegisterAction($device='android', $regId ='123') {
         
