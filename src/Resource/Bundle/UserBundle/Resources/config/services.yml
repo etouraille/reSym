@@ -17,3 +17,11 @@ services:
     percolate_notifier:
         class: Resource\Bundle\UserBundle\Service\PercolateNotifier
         arguments: [@doctrine_mongodb,@notification]
+
+
+
+    #platform.user.provider:
+     #    class: Resource\Bundle\UserBundle\Document\UserRepository
+      #   factory-service: doctrine.odm.mongodb
+       #  factory-method: getRepository
+        # arguments: [doctrine.odm.mongodb]

@@ -4,17 +4,31 @@ namespace Resource\Bundle\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Resource\Bundle\UserBundle\Document\User;
+use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 class UserController extends Controller
 {
-    public function saltAction($username='edouard.touraille@gmail.com') {
+
+    private $sessionStorage;
+    private $session;
+
+    public function saltAction($username="edouard.touraille@gmail.com") {
         $repository = $this->get('doctrine_mongodb')
             ->getManager()
             ->getRepository('ResourceUserBundle:User');
+
+
         $user = $repository->loadUserByUsername($username);
+
         $ret = array('success'=>false);
-        if($user){
+       if($user){
             $success = true;
             $ret = array(
                 'id'=>$user->getId(),
@@ -27,12 +41,15 @@ class UserController extends Controller
         return $response;
     }
 
-    public function existsAction($email='edouard.touraille@gmail.co'){
+
+
+    public function existsAction($email="clemansles@gmail.com") {
          $repository = $this->get('doctrine_mongodb')
             ->getManager()
             ->getRepository('ResourceUserBundle:User');
+
          $user = $repository->findOneByEmail($email);
-         
+
          $inDatabase = false;
          if(isset($user)){
             $inDatabase = true;
@@ -42,11 +59,13 @@ class UserController extends Controller
          return $response;
     }
 
-    public function subscribeAction($username='etouraille',$password1='b1otope', $password2='b1otope',$email='edouard.touraille@gmail.com') {
+    public function subscribeAction($username,$password1,$password2,$email) {
             $success = true;
             
             $user = new User();
-            
+
+
+
             $user->setUsername($username);
             $user->setPassword($password1);
             $user->setPassword2($password2);
@@ -84,6 +103,33 @@ class UserController extends Controller
             return $response;
     }
 
+
+
+
+
+    public function createClientAction(){
+
+        $clientManager = $this->get('fos_oauth_server.client_manager.default');
+        $client = $clientManager->createClient();
+        $client->setRedirectUris(array('http://192.168.33.10/resource/reSym/web/app_dev.php/callBack'));
+        $client->setAllowedGrantTypes(array('token', 'authorization_code'));
+        $clientManager->updateClient($client);
+
+        return $this->redirect($this->generateUrl('fos_oauth_server_authorize', array(
+            'client_id'     => $client->getPublicId(),
+            'redirect_uri'  => 'http://192.168.33.10/resource/reSym/web/app_dev.php/callBack',
+            'response_type' => 'code'
+        )));
+    }
+
+    public function clientAction() {
+
+        $clientManager = $this->getContainer()->get('fos_oauth_server.client_manager.default');
+        //$clientManager->getC
+        return new Response("auth",200);
+
+    }
+
     public function notificationRegisterAction($device='android', $regId ='123') {
         
         $user = $this->get('security.context')->getToken()->getUser();
@@ -104,6 +150,7 @@ class UserController extends Controller
             $success = true;
         }
         return (new Response())->setContent(json_encode(array('success'=>$success)));
+
 
     }
 }

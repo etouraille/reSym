@@ -11,5 +11,6 @@ services:
     arguments: [2]
   security.encryption:
     class: Resource\Bundle\SecurityBundle\Authentication\Service\Encryption
-
+  security.token:
+    class: Resource\Bundle\SecurityBundle\Authentication\Service\Token
 
