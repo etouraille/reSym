@@ -33,8 +33,24 @@ class Elastic extends ContainerAwareCommand
             case 'mapping' : 
                 $elastic->mapping();
             break;
+
+            case 'populate' : 
+            break;
         }
         
         $output->writeln(sprintf(' %s performed ', $action));
+    }
+
+    public function populate()
+    {
+        $resources = $this->getContainer()
+            ->get('doctrine_mongodb')
+            ->getManager()
+            ->getRepository('ResourceUserBundle:Resource')
+            ->find();
+
+        $elastic = $this->getContainer()->get('elastic');
+
+
     }
 }

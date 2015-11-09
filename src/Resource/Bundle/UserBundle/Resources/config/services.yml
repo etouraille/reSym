@@ -4,6 +4,8 @@ services:
         arguments: [@doctrine_mongodb]
     jsonify: 
         class: Resource\Bundle\UserBundle\Service\JSONify
+    elastic:
+        class: Resource\Bundle\UserBundle\Service\Elastic
     rabbit:
         class: Resource\Bundle\UserBundle\Service\Rabbit
     place:

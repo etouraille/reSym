@@ -231,8 +231,49 @@ class Elastic {
        $url = $this->getRootUrl().'resource';
        $method = 'DELETE';
        Curl::get($url,$method,'');
+
+       $settings = array(
+        'settings'=> 
+           array('analysis'=>
+            array(
+                'filter'=>array(
+                    'nGram_filter'=>array(
+                        'type'=>'nGram',
+                        'min_gram'=>2,
+                        'max_gram'=>20,
+                        'token_chars'=>array(
+                            'letter',
+                            'digit',
+                            'punctuation',
+                            'symbol'
+                        )
+                    )
+                ),
+                'analyze'=>array(
+                    'nGram_analyzer'=>array(
+                        'type'=>'custom',
+                        'tokenizer'=>'whitespace',
+                        'filter'=>array(
+                            'lowercase',
+                            'asciifolding',
+                            'nGram_filter'
+                        )
+                    ),
+                    'whitespace_analyzer'=>array(
+                        'type'=>'custom',
+                        'tokenizer'=>'whitespace',
+                        'filter'=>array(
+                            'lowercase',
+                            'asciifolding'
+                        )
+                    )
+                )
+            )
+        )
+    );
+
        
-       $tab = array('mappings'=>
+       $mappings = array('mappings'=>
            array(
                'hashtag'=>
                 array('properties'=>
@@ -241,11 +282,12 @@ class Elastic {
                         'reserved'=>array('type'=>'boolean'),
                         'content'=>array('type'=>'string'),
                         'userid'=>array('type'=>'string'),
+                        'message'=>array('type'=>'string'),
                         'geo'=>array('type'=>'geo_point'),
-                        'startDate'=>array(
-                            'type'=>'date',
-                            'format'=>'basicDateTimeNoMillis'
-                         ),
+                            'startDate'=>array(
+                                'type'=>'date',
+                                'format'=>'basicDateTimeNoMillis'
+                        ),
                         'endDate'=>array(
                             'type'=>'date',
                             'format'=>'basicDateTimeNoMillis'
@@ -265,8 +307,11 @@ class Elastic {
         );
        $url = $this->getRootUrl().'resource';
        $method = 'PUT';
-       $json = json_encode($tab);
+       $json = json_encode( array_merge($settings, $mappings)
+       );
        return Curl::get($url,$method,$json);
    }
 }
+
+
 
