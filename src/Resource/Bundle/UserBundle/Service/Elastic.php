@@ -48,6 +48,23 @@ class Elastic {
          return 'http://'.$this->host.':'.$this->port.'/'; 
     }
 
+    protected function autocompleteMapping($tag)
+        return array( $tag => array(
+            "properties"=> array(
+                "name" => array("type"=>"string")
+                "suggest"=>array( 
+                    "type"=>"completion",
+                    "analyzer"=>"simple",
+                    "search_analyzer"=>"simple"
+                    "payloads"=>"true"
+                )
+            )    
+        )
+    )
+     
+    } 
+        
+    }
     public function geoSearch($content,$latitude,$longitude, $distance, $userId) {
        $json = $this->geoSearchJson($content,$latitude,$longitude, $distance, $userId ); 
        $method = 'GET';
@@ -190,7 +207,7 @@ class Elastic {
                         "geo"=>array(
                             "lat"=>$latitude,
                             "lon"=>$longitude,
-                        )
+                    )
                     )
                 )
             )
@@ -231,6 +248,12 @@ class Elastic {
        $url = $this->getRootUrl().'resource';
        $method = 'DELETE';
        Curl::get($url,$method,'');
+
+       //mapping for completion:
+       $url = $this->getRootUrl().'resource';
+       $method = 'PUT';
+       Curl::get($url.json_encode($this->autocompletMapping('hashtag')));
+
 
        $settings = array(
         'settings'=> 
