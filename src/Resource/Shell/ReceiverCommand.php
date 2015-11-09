@@ -42,11 +42,12 @@ class ReceiverCommand extends ContainerAwareCommand {
             $channel->queue_bind($queue_name, 'indexing', 'update');
             $channel->queue_bind($queue_name, 'indexing', 'percolator');
             $channel->queue_bind($queue_name, 'indexing', 'send');
+            $channel->queue_bind($queue_name, 'indexing', 'associate');
 
 
             $channel->basic_consume($queue_name, '', false, true, false, false, array($this, 'callBack'));
 
-            $this->wait = false;
+            $this->wait = false; 
             while(count($channel->callbacks)) {
                    $channel->wait();
             }
@@ -72,6 +73,7 @@ class ReceiverCommand extends ContainerAwareCommand {
         $id = null;
         $type = null;
         $userid = null;
+        $likeword = null;
 
         try{
             $headers = $msg->get('application_headers')->getNativeData();
@@ -81,8 +83,11 @@ class ReceiverCommand extends ContainerAwareCommand {
             if(isset($headers['id'])) {
                 $id = $headers['id'];
             }
-            if(isset($header['userid'])) {
+            if(isset($headers['userid'])) {
                 $userid = $headers['userid'];
+            }
+            if(isset($headers['likeword'])) {
+                $likeword = $headers['likeword'];
             }
             
         } catch(\Exception $e){
@@ -94,7 +99,7 @@ class ReceiverCommand extends ContainerAwareCommand {
                 // $type = hashtag
                 //we defer the call to the reverseGeoCoding API
                 //and we update the resource datbase accordingly
-                //we also 
+                //we also associate the word with the other associate  
                     $doc = json_encode(array('doc'=>json_decode($data,true)));
                     $dataWithAddress = DeferResourceAddressSetting::defer(
                         $this->getContainer()->get('doctrine_mongodb')->getManager(),
@@ -136,7 +141,22 @@ class ReceiverCommand extends ContainerAwareCommand {
                 }
 
 
-            break;
+                break;
+             
+             case 'associate' : 
+
+                 // in this case it can be a new index or an update but we must associate 
+                 // all the linked word by the same person
+                 $tags =$this->getContext()->get('doctrine_mongodb')
+                     ->getManager()
+                     ->getRepository('ResourceUserBundle:Resource')
+                     ->findBy(array('userId'=>$userId));
+
+                var_dump($tags); 
+                foreach($tags as $tag ) {
+                    $Rabbit->associate($tag,$likeword);
+                 }
+            
         
         }
 

@@ -1,13 +1,13 @@
 <?php
 
-namespace Resource\Bundle\UserBundle\Controller;
+namespace resource\bundle\userbundle\controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Resource\Bundle\UserBundle\Document\Resource;
-use Symfony\Component\HttpFoundation\Response;
-use Resource\Bundle\UserBundle\Service\Elastic;
-use Resource\Bundle\UserBundle\Service\Date;
-use Resource\Bundle\UserBundle\Document\Place;
+use symfony\bundle\frameworkbundle\controller\controller;
+use resource\bundle\userbundle\document\resource;
+use symfony\component\httpfoundation\response;
+use resource\bundle\userbundle\service\elastic;
+use resource\bundle\userbundle\service\date;
+use resource\bundle\userbundle\document\place;
 
 class ResourceController extends Controller
 {
@@ -65,6 +65,14 @@ class ResourceController extends Controller
                     'type'=>'hashtag',
                     'id'=> $resource->getId()
                 )
+            );
+            $rabbit->send(
+                $json = array('associate'),
+                    'associate',
+                    array(
+                        'userId'=>$user->getId(),
+                        'likeword'=>$tag
+                    ),
             );
             $response = new Response();
             $response->setContent(json_encode($ret));

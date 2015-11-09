@@ -61,6 +61,22 @@ class Elastic {
                 )    
             )
         );
+    }
+
+    public function associate($newTag,$tag) {
+        
+           $json =  array("name" => $tag,
+                          "suggest"=> array(
+                                "input"=> array( $tag ),
+                                "output"=> array($newTag),
+                                "weight" => 1)
+                            );
+           
+           $method = 'PUT';
+        return Curl::get($this->getRootUrl.'index'./$tag,$method,jsonencode($json));       
+
+    }
+    
     } 
         
     public function geoSearch($content,$latitude,$longitude, $distance, $userId) {
