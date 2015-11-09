@@ -48,23 +48,21 @@ class Elastic {
          return 'http://'.$this->host.':'.$this->port.'/'; 
     }
 
-    protected function autocompleteMapping($tag)
+    protected function autocompleteMapping($tag) {
         return array( $tag => array(
             "properties"=> array(
-                "name" => array("type"=>"string")
+                "name" => array("type"=>"string"),
                 "suggest"=>array( 
                     "type"=>"completion",
                     "analyzer"=>"simple",
-                    "search_analyzer"=>"simple"
+                    "search_analyzer"=>"simple",
                     "payloads"=>"true"
-                )
-            )    
-        )
-    )
-     
+                    )
+                )    
+            )
+        );
     } 
         
-    }
     public function geoSearch($content,$latitude,$longitude, $distance, $userId) {
        $json = $this->geoSearchJson($content,$latitude,$longitude, $distance, $userId ); 
        $method = 'GET';
