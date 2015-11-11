@@ -1,16 +1,17 @@
 <?php
+namespace Resource\Bundle\UserBundle\Controller;
 
-namespace resource\bundle\userbundle\controller;
 
-use symfony\bundle\frameworkbundle\controller\controller;
-use resource\bundle\userbundle\document\resource;
-use symfony\component\httpfoundation\response;
-use resource\bundle\userbundle\service\elastic;
-use resource\bundle\userbundle\service\date;
-use resource\bundle\userbundle\document\place;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Resource\Bundle\UserBundle\Document\Resource;
+use Resource\Bundle\UserBundle\Service\Elastic;
+use Resource\Bundle\UserBundle\Service\Date;
+use Resource\Bundle\UserBundle\Document\Place;
+use Symfony\Component\HttpFoundation\Response;
 
-class ResourceController extends Controller
+class ResourceController extends Controller 
 {
+
     public function addAction($tag='cool',$lat='0.0001', $lon='0.0001',$picture = '',
     $endInterval = 0, $place = null, $message = '', $category = 'the world is a vampire') {
             $success = true;
@@ -60,20 +61,35 @@ class ResourceController extends Controller
             $rabbit = new \Resource\Bundle\UserBundle\Service\Rabbit();
             $rabbit->send(
                 $json = $this->get('jms_serializer')->serialize($resource,'json'),
-                'index', 
-                array(
+                'index',
+                 array(
                     'type'=>'hashtag',
                     'id'=> $resource->getId()
                 )
             );
-            $rabbit->send(
-                $json = array('associate'),
+
+           
+            
+            $user = $this->get('security.context')
+            ->getToken()
+            ->getUser();
+            $elastic = new Elastic();
+            $tags =$this->get('doctrine_mongodb')
+                     ->getManager()
+                     ->getRepository('ResourceUserBundle:Resource')
+                     ->findBy(array('userId'=>$user->getId()));
+            
+            foreach($tags as $associateTag ) {
+                $rabbit->send(
+                    $json = 'associate',
                     'associate',
-                    array(
-                        'userId'=>$user->getId(),
-                        'likeword'=>$tag
-                    ),
-            );
+                        array(
+                            'tag'=>$tag,
+                            'id'=>$resource->getId(),
+                            'associateTag'=>$associateTag )
+                        );
+                    }
+            
             $response = new Response();
             $response->setContent(json_encode($ret));
             return $response;
@@ -81,7 +97,7 @@ class ResourceController extends Controller
 
     public function searchAction($content='',$lat='45.7677957',$lon='4.8731638',$distance = '10km' ) {
         
-        //$user = $this->get('security.context')->getToken()->getUser();
+    //$user = $this->get('security.context')->getToken()->getUser();
         //$userId = $user->getId();
         $userId = 123;
         $elastic = new Elastic();
@@ -89,6 +105,25 @@ class ResourceController extends Controller
         $ret = $elastic->geoSearch($content,$lat,$lon,$distance, $userId);
         //$ret = $elastic->delete();
         return (new Response())->setContent($ret);
+    }
+
+    public function autocompleteAction($letters='a') 
+    {
+        $user = $this->get('security.context')
+            ->getToken()
+            ->getUser();
+        $elastic = new Elastic();
+        $tags =$this->get('doctrine_mongodb')
+                     ->getManager()
+                     ->getRepository('ResourceUserBundle:Resource')
+                     ->findBy(array('userId'=>$user->getId()));
+
+        return (new Response())->setContent(
+            $this->get('jms_serializer')
+            ->serialize($tags,'json')
+        ); 
+            
+
     }
 
     public function getAction($id=123) {

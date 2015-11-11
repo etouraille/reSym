@@ -14,6 +14,7 @@ define('AMQP_DEBUG', true);
 class ReceiverCommand extends ContainerAwareCommand {
 
     protected $oputput; 
+    protected $wait = 10;
     protected function configure(){
         
         $this
@@ -59,7 +60,6 @@ class ReceiverCommand extends ContainerAwareCommand {
          catch(\Exception $e){ // todo we have only to catch the amq exception, or socket exception 
             $this->wait();
             echo $e->getMessage();
-            var_dump($e->getTrace());
          } 
         }
 
@@ -86,9 +86,15 @@ class ReceiverCommand extends ContainerAwareCommand {
             if(isset($headers['userid'])) {
                 $userid = $headers['userid'];
             }
-            if(isset($headers['likeword'])) {
-                $likeword = $headers['likeword'];
-            }
+            if(isset($headers['associateTag'])) {
+                $associateTag = $headers['associateTag'];
+            }                        
+            if(isset($headers['tag'])) {
+                $tag = $headers['tag'];
+            }                        
+            
+
+
             
         } catch(\Exception $e){
             //NO HEADERS IS DEFINED
@@ -125,7 +131,7 @@ class ReceiverCommand extends ContainerAwareCommand {
 
             case 'message' : 
                 
-                $user = $this->getContext()->get('doctrine_mongodb')
+                $user = $this->getContainer()->get('doctrine_mongodb')
                     ->getManager()
                     ->getRepository('ResourceUserBundle:User')
                     ->getOneById($userid);
@@ -147,17 +153,12 @@ class ReceiverCommand extends ContainerAwareCommand {
 
                  // in this case it can be a new index or an update but we must associate 
                  // all the linked word by the same person
-                 $tags =$this->getContext()->get('doctrine_mongodb')
-                     ->getManager()
-                     ->getRepository('ResourceUserBundle:Resource')
-                     ->findBy(array('userId'=>$userId));
+                 //
 
-                var_dump($tags); 
-                foreach($tags as $tag ) {
-                    $Rabbit->associate($tag,$likeword);
-                 }
-            
-        
+                 $elastic->associate($tag,$id,$associateTag);
+
+                 break;
+                         
         }
 
         echo $data;

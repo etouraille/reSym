@@ -79,7 +79,9 @@ conversation:
 conversation_send_message:
     path:     /logged-area/send/message
     defaults: { _controller: ResourceUserBundle:Messaging:send }
-
+search_completion:
+    path:     /logged-area/autocomplete
+    defaults: { _controller: ResourceUserBundle:Resource:autocomplete }
 
 
 

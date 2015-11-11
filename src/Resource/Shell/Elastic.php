@@ -32,7 +32,11 @@ class Elastic extends ContainerAwareCommand
         switch($action) {
             case 'mapping' : 
                 $elastic->mapping();
-            break;
+                break;
+
+            case 'elastic-mapping':
+                $elastic->otherMapping();
+                break;
 
             case 'populate' : 
             break;

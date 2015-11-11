@@ -47,9 +47,21 @@ class Elastic {
     {
          return 'http://'.$this->host.':'.$this->port.'/'; 
     }
+    protected function tagSuggestion($letters) {
+       $json = array(
+            'hashtag-suggest' =>array (
+                'text'=> $letters,
+                'completion'=> array (
+                    'field' => 'suggest'
+                    )
+                )
+            );
 
-    protected function autocompleteMapping($tag) {
-        return array( $tag => array(
+        return Curl::get($this->getRootUrl().' sim/_mappping?pretty -d '.json_encode($json));
+    }
+
+    public function otherMapping($tag = 'hashtag') {
+        $json = array( 'hashtag' => array(
             "properties"=> array(
                 "name" => array("type"=>"string"),
                 "suggest"=>array( 
@@ -61,23 +73,24 @@ class Elastic {
                 )    
             )
         );
+        $action = 'PUT';
+        return Curl::get($this->getRootUrl().'index/hashtag/_mapping -d',$action,json_encode($json));
     }
 
-    public function associate($newTag,$tag) {
+    public function associate($tag,$idTag,$associateTag) {
         
            $json =  array("name" => $tag,
                           "suggest"=> array(
                                 "input"=> array( $tag ),
-                                "output"=> array($newTag),
+                                "output"=> array($associateTag),
                                 "weight" => 1)
                             );
-           
-           $method = 'PUT';
-        return Curl::get($this->getRootUrl.'index'./$tag,$method,jsonencode($json));       
+
+                      $method = 'PUT';
+        return Curl::get($this->getRootUrl().'sim'.'/'.$tag.'/'.$idTag,$method,json_encode($json));       
 
     }
     
-    } 
         
     public function geoSearch($content,$latitude,$longitude, $distance, $userId) {
        $json = $this->geoSearchJson($content,$latitude,$longitude, $distance, $userId ); 
@@ -306,9 +319,27 @@ class Elastic {
                     )
                 )
             )
+            
         )
-    );
+       
+     );
 
+       $mapauto = array('mappings'=>
+           array('hashtag' => array(
+                    "properties"=> array(
+                        "name" => array("type"=>"string"),
+                        "suggest"=>array( 
+                        "type"=>"completion",
+                        "analyzer"=>"simple",
+                        "search_analyzer"=>"simple",
+                        "payloads"=>"true"
+                    )
+                )
+            )
+        )
+    ); 
+
+       Curl::get($this->getRootUrl().'sim/hastag/_mapping -d', 'PUT', json_encode($mapauto));
        
        $mappings = array('mappings'=>
            array(
@@ -329,7 +360,7 @@ class Elastic {
                             'type'=>'date',
                             'format'=>'basicDateTimeNoMillis'
                          ),
-                    )
+                     ),
                 ),
                 'place'=>
                 array('properties'=>
@@ -338,10 +369,13 @@ class Elastic {
                         'address'=>array('type'=>'string'),
                         'geo'=>array('type'=>'geo_point'),
                     )
-                )
-                          
+                ),
+                  
             )
         );
+        
+
+                          
        $url = $this->getRootUrl().'resource';
        $method = 'PUT';
        $json = json_encode( array_merge($settings, $mappings)

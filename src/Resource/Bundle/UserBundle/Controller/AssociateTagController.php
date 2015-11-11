@@ -3,11 +3,6 @@
 namespace Resource\Bundle\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Resource\Bundle\UserBundle\Document\Resource;
-use Symfony\Component\HttpFoundation\Response;
-use Resource\Bundle\UserBundle\Service\Elastic;
-use Resource\Bundle\UserBundle\Service\Date;
-use Resource\Bundle\UserBundle\Document\Place;
 
 
 class AssociateTagController extends Controller {
