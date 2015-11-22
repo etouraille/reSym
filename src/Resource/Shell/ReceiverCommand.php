@@ -66,7 +66,7 @@ class ReceiverCommand extends ContainerAwareCommand {
     }
 
     public function callBack($msg){
-        $elastic = new \Resource\Bundle\UserBundle\Service\Elastic();
+        $elastic = new \Resource\Bundle\UserBundle\Service\Elastic\Percolator();
         
         $data = $msg->body;
         $key  = $msg->delivery_info['routing_key'];

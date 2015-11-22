@@ -5,7 +5,7 @@ namespace Resource\Bundle\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Resource\Bundle\UserBundle\Document\Search;
 use Symfony\Component\HttpFoundation\Response;
-use Resource\Bundle\UserBundle\Service\Elastic;
+use Resource\Bundle\UserBundle\Service\Elastic\Search;
 use Resource\Bundle\UserBundle\Service\Rabbit;
 use Resource\Bundle\UserBundle\Document\Geo;
 

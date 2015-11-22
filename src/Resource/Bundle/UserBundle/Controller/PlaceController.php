@@ -5,7 +5,7 @@ namespace Resource\Bundle\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Resource\Bundle\UserBundle\Document\Search;
 use Symfony\Component\HttpFoundation\Response;
-use Resource\Bundle\UserBundle\Service\Elastic;
+use Resource\Bundle\UserBundle\Service\Elastic\PlaceAround;
 use Resource\Bundle\UserBundle\Service\ReverseGeoCoding;
 use Resource\Bundle\UserBundle\Document\Place;
 class PlaceController extends Controller {
