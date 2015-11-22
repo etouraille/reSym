@@ -5,6 +5,7 @@ namespace Resource\Bundle\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Resource\Bundle\UserBundle\Document\Resource;
 use Resource\Bundle\UserBundle\Service\Elastic\Search;
+use Resource\Bundle\UserBundle\Service\Elastic\Autocomplete;
 use Resource\Bundle\UserBundle\Service\Date;
 use Resource\Bundle\UserBundle\Document\Place;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +20,6 @@ class ResourceController extends Controller
             $resource = new Resource($lat,$lon);
         
             $resource->setUserid($user->getId());
-            //$resource->setUserid(123);
             $resource->setContent($tag);
             $resource->setPicture($picture);
             $resource->setStartDate($now = (new Date())->now());
@@ -41,8 +41,8 @@ class ResourceController extends Controller
 
             $dm = $this->get('doctrine_mongodb')->getManager();
             $hashtag = $dm->getRepository('ResourceUserBundle:Hashtag')->findOneByHashtag($tag);
-        
-            if(!isset($hashtag)) {
+    
+        if(!isset($hashtag)) {
                 $hash = new \Resource\Bundle\UserBundle\Document\Hashtag();
                 $hash->setHashtag($tag);
                 $dm->persist($hash);
@@ -73,47 +73,52 @@ class ResourceController extends Controller
             $user = $this->get('security.context')
             ->getToken()
             ->getUser();
-            $elastic = new Elastic();
-            $tags =$this->get('doctrine_mongodb')
+            $tags = $this->get('doctrine_mongodb')
                      ->getManager()
-                     ->getRepository('ResourceUserBundle:Resource')
-                     ->findBy(array('userId'=>$user->getId()));
+                     ->createQueryBuilder('ResourceUserBundle:Resource')
+                     ->field ('userid')
+                     ->equals($user->getId())
+                    ->getQuery()
+                     ->execute();
 
-                       foreach($tags as $associateTag ) {
-                $json = array(
-                'name' => 'hashtag',
-                'suggest'=> array(
-                    'input' => $tag,
-                    'output'=> $associateTag,
-                    'payload'=> array(),
-                    'weight'=> 12
-                   )
-                );
-                
-                $rabbit->send(
-                    json_encode($json),
-                    'associate',
-                        array(
-                            'tag'=>$tag,
-                            'id'=>$resource->getId(),
-                            'associateTag'=>$associateTag )
+            // for each the personne as ever taged, it is associated with his new tag
+            if(isset($tags) ) {
+                foreach($tags as $associateTag ) {
+                    
+                    if($tag != $associateTag->getContent()) {
+                        $json = array(
+                        'name' => $tag,
+                        'suggest'=> array(
+                            'input' => $tag,
+                            'output'=> $associateTag->getContent(),
+                            'payload'=> array(),
+                            'weight'=> uniqid()
+                           )
                         );
+                        
+                        $rabbit->send(
+                            json_encode($json),
+                            'associate',
+                                array(
+                                    'tag'=>$tag,
+                                    'id'=>$resource->getId(),
+                                    'associateTag'=>$associateTag->getContent() )
+                                );
                     }
+                }
+            }
             
             $response = new Response();
-            $response->setContent(json_encode($ret));
+            $response->setContent(json_encode(array('success')));
             return $response;
     }
 
     public function searchAction($content='',$lat='45.7677957',$lon='4.8731638',$distance = '10km' ) {
         
-    //$user = $this->get('security.context')->getToken()->getUser();
-        //$userId = $user->getId();
-        $userId = 123;
-        $elastic = new Elastic();
-        //$ret = $elastic->mapping();
+        $user = $this->get('security.context')->getToken()->getUser();
+        $userId = $user->getId();
+        $elastic = new Search();
         $ret = $elastic->geoSearch($content,$lat,$lon,$distance, $userId);
-        //$ret = $elastic->delete();
         return (new Response())->setContent($ret);
     }
 
@@ -122,18 +127,13 @@ class ResourceController extends Controller
         $user = $this->get('security.context')
             ->getToken()
             ->getUser();
-        $elastic = new Elastic();
-        $tags =$this->get('doctrine_mongodb')
-                     ->getManager()
-                     ->getRepository('ResourceUserBundle:Resource')
-                     ->findBy(array('userId'=>$user->getId()));
 
+        $elastic = new Autocomplete();
+        $ret = $elastic->tagSuggestion($letters);
         return (new Response())->setContent(
             $this->get('jms_serializer')
-            ->serialize($tags,'json')
+            ->serialize($ret,'json')
         ); 
-            
-
     }
 
     public function getAction($id=123) {

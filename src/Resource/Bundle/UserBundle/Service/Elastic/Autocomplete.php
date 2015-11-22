@@ -5,9 +5,9 @@ use Resource\Bundle\UserBundle\Service\Curl;
 class Autocomplete extends Elastic {
 
    
-    protected function tagSuggestion($letters) {
+    public function tagSuggestion($letters='p') {
        $json = array(
-            'hashtag-suggest' =>array (
+            'similar-suggest' =>array (
                 'text'=> $letters,
                 'completion'=> array (
                     'field' => 'suggest'
@@ -15,7 +15,10 @@ class Autocomplete extends Elastic {
                 )
             );
 
-        return Curl::get($this->getRootUrl().' sim/_mappping?pretty -d '.json_encode($json));
+       return Curl::get(
+           $this->getRootUrl().' resource/_mappping?pretty -d ',
+           'PUT',
+           json_encode($json));
     }
 
     public function associate($tag,$idTag,$associateTag) {
@@ -27,11 +30,10 @@ class Autocomplete extends Elastic {
                                 "weight" => 1)
                             );
 
-                      $method = 'PUT';
-        return Curl::get($this->getRootUrl().'sim'.'/'.$tag.'/'.$idTag,$method,json_encode($json));       
-
+        $method = 'POST';
+        return Curl::get($this->getRootUrl().'resource/similar/'.$idTag,$method,json_encode($json));       
     }
-
+    
 }
 
 

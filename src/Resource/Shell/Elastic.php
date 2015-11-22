@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Resource\Bundle\UserBundle\Service\Elastic\Mappinp;
+use Resource\Bundle\UserBundle\Service\Elastic\Mapping;
 use Resource\Bundle\UserBundle\Service\Elastic\Delete;
 
 use Resource\Bundle\UserBundle\Service\Notification;
@@ -28,7 +28,7 @@ class Elastic extends ContainerAwareCommand
     {
         $action = $input->getArgument('action');
 
-        $elasticMapping = new Mappping();
+        $elasticMapping = new Mapping();
         $elasticDelete = new Delete();
 
         switch($action) {
@@ -37,7 +37,7 @@ class Elastic extends ContainerAwareCommand
                 break;
 
             case 'delete':
-                $elasticDelete->otherMapping();
+                $elasticDelete->delete();
                 break;
 
             case 'populate' : 

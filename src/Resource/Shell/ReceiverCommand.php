@@ -8,6 +8,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use PhpAmqpLib\Connection\AMQPConnection;
 use Resource\Bundle\UserBundle\Service\DeferResourceAddressSetting;
+use Resource\Bundle\UserBundle\Service\Elastic;
+use Resource\Bundle\UserBundle\Service\Elastic\Percolator;
+use Resource\Bundle\UserBundle\Service\Elastic\Autocomplete;
 
 define('AMQP_DEBUG', true);
 
@@ -66,7 +69,6 @@ class ReceiverCommand extends ContainerAwareCommand {
     }
 
     public function callBack($msg){
-        $elastic = new \Resource\Bundle\UserBundle\Service\Elastic\Percolator();
         
         $data = $msg->body;
         $key  = $msg->delivery_info['routing_key'];
@@ -111,8 +113,10 @@ class ReceiverCommand extends ContainerAwareCommand {
                         $this->getContainer()->get('doctrine_mongodb')->getManager(),
                         $data
                     );
+                    $elastic = new Elastic();
                     $return = $elastic->index('resource',$type,$dataWithAddress,$id);
                     if($type = 'hashtag') {
+                        $elastic = new Percolator();
                         $return = $elastic->percolate('resource', $type, $doc );
                     
                         $this->getContainer()
@@ -120,12 +124,14 @@ class ReceiverCommand extends ContainerAwareCommand {
                             ->process($return, $dataWithAddress);
                     }
                 break;
-            case  'update' :
+        case  'update' :
+                    $elastic = new Elastic();
                     $return = $elastic->update('resource',$type , $data, $id );
                     break;
                         
 
-            case 'percolator' : 
+        case 'percolator' : 
+                    $elastic = new Percolator();
                     $return = $elastic->percolator('resource', $type, $data, $id);
                     break;
 
@@ -154,7 +160,7 @@ class ReceiverCommand extends ContainerAwareCommand {
                  // in this case it can be a new index or an update but we must associate 
                  // all the linked word by the same person
                  //
-
+                 $elastic = new Autocomplete();
                  $elastic->associate($tag,$id,$associateTag);
                  echo $tag;
                  echo "\n";

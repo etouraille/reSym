@@ -5,7 +5,7 @@ namespace Resource\Bundle\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Resource\Bundle\UserBundle\Document\Search;
 use Symfony\Component\HttpFoundation\Response;
-use Resource\Bundle\UserBundle\Service\Elastic\Search;
+use Resource\Bundle\UserBundle\Service\Elastic\Search as ElasticSearch;
 use Resource\Bundle\UserBundle\Service\Rabbit;
 use Resource\Bundle\UserBundle\Document\Geo;
 
@@ -27,7 +27,7 @@ class SearchController extends Controller {
                         $hashtags[] = $hashtag;
                     }
                 }
-            $elastic = new Elastic();
+            $elastic = new ElasticSearch();
             //$elastic->mapping();
             $ret = $elastic->geoSearch($hashtags,$lat,$lng,'1km',$user->getId());
             

@@ -14,7 +14,7 @@ class Search extends Elastic{
  
     } 
 
-    protected function geoSearchJson($content,$latitude,$longitude, $distance, $userId, $notByMe = false )
+    public function geoSearchJson($content,$latitude,$longitude, $distance, $userId, $notByMe = false )
     {
        $match = array();
        if(is_array($content) && count($content)>0){
@@ -139,6 +139,4 @@ class Search extends Elastic{
        return $json;
        
    }
-
-
 }

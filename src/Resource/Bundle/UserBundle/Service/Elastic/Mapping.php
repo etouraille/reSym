@@ -4,73 +4,8 @@ namespace Resource\Bundle\UserBundle\Service\Elastic;
 use Resource\Bundle\UserBundle\Service\Curl;
 class Mapping extends Elastic {
 
-       //mapping for completion:
-       $url = $this->getRootUrl().'resource';
-       $method = 'PUT';
-       //Curl::get($url.json_encode($this->autocompletMapping('hashtag')));
-
-       /*
-       $settings = array(
-        'settings'=> 
-           array('analysis'=>
-            array(
-                'filter'=>array(
-                    'nGram_filter'=>array(
-                        'type'=>'nGram',
-                        'min_gram'=>2,
-                        'max_gram'=>20,
-                        'token_chars'=>array(
-                            'letter',
-                            'digit',
-                            'punctuation',
-                            'symbol'
-                        )
-                    )
-                ),
-                'analyze'=>array(
-                    'nGram_analyzer'=>array(
-                        'type'=>'custom',
-                        'tokenizer'=>'whitespace',
-                        'filter'=>array(
-                            'lowercase',
-                            'asciifolding',
-                            'nGram_filter'
-                        )
-                    ),
-                    'whitespace_analyzer'=>array(
-                        'type'=>'custom',
-                        'tokenizer'=>'whitespace',
-                        'filter'=>array(
-                            'lowercase',
-                            'asciifolding'
-                        )
-                    )
-                )
-            )
-            
-        )
-       
-    );
-    */
-
-       $mapauto = array('mappings'=>
-           array('hashtag' => array(
-                    "properties"=> array(
-                        "name" => array("type"=>"string"),
-                        "suggest"=>array( 
-                        "type"=>"completion",
-                        "analyzer"=>"simple",
-                        "search_analyzer"=>"simple",
-                        "payloads"=>"true"
-                    )
-                )
-            )
-        )
-    ); 
-
-       //Curl::get($this->getRootUrl().'sim/hahstag/_mapping -d', 'PUT', json_encode($mapauto));
-       
-       $mappings = array('mappings'=>
+    public function mapping() { 
+        $mappings = array('mappings'=>
            array(
                'hashtag'=>
                 array('properties'=>
@@ -83,7 +18,7 @@ class Mapping extends Elastic {
                         'geo'=>array('type'=>'geo_point'),
                             'startDate'=>array(
                                 'type'=>'date',
-                                'format'=>'basiDateTimeNoMillis'
+                                'format'=>'basicDateTimeNoMillis'
                         ),
                         'endDate'=>array(
                             'type'=>'date',
@@ -99,7 +34,17 @@ class Mapping extends Elastic {
                         'geo'=>array('type'=>'geo_point'),
                     )
                 ),
-                  
+                'similar' => array(
+                    "properties"=> array(
+                        "name" => array("type"=>"string"),
+                        "suggest"=>array( 
+                            "type"=>"completion",
+                            "analyzer"=>"simple",
+                            "search_analyzer"=>"simple",
+                            "payloads"=>"true"
+                       )
+                    )
+                )
             )
         );
         
@@ -108,7 +53,7 @@ class Mapping extends Elastic {
        $url = $this->getRootUrl().'resource';
        $method = 'PUT';
        $json = json_encode($mappings);
-       return Curl::get($url,$method,$json);
+       echo Curl::get($url,$method,$json);
    }
 }
 
