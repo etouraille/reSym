@@ -60,25 +60,8 @@ class Elastic {
         return Curl::get($this->getRootUrl().' sim/_mappping?pretty -d '.json_encode($json));
     }
 
-    public function otherMapping($tag = 'hashtag') {
-        $json = array( 'hashtag' => array(
-            "properties"=> array(
-                "name" => array("type"=>"string"),
-                "suggest"=>array( 
-                    "type"=>"completion",
-                    "analyzer"=>"simple",
-                    "search_analyzer"=>"simple",
-                    "payloads"=>"true"
-                    )
-                )    
-            )
-        );
-        $action = 'PUT';
-        return Curl::get($this->getRootUrl().'index/hashtag/_mapping -d',$action,json_encode($json));
-    }
-
     public function associate($tag,$idTag,$associateTag) {
-        
+    
            $json =  array("name" => $tag,
                           "suggest"=> array(
                                 "input"=> array( $tag ),
@@ -90,10 +73,12 @@ class Elastic {
         return Curl::get($this->getRootUrl().'sim'.'/'.$tag.'/'.$idTag,$method,json_encode($json));       
 
     }
+
+
     
         
     public function geoSearch($content,$latitude,$longitude, $distance, $userId) {
-       $json = $this->geoSearchJson($content,$latitude,$longitude, $distance, $userId ); 
+    $json = $this->geoSearchJson($content,$latitude,$longitude, $distance, $userId ); 
        $method = 'GET';
        $url = 'http://'.$this->host.':'.$this->port.'/resource/hashtag/_search?pretty&size=50'; //find a way to evalulat quantitiy
        return Curl::get($url, $method,$json );
@@ -279,9 +264,9 @@ class Elastic {
        //mapping for completion:
        $url = $this->getRootUrl().'resource';
        $method = 'PUT';
-       Curl::get($url.json_encode($this->autocompletMapping('hashtag')));
+       //Curl::get($url.json_encode($this->autocompletMapping('hashtag')));
 
-
+       /*
        $settings = array(
         'settings'=> 
            array('analysis'=>
@@ -322,7 +307,8 @@ class Elastic {
             
         )
        
-     );
+    );
+    */
 
        $mapauto = array('mappings'=>
            array('hashtag' => array(
@@ -339,7 +325,7 @@ class Elastic {
         )
     ); 
 
-       Curl::get($this->getRootUrl().'sim/hastag/_mapping -d', 'PUT', json_encode($mapauto));
+       //Curl::get($this->getRootUrl().'sim/hahstag/_mapping -d', 'PUT', json_encode($mapauto));
        
        $mappings = array('mappings'=>
            array(
@@ -354,7 +340,7 @@ class Elastic {
                         'geo'=>array('type'=>'geo_point'),
                             'startDate'=>array(
                                 'type'=>'date',
-                                'format'=>'basicDateTimeNoMillis'
+                                'format'=>'basiDateTimeNoMillis'
                         ),
                         'endDate'=>array(
                             'type'=>'date',
@@ -378,8 +364,7 @@ class Elastic {
                           
        $url = $this->getRootUrl().'resource';
        $method = 'PUT';
-       $json = json_encode( array_merge($settings, $mappings)
-       );
+       $json = json_encode($mappings);
        return Curl::get($url,$method,$json);
    }
 }

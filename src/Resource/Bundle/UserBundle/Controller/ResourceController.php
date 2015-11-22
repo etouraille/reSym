@@ -69,7 +69,7 @@ class ResourceController extends Controller
             );
 
            
-            
+           // solution to associate word use by user to other words. in order to autocomplete. 
             $user = $this->get('security.context')
             ->getToken()
             ->getUser();
@@ -78,10 +78,20 @@ class ResourceController extends Controller
                      ->getManager()
                      ->getRepository('ResourceUserBundle:Resource')
                      ->findBy(array('userId'=>$user->getId()));
-            
-            foreach($tags as $associateTag ) {
+
+                       foreach($tags as $associateTag ) {
+                $json = array(
+                'name' => 'hashtag',
+                'suggest'=> array(
+                    'input' => $tag,
+                    'output'=> $associateTag,
+                    'payload'=> array(),
+                    'weight'=> 12
+                   )
+                );
+                
                 $rabbit->send(
-                    $json = 'associate',
+                    json_encode($json),
                     'associate',
                         array(
                             'tag'=>$tag,

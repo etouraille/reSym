@@ -156,6 +156,9 @@ class ReceiverCommand extends ContainerAwareCommand {
                  //
 
                  $elastic->associate($tag,$id,$associateTag);
+                 echo $tag;
+                 echo "\n";
+                 echo $associateTag;
 
                  break;
                          

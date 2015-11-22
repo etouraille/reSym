@@ -74,6 +74,7 @@ class UserController extends Controller
                 $dm = $this->get('doctrine_mongodb')->getManager();
                 $dm->persist($user);
                 $dm->flush();
+                $messages['salt'] = $user->getSalt();
             }
             $ret = array(
                 'success' => $success,
