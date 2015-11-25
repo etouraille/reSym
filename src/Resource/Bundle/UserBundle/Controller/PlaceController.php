@@ -12,7 +12,7 @@ class PlaceController extends Controller {
 
 
     public function searchAction( $lat='45.7677957',$lng='4.8731638') {
-        $elastic = new Elastic();
+        $elastic = new PlaceAround();
         //$elastic->mapping();
         $ret = $elastic->placeAround($lat,$lng,'1km');
         return (new Response())->setContent($ret);

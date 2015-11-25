@@ -33,17 +33,6 @@ class Mapping extends Elastic {
                         'address'=>array('type'=>'string'),
                         'geo'=>array('type'=>'geo_point'),
                     )
-                ),
-                'similar' => array(
-                    "properties"=> array(
-                        "name" => array("type"=>"string"),
-                        "suggest"=>array( 
-                            "type"=>"completion",
-                            "analyzer"=>"simple",
-                            "search_analyzer"=>"simple",
-                            "payloads"=>"true"
-                       )
-                    )
                 )
             )
         );
@@ -54,7 +43,27 @@ class Mapping extends Elastic {
        $method = 'PUT';
        $json = json_encode($mappings);
        echo Curl::get($url,$method,$json);
-   }
+    }
+
+    public function autocompleteMapping(){
+        $url =  $this->getRootUrl().'tag';
+        $method = 'PUT';
+        echo Curl::get($url,$method);
+        $url = $this->getRootUrl().'tag/similar/_mapping -d';
+        $method = 'PUT';
+        $json = array('similar' => array(
+                    "properties"=> array(
+                        "name" => array("type"=>"string"),
+                        "suggest"=>array( 
+                            "type"=>"completion",
+                            "analyzer"=>"simple",
+                            "search_analyzer"=>"simple",
+                            "payloads"=>"true"
+                       )
+                    )
+                )
+            );
+    }
 }
 
 

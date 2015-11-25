@@ -10,7 +10,7 @@ class Delete extends Elastic {
        $method = 'DELETE';
        Curl::get($url,$method,'');
 
-        $url = $this->getRootUrl().'sim';
+       $url = $this->getRootUrl().'tag';
        $method = 'DELETE';
        Curl::get($url,$method,'');
 

@@ -34,6 +34,7 @@ class Elastic extends ContainerAwareCommand
         switch($action) {
             case 'mapping' : 
                 $elasticMapping->mapping();
+                $elasticMapping->autocompleteMapping();
                 break;
 
             case 'delete':

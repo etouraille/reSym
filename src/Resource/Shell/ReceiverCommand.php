@@ -88,9 +88,6 @@ class ReceiverCommand extends ContainerAwareCommand {
             if(isset($headers['userid'])) {
                 $userid = $headers['userid'];
             }
-            if(isset($headers['associateTag'])) {
-                $associateTag = $headers['associateTag'];
-            }                        
             if(isset($headers['tag'])) {
                 $tag = $headers['tag'];
             }                        
@@ -161,10 +158,10 @@ class ReceiverCommand extends ContainerAwareCommand {
                  // all the linked word by the same person
                  //
                  $elastic = new Autocomplete();
-                 $elastic->associate($tag,$id,$associateTag);
+                 $elastic->associate($tag,$id,$data);
                  echo $tag;
                  echo "\n";
-                 echo $associateTag;
+                 echo $data;
 
                  break;
                          

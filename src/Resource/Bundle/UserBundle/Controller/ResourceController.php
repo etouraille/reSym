@@ -18,7 +18,7 @@ class ResourceController extends Controller
             $success = true;
             $user = $this->get('security.context')->getToken()->getUser();
             $resource = new Resource($lat,$lon);
-        
+            $userid = '5651e4b3f08871d4048b4567'; 
             $resource->setUserid($user->getId());
             $resource->setContent($tag);
             $resource->setPicture($picture);
@@ -83,29 +83,23 @@ class ResourceController extends Controller
 
             // for each the personne as ever taged, it is associated with his new tag
             if(isset($tags) ) {
+
+                $returnTags = array();
                 foreach($tags as $associateTag ) {
-                    
+
                     if($tag != $associateTag->getContent()) {
-                        $json = array(
-                        'name' => $tag,
-                        'suggest'=> array(
-                            'input' => $tag,
-                            'output'=> $associateTag->getContent(),
-                            'payload'=> array(),
-                            'weight'=> uniqid()
-                           )
-                        );
-                        
-                        $rabbit->send(
-                            json_encode($json),
-                            'associate',
-                                array(
-                                    'tag'=>$tag,
-                                    'id'=>$resource->getId(),
-                                    'associateTag'=>$associateTag->getContent() )
-                                );
+                        $returnTags[] = $associateTag->getContent();
+                      }
                     }
-                }
+                    $rabbit->send(
+                        json_encode($returnTags),
+                        'associate',
+                            array(
+                                'tag'=>$tag,
+                                'id'=>$resource->getId()
+                            )
+                        );
+
             }
             
             $response = new Response();
@@ -122,18 +116,15 @@ class ResourceController extends Controller
         return (new Response())->setContent($ret);
     }
 
-    public function autocompleteAction($letters='a') 
+    public function autocompleteAction($letters='potir') 
     {
-        $user = $this->get('security.context')
-            ->getToken()
-            ->getUser();
+        //$user = $this->get('security.context')
+        //    ->getToken()
+        //    ->getUser();
 
         $elastic = new Autocomplete();
         $ret = $elastic->tagSuggestion($letters);
-        return (new Response())->setContent(
-            $this->get('jms_serializer')
-            ->serialize($ret,'json')
-        ); 
+        return (new Response())->setContent($ret); 
     }
 
     public function getAction($id=123) {

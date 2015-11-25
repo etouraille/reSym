@@ -4,10 +4,11 @@ namespace Resource\Bundle\UserBundle\Service\Elastic;
 use Resource\Bundle\UserBundle\Service\Curl;
 class Autocomplete extends Elastic {
 
-   
-    public function tagSuggestion($letters='p') {
-       $json = array(
-            'similar-suggest' =>array (
+
+    #dead code, not workink yet ...
+    public function tagSuggestion($letters='pot') {
+       $json = array( 
+            'similar' =>array (
                 'text'=> $letters,
                 'completion'=> array (
                     'field' => 'suggest'
@@ -16,22 +17,24 @@ class Autocomplete extends Elastic {
             );
 
        return Curl::get(
-           $this->getRootUrl().' resource/_mappping?pretty -d ',
-           'PUT',
-           json_encode($json));
+            $this->getRootUrl().'tag/_suggest?pretty -d ',
+           'POST',
+           json_encode($json), 50);
     }
 
+    #dead code not working yet ...
     public function associate($tag,$idTag,$associateTag) {
     
            $json =  array("name" => $tag,
                           "suggest"=> array(
-                                "input"=> array( $tag ),
-                                "output"=> array($associateTag),
+                                "input"=> $associateTag,
+                                "output"=> $tag,
                                 "weight" => 1)
                             );
 
-        $method = 'POST';
-        return Curl::get($this->getRootUrl().'resource/similar/'.$idTag,$method,json_encode($json));       
+           
+           $method = 'PUT';
+           return Curl::get($this->getRootUrl().'tag/similar/'.$idTag.'?refresh=true',$method,json_encode($json));       
     }
     
 }
