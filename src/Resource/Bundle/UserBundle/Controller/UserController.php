@@ -2,10 +2,10 @@
 
 namespace Resource\Bundle\UserBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Resource\Bundle\UserBundle\Service\Word;
 use Resource\Bundle\UserBundle\Document\User;
 use Symfony\Component\HttpFoundation\Response;
-
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class UserController extends Controller
 {
     public function saltAction($username='edouard.touraille@gmail.com') {
@@ -84,6 +84,34 @@ class UserController extends Controller
             $response->setContent(json_encode($ret));
             return $response;
     }
+
+    // in case of email subscription only, we generate a random password and user name
+    // and create the account, and send back the datas ...
+    // preferabily insert a captcha on the website ...
+    public function subscribeWithEmailOnlyAction($email='lifnucucI@gmail.com',$username='anonymous'){
+        
+        $password = Word::getRandom();
+
+        //todo : send an email to the user with is clear password.
+        $success = false;
+        $json = $this->subscribeAction($username,$password,$password,$email)->getContent();
+        $return_array = json_decode($json,true);
+        $success = $return_array['success'];
+        $return = array();
+        if($success) {
+            $repository = $this->get('doctrine_mongodb')
+                ->getManager()
+                ->getRepository('ResourceUserBundle:User');
+        $user = $repository->loadUserByUsername($email);
+            $salt = $return_array['message']['salt'];
+            $return['salt'] = $salt;
+            $return['email'] = $email;
+            $return['password'] = $password;
+            $return['id'] = $user->getId(); 
+        }
+        $return['success'] = $success;
+        return (new Response)->setContent(json_encode($return));
+    } 
 
     public function notificationRegisterAction($device='android', $regId ='123') {
         

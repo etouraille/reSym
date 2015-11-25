@@ -7,6 +7,10 @@ forgotten_change:
 user_subscribe:
     path:     /subscribe
     defaults: { _controller: ResourceUserBundle:User:subscribe }
+user_subscribe_with_email_only:
+    path:     /subscribe-with-email-only
+    defaults: { _controller: ResourceUserBundle:User:subscribeWithEmailOnly }
+
 user_salt:
     path:     /salt
     defaults: { _controller: ResourceUserBundle:User:salt }
